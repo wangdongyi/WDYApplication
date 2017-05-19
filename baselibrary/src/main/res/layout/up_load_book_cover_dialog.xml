@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingBottom="1dp"
+        android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding"
+        android:paddingTop="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_gray_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_photo"
+                style="@style/Text_Blue_Default_little"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:background="@drawable/round_white"
+                android:gravity="center"
+                android:text="拍照" />
+
+            <View style="@style/LineHorizontal" />
+
+            <TextView
+                android:id="@+id/textView_picture"
+                style="@style/Text_Blue_Default_little"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:background="@drawable/round_white"
+                android:gravity="center"
+                android:text="从手机相册选择" />
+
+            <View style="@style/LineHorizontal" />
+
+            <TextView
+                android:id="@+id/textView_change"
+                style="@style/Text_Blue_Default_little"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:background="@drawable/round_white"
+                android:gravity="center"
+                android:text="选择默认封皮" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_cancel"
+            style="@style/Text_Blue_Default_little"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginTop="@dimen/padding"
+            android:background="@drawable/round_gray_white"
+            android:gravity="center"
+            android:text="取消" />
+    </LinearLayout>
+</RelativeLayout>

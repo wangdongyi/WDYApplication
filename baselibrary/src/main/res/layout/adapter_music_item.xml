@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/music_item_main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="vertical"
+                android:padding="@dimen/padding">
+
+    <TextView
+        android:id="@+id/music_item_name_textView"
+        style="@style/Text_Black_Default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"/>
+
+    <ImageView
+        android:id="@+id/music_item_playing_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="播放中"
+        android:src="@drawable/playing"
+        android:visibility="gone"
+        tools:ignore="HardcodedText"/>
+</RelativeLayout>

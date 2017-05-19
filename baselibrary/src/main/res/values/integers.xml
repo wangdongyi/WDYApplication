@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="activity_trans_duration">300</integer>
+    <integer name="min_exit_scroll_factor">25</integer>
+</resources>

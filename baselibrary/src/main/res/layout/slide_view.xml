@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.base.library.view.slideView.WDYHScroll xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:id="@+id/layout_farther"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/delete"
+            style="@style/Text_White_Default"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/btn_red"
+            android:focusable="false"
+            android:gravity="center"
+            android:text="删除" />
+    </LinearLayout>
+</com.base.library.view.slideView.WDYHScroll>

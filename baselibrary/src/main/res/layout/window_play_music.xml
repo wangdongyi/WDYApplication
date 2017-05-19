@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangular"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:id="@+id/music_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/window_play_music_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/music_background_gray">
+
+            <LinearLayout
+                android:id="@+id/window_music_down_layout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="向下箭头"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/music_down"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/window_music_title_textView"
+                style="@style/Text_Blue_Default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+            <LinearLayout
+                android:id="@+id/window_music_close_layout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="关闭"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/close"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/window_music_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/music_background_gray"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@drawable/rectangular"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/window_music_play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/music_background_gray"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding">
+
+        <ImageView
+            android:id="@+id/play_music_imageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/oval_blue"
+            android:contentDescription="播放按钮"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/play"
+            tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:id="@+id/play_music_on_time_textView"
+            style="@style/Text_Blue_Default_little"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/play_music_imageView"
+            android:gravity="center"
+            android:text="00:00"
+            tools:ignore="HardcodedText"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/play_music_time_textView"
+            android:layout_toRightOf="@+id/play_music_on_time_textView"
+            android:max="100"
+            android:maxHeight="4.0dip"
+            android:minHeight="4.0dip"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:progressDrawable="@drawable/seekbar_background"
+            android:thumb="@drawable/seekbar_thumb"/>
+
+        <TextView
+            android:id="@+id/play_music_time_textView"
+            style="@style/Text_Blue_Default_little"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/play_music_menu_imageView"
+            android:gravity="center"
+            android:text="00:00"/>
+
+        <ImageView
+            android:id="@+id/play_music_menu_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="菜单"
+            android:scaleType="centerInside"
+            android:src="@drawable/menu"/>
+    </RelativeLayout>
+</LinearLayout>

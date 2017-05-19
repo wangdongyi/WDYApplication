@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="text_black">#292d30</color>
+    <color name="text_red">#ed1b4c</color>
+    <color name="text_grey">#696969</color>
+    <color name="text_blue">#1795C6</color>
+    <color name="text_pink">#dd797c</color>
+    <color name="text_orange">#f9bd05</color>
+    <color name="text_green">#15d989</color>
+    <color name="text_dark_gray">#bbbbbb</color>
+    <color name="text_light_gray">#d0d0d0</color>
+    <color name="line">#A6A7A8</color>
+    <color name="btn_unable">#F2F2F2</color>
+    <color name="btn_red">#dd1a1a</color>
+    <color name="btn_unable_red">#fe6146</color>
+    <color name="btn_grey">#c8c8c8</color>
+    <!--黑色 -->
+    <color name="half_transparent">#66000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="top_color">#1795C6</color>
+
+    <color name="blue">#1795C6</color>
+    <color name="grey">#9F9F9F</color>
+    <color name="orange">#FCAE42</color>
+    <color name="pink">#dd797c</color>
+    <color name="bottom_gray">#eeeff3</color>
+    <color name="top_gray">#f8f8f8</color>
+    <color name="light_gray">#f7f7fc</color>
+    <color name="background_gray">#F4F5F7</color>
+    <color name="music_background_gray">#F8F8F8</color>
+
+    <color name="cpb_grey">#F9F9F9</color>
+    <color name="cpb_blue">#1ea1f3</color>
+    <color name="cpb_blue_dark">#ff00719b</color>
+    <color name="cpb_red">#ffff4444</color>
+    <color name="cpb_red_dark">#ffcd3a3a</color>
+    <color name="cpb_green">#ff99cc00</color>
+    <color name="cpb_green_dark">#ff6d9b00</color>
+    <color name="cpb_white">@android:color/white</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#C0FFFF00</color>
+    <!--1. 浅绿 #-->
+    <!--2. 深绿 #-->
+    <!--3. 暗蓝 #-->
+    <!--4. 蓝色 #-->
+    <!--5. 深蓝 #-->
+    <!--6. 深紫 #-->
+    <!--7. 浅紫 #-->
+    <!--8. 粉色 #-->
+    <!--9. 红色 #-->
+    <!--10. 橙色 #-->
+    <!--11. 黄色 #-->
+    <!--12. 灰色 #-->
+    <color name="color0">#8cc540</color>
+    <color name="color1">#009f5d</color>
+    <color name="color2">#019fa0</color>
+    <color name="color3">#019fde</color>
+    <color name="color4">#007cdc</color>
+    <color name="color5">#887ddd</color>
+    <color name="color6">#cd7bdd</color>
+    <color name="color7">#ff5675</color>
+    <color name="color8">#ff1244</color>
+    <color name="color9">#ff8345</color>
+    <color name="color10">#f8bd0b</color>
+    <color name="color11">#d1d2d4</color>
+</resources>

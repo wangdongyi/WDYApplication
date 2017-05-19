@@ -1,0 +1,46 @@
+package com.base.library.view.photoView;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.view.MotionEvent;
+import android.view.View;
+
+/**
+ * 作者：王东一
+ * 创建时间：2017/4/26.
+ */
+
+public class Compat {
+    private static final int SIXTY_FPS_INTERVAL = 1000 / 60;
+
+    public static void postOnAnimation(View view, Runnable runnable) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            postOnAnimationJellyBean(view, runnable);
+        } else {
+            view.postDelayed(runnable, SIXTY_FPS_INTERVAL);
+        }
+    }
+
+    @TargetApi(16)
+    private static void postOnAnimationJellyBean(View view, Runnable runnable) {
+        view.postOnAnimation(runnable);
+    }
+
+    public static int getPointerIndex(int action) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            return getPointerIndexHoneyComb(action);
+        else
+            return getPointerIndexEclair(action);
+    }
+
+    @SuppressWarnings("deprecation")
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+    private static int getPointerIndexEclair(int action) {
+        return (action & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private static int getPointerIndexHoneyComb(int action) {
+        return (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+    }
+}

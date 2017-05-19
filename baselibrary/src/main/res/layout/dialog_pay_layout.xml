@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    tools:ignore="HardcodedText">
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/textView_wexin"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/textView_wexin"
+        style="@style/Text_White_Default_little"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/line"
+        android:background="@color/text_green"
+        android:gravity="center"
+        android:text="微信"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/textView_zhifubao"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/textView_zhifubao"
+        style="@style/Text_White_Default_little"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/text_green"
+        android:gravity="center"
+        android:text="支付宝"/>
+</RelativeLayout>

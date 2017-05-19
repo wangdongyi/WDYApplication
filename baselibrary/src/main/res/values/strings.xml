@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MyLibrary</string>
+    <string name="back">返回</string>
+    <string name="refresh_head_load_more">加载更多</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="tips_not_wifi">您当前正在使用移动网络，继续播放将消耗流量</string>
+    <string name="tips_not_wifi_confirm">继续播放</string>
+    <string name="tips_not_wifi_cancel">停止播放</string>
+    <string name="no_url">播放地址无效</string>
+    <string name="picker_all_image">所有图片</string>
+    <string name="picker_msg_maxi_capacity">已达到照片选择上限</string>
+    <string name="picker_photos_num">%1$d张</string>
+    <string name="picker_msg_no_camera">没找到摄像头</string>
+</resources>

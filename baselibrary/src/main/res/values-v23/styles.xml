@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="BaseAppTheme">
+        <!--状态栏颜色-->
+        <item name="android:statusBarColor">@color/blue</item>
+        <!-- 底部bar颜色 -->
+        <item name="android:navigationBarColor">@color/blue</item>
+        <!--&lt;!&ndash;状态栏不占空间&ndash;&gt;-->
+        <item name="android:windowTranslucentStatus">true</item>
+        <!--支持动画切换-->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+
+    <style name="myToolbar" parent="myToolbar">
+        <item name="elevation">0dp</item>
+    </style>
+
+
+    <style name="fitStyles">
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:translationZ">0dp</item>
+    </style>
+</resources>
