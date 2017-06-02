@@ -163,7 +163,7 @@ public class RefreshLayout extends SwipeRefreshLayout implements SwipeRefreshLay
                 if (mRecyclerView.getLayoutManager() instanceof LinearLayoutManager)
                     if (((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 0) {
                         setEnabled(true);
-                    } else if (mRecyclerView.getChildCount() == 0) {
+                    } else if (mRecyclerView.getChildCount() > 0 && mRecyclerView.getChildAt(0).getTop() == 0) {
                         setEnabled(true);
                     } else {
                         setEnabled(false);

@@ -1,4 +1,4 @@
-package com.base.library.util;
+package com.base.library.recyclerUtil;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,18 +11,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.base.library.util.CodeUtil;
+
 /**
  * 作者：王东一 on 2016/5/4 16:16
+ * RecyclerView的分割线
  **/
 public class ItemDivider extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private Drawable mDivider;
-    private int mDividerHeight = 2;//分割线高度，默认为1px
+    private int mDividerHeight = 1;//分割线高度，默认为1px
     private int mOrientation;//列表的方向：LinearLayoutManager.VERTICAL或LinearLayoutManager.HORIZONTAL
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
 
     /**
-     * 默认分割线：高度为2px，颜色为灰色
+     * 默认分割线：高度为1px，颜色为灰色
      *
      * @param context
      * @param orientation 列表方向
@@ -61,7 +64,7 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
      */
     public ItemDivider(Context context, int orientation, int dividerHeight, int dividerColor) {
         this(context, orientation);
-        mDividerHeight = CodeUtil.dip2px(context,dividerHeight);
+        mDividerHeight = CodeUtil.dip2px(context, dividerHeight);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(dividerColor);
         mPaint.setStyle(Paint.Style.FILL);

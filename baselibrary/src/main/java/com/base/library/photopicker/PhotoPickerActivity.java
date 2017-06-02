@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -24,7 +22,6 @@ import android.widget.TextView;
 
 import com.base.library.R;
 import com.base.library.activity.BaseActivity;
-import com.base.library.activity.PermissionsActivity;
 import com.base.library.application.BaseApplication;
 import com.base.library.listen.OnPermissionListen;
 import com.base.library.listen.OnRecyclerClickListen;
@@ -33,14 +30,11 @@ import com.base.library.photopicker.model.PhotoDirectory;
 import com.base.library.photopicker.utils.MediaStoreHelper;
 import com.base.library.photopicker.utils.PhotoUtils;
 import com.base.library.util.CodeUtil;
-import com.base.library.util.ItemDivider;
-import com.base.library.view.upPhotoView.DoPicCapUtil;
+import com.base.library.recyclerUtil.ItemDivider;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
 
 /**
  * 作者：王东一

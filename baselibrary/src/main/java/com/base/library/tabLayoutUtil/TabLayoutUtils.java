@@ -1,16 +1,18 @@
-package com.base.library.util;
+package com.base.library.tabLayoutUtil;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.base.library.util.CodeUtil;
+
 import java.lang.reflect.Field;
 
 /**
  * Created by apple on 2017/3/16.
  * 控制指示条长度
- * api      TabLayoutUtils.setIndicator(InterviewQuestionActivity.this, tab, 25, 25);
+ * api      TabLayoutUtils.setIndicator(this, tab, 25, 25);
  */
 
 public class TabLayoutUtils {

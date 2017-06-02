@@ -51,6 +51,7 @@ public class BaseApplication extends MultiDexApplication {
     //
     @SuppressLint("StaticFieldLeak")
     private static VolleyUtil volleyUtil;
+    @SuppressLint("StaticFieldLeak")
     private static ToastUtil toastUtil;
     private static SharedPreferencesUtil sharedPreferencesUtil;
 
