@@ -40,6 +40,7 @@ import com.base.library.util.ActivityManage;
 import com.base.library.util.ActivityTaskUtils;
 import com.base.library.util.ActivityTransition;
 import com.base.library.util.AudioManagerTools;
+import com.base.library.util.CodeUtil;
 import com.base.library.util.CrashHandler;
 import com.base.library.util.LogUtil;
 import com.base.library.util.SharedPreferencesUtil;
@@ -203,7 +204,11 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        states = (int) BaseApplication.getSharedPreferencesUtil().getData("states", 2);
+        if (CodeUtil.IntegerEmpty((Integer) BaseApplication.getSharedPreferencesUtil().getData("states", 2)) == 0) {
+            states = 2;
+        } else {
+            states = CodeUtil.IntegerEmpty((Integer) BaseApplication.getSharedPreferencesUtil().getData("states", 2));
+        }
         switch (states) {
             case 1:
                 setTheme(R.style.Default_TextSize_Small);

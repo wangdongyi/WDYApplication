@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.base.library.R;
 import com.base.library.bean.ImageLoaderBean;
 import com.base.library.bean.ThemBean;
+import com.base.library.util.CrashHandler;
 import com.base.library.volleyUtil.VolleyUtil;
 import com.base.library.util.CCPAppManager;
 import com.base.library.util.CodeUtil;
@@ -67,7 +68,7 @@ public class BaseApplication extends MultiDexApplication {
         if (volleyUtil == null) {
             synchronized (VolleyUtil.class) {
                 if (volleyUtil == null)
-                    volleyUtil = new VolleyUtil(instance);
+                    volleyUtil = new VolleyUtil(getInstance());
             }
         }
         return volleyUtil;
@@ -77,7 +78,7 @@ public class BaseApplication extends MultiDexApplication {
         if (toastUtil == null) {
             synchronized (ToastUtil.class) {
                 if (toastUtil == null)
-                    toastUtil = new ToastUtil(instance);
+                    toastUtil = new ToastUtil(getInstance());
             }
         }
         return toastUtil;
@@ -87,7 +88,7 @@ public class BaseApplication extends MultiDexApplication {
         if (sharedPreferencesUtil == null) {
             synchronized (SharedPreferencesUtil.class) {
                 if (sharedPreferencesUtil == null)
-                    sharedPreferencesUtil = new SharedPreferencesUtil(instance);
+                    sharedPreferencesUtil = new SharedPreferencesUtil(getInstance());
             }
         }
         return sharedPreferencesUtil;
@@ -169,7 +170,6 @@ public class BaseApplication extends MultiDexApplication {
     public void initApp() {
         instance = this;
         CCPAppManager.setContext(instance);
-//        CrashHandler.getInstance().init(this);
         initImageLoader();
         setOptionsHeadPortrait(this);
         setOptionsRectangular();
@@ -177,7 +177,14 @@ public class BaseApplication extends MultiDexApplication {
 
     }
 
+    public void startCrash() {
+        CrashHandler.getInstance().init(this);
+    }
+
     public static ThemBean getThemBean() {
+        if (themBean == null) {
+            themBean = new ThemBean();
+        }
         return themBean;
     }
 
