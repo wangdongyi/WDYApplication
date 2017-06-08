@@ -24,7 +24,7 @@ import com.base.library.R;
 import com.base.library.adapter.MusicAdapter;
 import com.base.library.bean.Mp3Info;
 import com.base.library.cache.DownloadCache;
-import com.base.library.network.DownLoadUtil;
+import com.base.library.volleyUtil.DownLoadUtil;
 import com.base.library.service.MusicService;
 import com.base.library.util.CodeUtil;
 import com.base.library.util.DateUtil;

@@ -249,22 +249,6 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
                         advertisementBean.setSelected(false);
                     }
                     list.add(advertisementBean);
-//                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(dip, dip);
-//                    param.leftMargin = dip5;
-//                    param.rightMargin = dip5;
-//                    //imageView : (小圆点)
-//                    ImageView imageView = new ImageView(mContext);
-//                    // 设置小圆点宽高
-//                    imageView.setLayoutParams(param);
-//                    tips.add(imageView);
-//                    if (i == 0) {
-//                        // 选中圆点
-//                        tips.get(i).setBackgroundResource(R.drawable.white_circle);
-//                    } else {
-//                        // 未选中圆点
-//                        tips.get(i).setBackgroundResource(R.drawable.grey_circle);
-//                    }
-//                    viewPoints.addView(imageView);
                 }
                 advertisementAdapter.notifyDataSetChanged();
                 for (int i = 0; i < mImageViews.length; i++) {

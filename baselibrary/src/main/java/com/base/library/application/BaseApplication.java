@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.base.library.R;
 import com.base.library.bean.ImageLoaderBean;
 import com.base.library.bean.ThemBean;
-import com.base.library.network.VolleyUtil;
+import com.base.library.volleyUtil.VolleyUtil;
 import com.base.library.util.CCPAppManager;
 import com.base.library.util.CodeUtil;
 import com.base.library.util.LogUtil;
