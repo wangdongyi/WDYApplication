@@ -13,16 +13,16 @@ isShowCamera//是否显示相机
 MODE;//单选多选0单选1多选 
 maxNum;//最多张数
 返回 :
-\<br> @Override
-\<br> protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-\<br> super.onActivityResult(requestCode, resultCode, data);
-\<br> PhotoUtils.onPhotoResult(resultCode,data, new PhotoUtils.onPhotoBack() {
-\<br> @Override
-\<br> public void onBack(ArrayList<String> result) {
-\<br> //图片路径 result
-\<br> }
-\<br> });
-\<br> }
+<br> @Override
+<br> protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+<br> super.onActivityResult(requestCode, resultCode, data);
+<br> PhotoUtils.onPhotoResult(resultCode,data, new PhotoUtils.onPhotoBack() {
+<br> @Override
+<br> public void onBack(ArrayList<String> result) {
+<br> //图片路径 result
+<br> }
+<br> });
+<br> }
 # 图片浏览工具:
 PhotoPreviewUtil.movePhotoPreview(this,list,0);
 注释：
