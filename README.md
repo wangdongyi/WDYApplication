@@ -8,10 +8,10 @@ public class BaseApplication extends com.base.library.application.BaseApplicatio
 用法 TabLayoutUtils.setIndicator(this, tab, 左边距（dp）,右边局（dp);
 # 上传图片选取相册的api
 PhotoUtils.showPhotoIntent(Context mContext, boolean isShowCamera, int MODE, int maxNum);
-参数：
-isShowCamera//是否显示相机 
-MODE;//单选多选0单选1多选 
-maxNum;//最多张数
+<br>参数：
+<br>isShowCamera//是否显示相机 
+<br>MODE;//单选多选0单选1多选 
+<br>maxNum;//最多张数
 返回 :
 <br> @Override
 <br> protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -26,5 +26,5 @@ maxNum;//最多张数
 # 图片浏览工具:
 PhotoPreviewUtil.movePhotoPreview(this,list,0);
 注释：
-\<br> Context context, ArrayList<String> urls, int selected,
-\<br> 跳转到图片预览 ArrayList<String> urls 图片地址 selected 选择位置
+<br> Context context, ArrayList<String> urls, int selected,
+<br> 跳转到图片预览 ArrayList<String> urls 图片地址 selected 选择位置
