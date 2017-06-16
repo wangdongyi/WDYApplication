@@ -3,13 +3,13 @@
 
     <style name="BaseAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!--toolbarColor-->
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <!--状态栏颜色-->
-        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--toolbar文字颜色-->
         <item name="android:textColorPrimary">@color/text_black</item>
         <!--控件Color-->
-        <item name="colorAccent">@color/blue</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <!--背景颜色-->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--过场动画-->
@@ -142,13 +142,13 @@
     <style name="CCPLayoutListenerView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/blue</item>
+        <item name="android:background">@color/top_color</item>
     </style>
 
     <style name="TitleRelativeLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:background">@color/blue</item>
+        <item name="android:background">@color/top_color</item>
     </style>
 
     <style name="BackRelativeLayout">
@@ -162,7 +162,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">?default_text_size_big</item>
+        <item name="android:textSize">@dimen/default_text_size_big</item>
         <item name="android:text">@string/app_name</item>
     </style>
 
@@ -214,7 +214,7 @@
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
-        <item name="color">@color/text_blue</item>
+        <item name="color">@color/DrawerArrowToggleColor</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">

@@ -3,9 +3,9 @@
 
     <style name="AppTheme" parent="BaseAppTheme">
         <!--状态栏颜色-->
-        <item name="android:statusBarColor">@color/blue</item>
+        <item name="android:statusBarColor">@color/top_color</item>
         <!-- 底部bar颜色 -->
-        <item name="android:navigationBarColor">@color/blue</item>
+        <item name="android:navigationBarColor">@color/top_color</item>
         <!--&lt;!&ndash;状态栏不占空间&ndash;&gt;-->
         <item name="android:windowTranslucentStatus">true</item>
         <!--支持动画切换-->

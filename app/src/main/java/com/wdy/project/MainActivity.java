@@ -1,19 +1,31 @@
 package com.wdy.project;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.base.library.activity.BaseActivity;
+import com.base.library.photopicker.utils.PhotoUtils;
+import com.base.library.preview.PhotoPreviewUtil;
+
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
+
+
+public class MainActivity extends BaseActivity {
+
+
+    TextView sampleText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-    // Example of a call to a native method
-    TextView tv = (TextView) findViewById(R.id.sample_text);
-    tv.setText(stringFromJNI());
+        hintTitle();
+        // Example of a call to a native method
+        TextView tv = (TextView) findViewById(R.id.sample_text);
+        tv.setText(stringFromJNI());
     }
 
     /**
@@ -25,5 +37,16 @@ public class MainActivity extends AppCompatActivity {
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PhotoUtils.onPhotoResult(resultCode, data, new PhotoUtils.onPhotoBack() {
+            @Override
+            public void onBack(ArrayList<String> result) {
+
+            }
+        });
     }
 }

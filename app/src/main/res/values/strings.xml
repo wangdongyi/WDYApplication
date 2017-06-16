@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WDYApplication</string>
+    <string name="app_error">WDYApplication</string>
 </resources>

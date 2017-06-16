@@ -62,8 +62,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     private AlertDialog dialog;
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected CCPLayoutListenerView ccp_content_fl;
-    //子类activity的view
-    protected View contentView;
     //子类view的布局
     protected RelativeLayout mRelativeLayout = null;
     //标题
@@ -204,22 +202,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (CodeUtil.IntegerEmpty((Integer) BaseApplication.getSharedPreferencesUtil().getData("states", 2)) == 0) {
-            states = 2;
-        } else {
-            states = CodeUtil.IntegerEmpty((Integer) BaseApplication.getSharedPreferencesUtil().getData("states", 2));
-        }
-        switch (states) {
-            case 1:
-                setTheme(R.style.Default_TextSize_Small);
-                break;
-            case 2:
-                setTheme(R.style.Default_TextSize_Normal);
-                break;
-            case 3:
-                setTheme(R.style.Default_TextSize_Big);
-                break;
-        }
         ActivityManage.getInstance().addActivity(this);
         mAudioManager = AudioManagerTools.getInstance().getAudioManager();
         mMusicMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -264,18 +246,16 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     public void setContentView(int layoutResID) {
         super.setContentView(R.layout.base_layout);
         mBaseLayoutView = LayoutInflater.from(this).inflate(layoutResID, null);
-        contentView = LayoutInflater.from(this).inflate(layoutResID, null);
         initView();
         onActivityCreate();
     }
-
 
     private void initView() {
         ccp_content_fl = (CCPLayoutListenerView) findViewById(R.id.ccp_content_fl);
         mRelativeLayout = (RelativeLayout) findViewById(R.id.WDY_content);
         assert mRelativeLayout != null;
         mRelativeLayout.removeAllViews();
-        mRelativeLayout.addView(contentView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        mRelativeLayout.addView(mBaseLayoutView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         titleBar = findViewById(R.id.WDY_title);
         lift_Relative = (RelativeLayout) findViewById(R.id.back_layout);
         right_Relative = (RelativeLayout) findViewById(R.id.Right_layout);
@@ -305,16 +285,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
                 }
             }
         });
-        if (ccp_content_fl != null && getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE) {
-            ccp_content_fl.setOnSizeChangedListener(new CCPLayoutListenerView.OnCCPViewSizeChangedListener() {
-
-                @Override
-                public void onSizeChanged(int w, int h, int oldw, int oldh) {
-                    LogUtil.d(LogUtil.getLogUtilsTag(getClass()), "oldh - h = " + (oldh - h));
-                }
-            });
-
-        }
         initSystemBar();
         changeThem();
         if (mSwipeBackLayout != null) {
@@ -387,6 +357,11 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
 //            params.setMargins(0, getStatusHeight(), 0, 0);
 //            main.setLayoutParams(params);
         }
+    }
+
+    //不显示状态栏
+    public void donShowStatusBar() {
+        ccp_content_fl.setFitsSystemWindows(false);
     }
 
     //获取状态栏高度

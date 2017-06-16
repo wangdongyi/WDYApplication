@@ -9,6 +9,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.RelativeLayout;
 
 import com.base.library.util.LogUtil;
+import com.base.library.util.WDYLog;
 
 //Created by 王东一 on 2016/9/9.
 public class CCPLayoutListenerView extends RelativeLayout {
@@ -43,21 +44,18 @@ public class CCPLayoutListenerView extends RelativeLayout {
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
-        LogUtil.d(LogUtil.getLogUtilsTag(getClass()), "jorstinchan onInitializeAccessibilityEvent");
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
-        LogUtil.d(LogUtil.getLogUtilsTag(getClass()), "jorstinchan onInitializeAccessibilityNodeInfo");
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onPopulateAccessibilityEvent(AccessibilityEvent event) {
         super.onPopulateAccessibilityEvent(event);
-        LogUtil.d(LogUtil.getLogUtilsTag(getClass()), "jorstinchan onPopulateAccessibilityEvent");
     }
 
 
@@ -73,8 +71,7 @@ public class CCPLayoutListenerView extends RelativeLayout {
         this.mOnLayoutListener = onLayoutListener;
     }
 
-    public void setOnSizeChangedListener(
-            OnCCPViewSizeChangedListener onSizeChangedListener) {
+    public void setOnSizeChangedListener(OnCCPViewSizeChangedListener onSizeChangedListener) {
         this.mOnSizeChangedListener = onSizeChangedListener;
     }
 

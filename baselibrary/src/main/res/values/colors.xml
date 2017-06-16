@@ -18,8 +18,16 @@
     <!--黑色 -->
     <color name="half_transparent">#66000000</color>
     <color name="transparent">#00000000</color>
-    <color name="top_color">#1795C6</color>
-
+    <!--标题颜色-->
+    <color name="top_color">#ffffff</color>
+    <!--标题颜色-->
+    <color name="colorPrimary">#ffffff</color>
+    <!--状态栏颜色-->
+    <color name="colorPrimaryDark">#ffffff</color>
+    <!--控件颜色-->
+    <color name="colorAccent">#ffffff</color>
+    <!--标题栏控件颜色-->
+    <color name="DrawerArrowToggleColor">#ffffff</color>
     <color name="blue">#1795C6</color>
     <color name="grey">#9F9F9F</color>
     <color name="orange">#FCAE42</color>
