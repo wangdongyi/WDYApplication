@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@style/BaseAppTheme">
-        <!--状态栏不占空间-->
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="titleStyles" >
+        <item name="android:layout_height">25dp</item>
     </style>
-
-    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/white</item>
-        <item name="tabIndicatorHeight">2dp</item>
-    </style>
-
 </resources>

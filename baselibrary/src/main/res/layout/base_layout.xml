@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.base.library.view.relativeLayout.CCPLayoutListenerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ccp_content_fl"
-    style="@style/CCPLayoutListenerView"
-    android:fitsSystemWindows="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include
-        android:id="@+id/WDY_title"
-        layout="@layout/title_layout" />
+    <include layout="@layout/title_layout" />
 
     <RelativeLayout
         android:id="@+id/WDY_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/WDY_title"
-        android:background="@color/white" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </com.base.library.view.relativeLayout.CCPLayoutListenerView>

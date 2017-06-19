@@ -139,15 +139,10 @@
         <item name="android:background">@color/transparent</item>
     </style>
 
-    <style name="CCPLayoutListenerView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/top_color</item>
-    </style>
 
     <style name="TitleRelativeLayout">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/top_color</item>
     </style>
 
@@ -157,11 +152,15 @@
         <item name="android:background">@null</item>
     </style>
 
+    <style name="titleStyles">
+        <item name="android:layout_height">0dp</item>
+    </style>
+
     <style name="TitleText">
-        <item name="android:gravity">left</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/title_textColor</item>
         <item name="android:textSize">@dimen/default_text_size_big</item>
         <item name="android:text">@string/app_name</item>
     </style>

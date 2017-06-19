@@ -1,14 +1,11 @@
 package com.base.library.activity;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,9 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,28 +23,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.library.R;
 import com.base.library.application.BaseApplication;
 import com.base.library.bean.ThemBean;
-import com.base.library.fragment.BaseFragment;
 import com.base.library.listen.OnPermissionListen;
 import com.base.library.util.ActivityManage;
 import com.base.library.util.ActivityTaskUtils;
 import com.base.library.util.ActivityTransition;
-import com.base.library.util.AudioManagerTools;
 import com.base.library.util.CodeUtil;
 import com.base.library.util.CrashHandler;
-import com.base.library.util.LogUtil;
-import com.base.library.util.SharedPreferencesUtil;
 import com.base.library.util.StatusBarUtil;
 import com.base.library.util.WDYLog;
 import com.base.library.view.relativeLayout.CCPLayoutListenerView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -57,15 +48,13 @@ import java.util.ArrayList;
  **/
 @ActivityTransition(0)
 public class BaseActivity extends WDYActivity implements GestureDetector.OnGestureListener, ActivityCompat.OnRequestPermissionsResultCallback {
+    private static final String TAG = BaseActivity.class.getSimpleName();
     // 要申请的权限
     private final int PERMISSIONS_REQUEST_CODE = 1114;
     private AlertDialog dialog;
-    private static final String TAG = BaseActivity.class.getSimpleName();
     protected CCPLayoutListenerView ccp_content_fl;
-    //子类view的布局
+    //接收子类view的布局
     protected RelativeLayout mRelativeLayout = null;
-    //标题
-    protected View titleBar;
     //键盘是否弹出
     protected Boolean isShowKeyboard = false;
     //左侧按钮
@@ -80,19 +69,22 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     private TextView title_textView;
     //右侧文字
     private TextView Right_textView;
+    //状态栏
+    private View wdyBaseStatus;
+    //子view
+    public View mBaseLayoutView;
+    //标题+状态栏
+    private LinearLayout wdyBaseTitleLayout;
+    //标题
+    private RelativeLayout wdyActivityTitleLayout;
     //标题管理
     private SystemBarTintManager tintManager;
     //键盘状态监听
     private onKeyboardListener onKeyboardListener;
-    private GestureDetector mGestureDetector = null;
-    private AudioManager mAudioManager;
-    private int mMusicMaxVolume;
     private boolean mIsHorizontalScrolling = false;
     private int mScrollLimit = 0;
     private boolean mIsChildScrolling = false;
     private int mMinExitScrollX = 0;
-    public View mBaseLayoutView;
-    public int states;
     private OnPermissionListen onPermissionListen;//权限监听
 
     public OnPermissionListen getOnPermissionListen() {
@@ -168,13 +160,10 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         return false;
     }
 
-    public int getWidthPixels() {
-        return getResources().getDisplayMetrics().widthPixels;
-    }
 
     private int getMinExitScrollX() {
         if (this.mMinExitScrollX == 0) {
-            this.mMinExitScrollX = (int) (getResources().getInteger(R.integer.min_exit_scroll_factor) * getWidthPixels() / 100.0F);
+            this.mMinExitScrollX = (int) (getResources().getInteger(R.integer.min_exit_scroll_factor) * CodeUtil.getScreenWidth(this) / 100.0F);
             this.mMinExitScrollX = (-this.mMinExitScrollX);
         }
         return this.mMinExitScrollX;
@@ -203,9 +192,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityManage.getInstance().addActivity(this);
-        mAudioManager = AudioManagerTools.getInstance().getAudioManager();
-        mMusicMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        WDYLog.d(TAG, "checktask onCreate:" + super.getClass().getSimpleName() + "#0x" + super.hashCode() + ", taskid:" + getTaskId() + ", task:" + new ActivityTaskUtils(this));
         //设置状态栏文字颜色
         StatusBarUtil.setStatusBarDark(this, BaseApplication.getThemBean().isStatusBarDark());
     }
@@ -256,13 +242,15 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         assert mRelativeLayout != null;
         mRelativeLayout.removeAllViews();
         mRelativeLayout.addView(mBaseLayoutView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        titleBar = findViewById(R.id.WDY_title);
         lift_Relative = (RelativeLayout) findViewById(R.id.back_layout);
         right_Relative = (RelativeLayout) findViewById(R.id.Right_layout);
         lift_imageView = (ImageView) findViewById(R.id.back_imageView);
         Right_imageView = (ImageView) findViewById(R.id.Right_imageView);
         title_textView = (TextView) findViewById(R.id.title_textView);
         Right_textView = (TextView) findViewById(R.id.Right_textView);
+        wdyBaseStatus = (View) findViewById(R.id.wdy_base_status);
+        wdyBaseTitleLayout = (LinearLayout) findViewById(R.id.wdy_base_title_layout);
+        wdyActivityTitleLayout = (RelativeLayout) findViewById(R.id.wdy_activity_title_layout);
         setLeftClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +279,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
             mSwipeBackLayout.init();
             mSwipeBackLayout.setSwipeGestureDelegate(this);
         }
+
     }
 
     //修改样式
@@ -300,7 +289,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
             if (themBean.getStatusBarColor() != 0)
                 ccp_content_fl.setBackgroundColor(themBean.getStatusBarColor());
             if (themBean.getTitleBackground() != 0)
-                titleBar.setBackgroundColor(themBean.getTitleBackground());
+                wdyBaseTitleLayout.setBackgroundColor(themBean.getTitleBackground());
             if (themBean.getBackMipmap() != 0)
                 lift_imageView.setImageResource(themBean.getBackMipmap());
             if (themBean.getTitleTextColor() != 0)
@@ -325,8 +314,14 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
 
     //隐藏标题栏
     protected void hintTitle() {
-        if (titleBar != null)
-            titleBar.setVisibility(View.GONE);
+        if (wdyActivityTitleLayout != null)
+            wdyActivityTitleLayout.setVisibility(View.GONE);
+    }
+
+    //隐藏电池栏
+    protected void hintStatus() {
+        if (wdyBaseStatus != null)
+            wdyBaseStatus.setVisibility(View.GONE);
     }
 
     //设置左侧按钮状态
@@ -344,25 +339,31 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         lift_imageView.setImageResource(id);
     }
 
+    //设置标题背景
+    protected void setTitleBackground(int id) {
+        if (wdyBaseTitleLayout != null)
+            wdyBaseTitleLayout.setBackgroundResource(id);
+    }
+
     //设置状态栏颜色
     private void initSystemBar() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            //底部沉嵌式
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setNavigationBarTintEnabled(true);
             tintManager.setTintColor(ContextCompat.getColor(this, R.color.transparent));
-//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) main.getLayoutParams();
-//            params.setMargins(0, getStatusHeight(), 0, 0);
-//            main.setLayoutParams(params);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //设置高度
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) wdyBaseStatus.getLayoutParams();
+            params.height = getStatusHeight();
+            wdyBaseStatus.setLayoutParams(params);
         }
     }
 
-    //不显示状态栏
-    public void donShowStatusBar() {
-        ccp_content_fl.setFitsSystemWindows(false);
-    }
 
     //获取状态栏高度
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -398,8 +399,9 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         }
     }
 
+    //设置状态栏+标题的背景色
     protected void setTitleLayoutColor(int id) {
-        titleBar.setBackgroundColor(ContextCompat.getColor(this, id));
+        wdyBaseTitleLayout.setBackgroundColor(ContextCompat.getColor(this, id));
     }
 
     //初始化右侧按钮
@@ -445,7 +447,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         right_Relative.setVisibility(View.VISIBLE);
     }
 
-
     /**
      * 关闭软键盘
      */
@@ -457,66 +458,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         }
     }
 
-    public boolean keyDown(int keyCode, KeyEvent event) {
-        if ((event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) && mAudioManager != null) {
-            int streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-
-            if (streamVolume >= mMusicMaxVolume) {
-                LogUtil.d(LogUtil.getLogUtilsTag(BaseFragment.class), "has set the max volume");
-                return true;
-            }
-
-            int mean = mMusicMaxVolume / 7;
-            if (mean == 0) {
-                mean = 1;
-            }
-
-            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume + mean, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
-        }
-        if ((event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) && mAudioManager != null) {
-            int streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            int mean = mMusicMaxVolume / 7;
-            if (mean == 0) {
-                mean = 1;
-            }
-            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume - mean, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param keyCode
-     * @param event
-     * @return
-     */
-    public boolean KeyUp(int keyCode, KeyEvent event) {
-
-        if (keyCode == KeyEvent.KEYCODE_MENU && event.getAction() == KeyEvent.ACTION_UP) {
-            /*if(mOverFlowAction != null && mOverFlowAction.isEnabled()) {
-                callMenuCallback(mOverFlowMenuItem, mOverFlowAction);
-				return true;
-			}*/
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyDown(keyCode, event)) {
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (KeyUp(keyCode, event)) {
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -579,10 +520,8 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
 
     @Override
     protected void onDestroy() {
-        WDYLog.d(TAG, "checktask onCreate:" + super.getClass().getSimpleName() + "#0x"
-                + super.hashCode() + ", taskid:" + getTaskId() + ", task:" + new ActivityTaskUtils(this));
+        WDYLog.d(TAG, "checktask onCreate:" + super.getClass().getSimpleName() + "#0x" + super.hashCode() + ", taskid:" + getTaskId() + ", task:" + new ActivityTaskUtils(this));
         super.onDestroy();
         ActivityManage.getInstance().removeActivity(this);
-        mAudioManager = null;
     }
 }

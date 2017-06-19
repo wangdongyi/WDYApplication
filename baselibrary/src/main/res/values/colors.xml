@@ -20,6 +20,8 @@
     <color name="transparent">#00000000</color>
     <!--标题颜色-->
     <color name="top_color">#ffffff</color>
+    <!--标题文字颜色-->
+    <color name="title_textColor">#292d30</color>
     <!--标题颜色-->
     <color name="colorPrimary">#ffffff</color>
     <!--状态栏颜色-->

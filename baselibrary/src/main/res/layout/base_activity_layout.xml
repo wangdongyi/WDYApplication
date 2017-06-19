@@ -10,7 +10,6 @@
         android:background="@color/transparent">
 
         <include
-            android:id="@+id/WDY_title"
             layout="@layout/title_layout" />
 
         <RelativeLayout

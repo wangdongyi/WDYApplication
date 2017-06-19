@@ -6,13 +6,14 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.library.util.LogUtil;
 import com.base.library.util.WDYLog;
 
 //Created by 王东一 on 2016/9/9.
-public class CCPLayoutListenerView extends RelativeLayout {
+public class CCPLayoutListenerView extends LinearLayout {
 
     private OnCCPViewLayoutListener mOnLayoutListener;
     private OnCCPViewSizeChangedListener mOnSizeChangedListener;
