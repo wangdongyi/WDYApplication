@@ -364,6 +364,10 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         }
     }
 
+    //设置主题是不是深色的
+    public void setStatusBar(boolean dark) {
+        StatusBarUtil.setStatusBarDark(this, dark);
+    }
 
     //获取状态栏高度
     @TargetApi(Build.VERSION_CODES.KITKAT)
