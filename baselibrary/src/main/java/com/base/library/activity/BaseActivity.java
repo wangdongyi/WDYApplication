@@ -462,7 +462,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         }
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
