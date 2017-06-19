@@ -28,3 +28,8 @@ PhotoPreviewUtil.movePhotoPreview(this,list,0);
 注释：
 <br> Context context, ArrayList<String> urls, int selected,
 <br> 跳转到图片预览 ArrayList<String> urls 图片地址 selected 选择位置
+# 检验权限：
+<br> checkPermission(ArrayList<String> permission, OnPermissionListen onPermissionListen)
+<br> ArrayList<String> permission 需要申请的权限。
+<br> OnPermissionListen 监听返回值
+
