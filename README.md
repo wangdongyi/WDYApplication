@@ -1,5 +1,17 @@
 # WDYApplication
 ![default](https://cloud.githubusercontent.com/assets/9795249/26715147/1b94607c-47a7-11e7-92dd-81494f8dbc7f.jpeg)
+# 引用方法
+<br>	allprojects {
+<br>		repositories {
+<br>		...
+<br>			maven { url 'https://jitpack.io' }
+<br>	}
+<br>	}
+<br> Step 2. Add the dependency
+<br>	dependencies {
+<br>	        compile 'com.github.wangdongyi:WDYApplication:1.0.4'
+<br>	}
+
 # 使用前一定要继承BaseApplication
 public class BaseApplication extends com.base.library.application.BaseApplication 
 
