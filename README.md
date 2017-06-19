@@ -32,4 +32,5 @@ PhotoPreviewUtil.movePhotoPreview(this,list,0);
 <br> checkPermission(ArrayList<String> permission, OnPermissionListen onPermissionListen)
 <br> ArrayList<String> permission 需要申请的权限。
 <br> OnPermissionListen 监听返回值
-
+# 修改电池栏颜色：
+<br>setStatusBar(boolean dark) true是黑色false白色。包含了小米，魅族和官方6.0以上系统。
