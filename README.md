@@ -88,3 +88,4 @@ PhotoPreviewUtil.movePhotoPreview(this,list,0);
 
         });
 ```
+传入activity和fragment 能绑定生命周期，在destroy中停止调用。
