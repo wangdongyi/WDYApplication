@@ -3,6 +3,7 @@ package com.base.library.lifeManagerUtil;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 /**
  * 作者：王东一
@@ -58,7 +59,7 @@ public class SupportActLifeListenerFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         listenerManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

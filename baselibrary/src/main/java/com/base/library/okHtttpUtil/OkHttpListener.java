@@ -2,6 +2,9 @@ package com.base.library.okHtttpUtil;
 
 import org.json.JSONObject;
 
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * 作者：王东一
  * 创建时间：2017/6/28.
@@ -11,7 +14,7 @@ import org.json.JSONObject;
 public interface OkHttpListener {
     boolean onBefore();
 
-    void onSuccess(String Request);
+    void onRequest(String response);
 
     void onError(String msg);
 

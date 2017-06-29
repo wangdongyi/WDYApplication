@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -11,8 +12,6 @@ import com.base.library.application.BaseApplication;
 import com.base.library.lifeManagerUtil.LifeListener;
 import com.base.library.lifeManagerUtil.LifeManager;
 import com.base.library.volleyUtil.NetUtil;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.manager.RequestManagerRetriever;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,16 +30,23 @@ import okhttp3.Response;
  */
 
 public class OkHttpUtil {
+    private static OkHttpUtil mInstance;
+    private OkHttpClient mOkHttpClient;
+    private Platform platform;
 
-    public static void with(Activity activity, Request request, final OkHttpListener okHttpListener) {
-        if (NetUtil.getNetWorkType(BaseApplication.getInstance()) == 0) {
-            BaseApplication.getToastUtil().showMiddleToast("当前无网络");
-            return;
+    public static OkHttpUtil getInstance() {
+        if (mInstance == null) {
+            synchronized (OkHttpUtil.class) {
+                if (mInstance == null) {
+                    mInstance = new OkHttpUtil();
+                }
+            }
         }
-        if (!okHttpListener.onBefore()) {
-            return;
-        }
-        File sdcache = activity.getExternalCacheDir();
+        return mInstance;
+    }
+
+    private OkHttpUtil() {
+        File sdcache = BaseApplication.getInstance().getExternalCacheDir();
         int cacheSize = 10 * 1024 * 1024;
         assert sdcache != null;
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -48,24 +54,67 @@ public class OkHttpUtil {
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
-        OkHttpClient okHttpClient = builder.build();
-        Call call = okHttpClient.newCall(request);
+        mOkHttpClient = builder.build();
+        platform = Platform.get();
+    }
+
+    public static void with(Activity activity, Request request, final GenericsCallback genericsCallback) {
+        if (NetUtil.getNetWorkType(BaseApplication.getInstance()) == 0) {
+            BaseApplication.getToastUtil().showMiddleToast("当前无网络");
+            return;
+        }
+        if (!genericsCallback.onBefore()) {
+            return;
+        }
+        Call call = getInstance().mOkHttpClient.newCall(request);
         final Call finalCall = call;
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                okHttpListener.onError(e.toString());
-                okHttpListener.onFinish();
+            public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericsCallback.onError(e.toString());
+                        genericsCallback.onFinish();
+                    }
+                });
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (call.isCanceled()) {
+                    return;
+                }
                 if (response.isSuccessful()) {
-                    okHttpListener.onSuccess(response.toString());
-                    okHttpListener.onFinish();
+                    try {
+                        final Object o = genericsCallback.parseNetworkResponse(response);
+                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                genericsCallback.onResponse(o);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onFinish();
+                        }
+                    });
+
                 } else {
-                    okHttpListener.onError(response.networkResponse().toString());
-                    okHttpListener.onFinish();
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onError(response.networkResponse().toString());
+                            genericsCallback.onFinish();
+                        }
+                    });
                 }
             }
         });
@@ -92,46 +141,68 @@ public class OkHttpUtil {
 
             @Override
             public void onDestroy() {
-                okHttpListener.onCancel();
+                genericsCallback.onCancel();
                 finalCall.cancel();
             }
         });
     }
 
-    public static void with(android.support.v4.app.Fragment fragment, Request request, final OkHttpListener okHttpListener) {
+    public static void with(android.support.v4.app.Fragment fragment, Request request, final GenericsCallback genericsCallback) {
         if (NetUtil.getNetWorkType(BaseApplication.getInstance()) == 0) {
             BaseApplication.getToastUtil().showMiddleToast("当前无网络");
             return;
         }
-        if (!okHttpListener.onBefore()) {
+        if (!genericsCallback.onBefore()) {
             return;
         }
-        File sdcache = fragment.getActivity().getExternalCacheDir();
-        int cacheSize = 10 * 1024 * 1024;
-        assert sdcache != null;
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
-        OkHttpClient okHttpClient = builder.build();
-        Call call = okHttpClient.newCall(request);
+        Call call = getInstance().mOkHttpClient.newCall(request);
         final Call finalCall = call;
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                okHttpListener.onError(e.toString());
-                okHttpListener.onFinish();
+            public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericsCallback.onError(e.toString());
+                        genericsCallback.onFinish();
+                    }
+                });
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (call.isCanceled()) {
+                    return;
+                }
                 if (response.isSuccessful()) {
-                    okHttpListener.onSuccess(response.toString());
-                    okHttpListener.onFinish();
+                    try {
+                        final Object o = genericsCallback.parseNetworkResponse(response);
+                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                genericsCallback.onResponse(o);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onFinish();
+                        }
+                    });
                 } else {
-                    okHttpListener.onError(response.networkResponse().toString());
-                    okHttpListener.onFinish();
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onError(response.networkResponse().toString());
+                            genericsCallback.onFinish();
+                        }
+                    });
                 }
             }
         });
@@ -158,46 +229,68 @@ public class OkHttpUtil {
 
             @Override
             public void onDestroy() {
-                okHttpListener.onCancel();
+                genericsCallback.onCancel();
                 finalCall.cancel();
             }
         });
     }
 
-    public static void with(Fragment fragment, Request request, final OkHttpListener okHttpListener) {
+    public static void with(Fragment fragment, Request request, final GenericsCallback genericsCallback) {
         if (NetUtil.getNetWorkType(BaseApplication.getInstance()) == 0) {
             BaseApplication.getToastUtil().showMiddleToast("当前无网络");
             return;
         }
-        if (!okHttpListener.onBefore()) {
+        if (!genericsCallback.onBefore()) {
             return;
         }
-        File sdcache = fragment.getActivity().getExternalCacheDir();
-        int cacheSize = 10 * 1024 * 1024;
-        assert sdcache != null;
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
-        OkHttpClient okHttpClient = builder.build();
-        Call call = okHttpClient.newCall(request);
+        Call call = getInstance().mOkHttpClient.newCall(request);
         final Call finalCall = call;
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                okHttpListener.onError(e.toString());
-                okHttpListener.onFinish();
+            public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericsCallback.onError(e.toString());
+                        genericsCallback.onFinish();
+                    }
+                });
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (call.isCanceled()) {
+                    return;
+                }
                 if (response.isSuccessful()) {
-                    okHttpListener.onSuccess(response.toString());
-                    okHttpListener.onFinish();
+                    try {
+                        final Object o = genericsCallback.parseNetworkResponse(response);
+                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                genericsCallback.onResponse(o);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onFinish();
+                        }
+                    });
                 } else {
-                    okHttpListener.onError(response.networkResponse().toString());
-                    okHttpListener.onFinish();
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onError(response.networkResponse().toString());
+                            genericsCallback.onFinish();
+                        }
+                    });
                 }
             }
         });
@@ -224,83 +317,127 @@ public class OkHttpUtil {
 
             @Override
             public void onDestroy() {
-                okHttpListener.onCancel();
+                genericsCallback.onCancel();
                 finalCall.cancel();
             }
         });
     }
 
-    public static void with(View view, Request request, final OkHttpListener okHttpListener) {
+    public static void with(View view, Request request, final GenericsCallback genericsCallback) {
         if (NetUtil.getNetWorkType(BaseApplication.getInstance()) == 0) {
             BaseApplication.getToastUtil().showMiddleToast("当前无网络");
             return;
         }
-        if (!okHttpListener.onBefore()) {
+        if (!genericsCallback.onBefore()) {
             return;
         }
-        File sdcache = view.getContext().getExternalCacheDir();
-        int cacheSize = 10 * 1024 * 1024;
-        assert sdcache != null;
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
-        OkHttpClient okHttpClient = builder.build();
-        Call call = okHttpClient.newCall(request);
+        Call call = getInstance().mOkHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                okHttpListener.onError(e.toString());
-                okHttpListener.onFinish();
+            public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericsCallback.onError(e.toString());
+                        genericsCallback.onFinish();
+                    }
+                });
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (call.isCanceled()) {
+                    return;
+                }
                 if (response.isSuccessful()) {
-                    okHttpListener.onSuccess(response.toString());
-                    okHttpListener.onFinish();
+                    try {
+                        final Object o = genericsCallback.parseNetworkResponse(response);
+                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                genericsCallback.onResponse(o);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onFinish();
+                        }
+                    });
                 } else {
-                    okHttpListener.onError(response.networkResponse().toString());
-                    okHttpListener.onFinish();
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onError(response.networkResponse().toString());
+                            genericsCallback.onFinish();
+                        }
+                    });
                 }
             }
         });
     }
 
-    public static void with(Context context, Request request, final OkHttpListener okHttpListener) {
+    public static void with(Context context, Request request, final GenericsCallback genericsCallback) {
         if (NetUtil.getNetWorkType(BaseApplication.getInstance()) == 0) {
             BaseApplication.getToastUtil().showMiddleToast("当前无网络");
             return;
         }
-        if (!okHttpListener.onBefore()) {
+        if (!genericsCallback.onBefore()) {
             return;
         }
-        File sdcache = context.getExternalCacheDir();
-        int cacheSize = 10 * 1024 * 1024;
-        assert sdcache != null;
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
-        OkHttpClient okHttpClient = builder.build();
-        Call call = okHttpClient.newCall(request);
+        Call call = getInstance().mOkHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                okHttpListener.onError(e.toString());
-                okHttpListener.onFinish();
+            public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        genericsCallback.onError(e.toString());
+                        genericsCallback.onFinish();
+                    }
+                });
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (call.isCanceled()) {
+                    return;
+                }
                 if (response.isSuccessful()) {
-                    okHttpListener.onSuccess(response.toString());
-                    okHttpListener.onFinish();
+                    try {
+                        final Object o = genericsCallback.parseNetworkResponse(response);
+                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                genericsCallback.onResponse(o);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onFinish();
+                        }
+                    });
                 } else {
-                    okHttpListener.onError(response.networkResponse().toString());
-                    okHttpListener.onFinish();
+                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            genericsCallback.onError(response.networkResponse().toString());
+                            genericsCallback.onFinish();
+                        }
+                    });
                 }
             }
         });
