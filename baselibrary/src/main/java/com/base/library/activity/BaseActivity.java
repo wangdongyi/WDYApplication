@@ -173,6 +173,8 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         finish();
     }
 
+
+
     @Override
     public void onLongPress(MotionEvent e) {
 

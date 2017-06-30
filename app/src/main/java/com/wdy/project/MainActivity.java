@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.base.library.activity.BaseActivity;
+import com.base.library.listen.NoDoubleClickListener;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpListener;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.photopicker.utils.PhotoUtils;
 import com.base.library.util.JsonUtil;
+import com.base.library.util.WDYLog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,16 +37,12 @@ public class MainActivity extends BaseActivity {
         TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
         setTitleBackground(R.drawable.title_background);
-        tv.setOnClickListener(new View.OnClickListener() {
+        tv.setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            protected void onNoDoubleClick(View v) {
                 getRequest();
             }
         });
-//        for (int i = 0; i < 20; i++) {
-//            getRequest();
-//        }
-
     }
 
 
@@ -58,7 +56,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(RequestBean response) {
-                Log.i("onSuccess", "泛型:" + JsonUtil.toJson(response));
+//                Log.i("onSuccess", "泛型:" + JsonUtil.toJson(response));
+                String log = JsonUtil.toJson(response);
+
+                for (int i = 0; i < 10; i++) {
+                    log = log + log;
+                }
+                WDYLog.i("泛型:dddd", log);
             }
 
             @Override
@@ -68,12 +72,12 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onRequest(String response) {
-                Log.i("onSuccess", "回掉:" + response);
+//                JniLog("回掉:" + response);
             }
 
             @Override
             public void onError(String msg) {
-                Log.i("onSuccess", "错误:" + msg);
+//                JniLog("错误:" + msg);
             }
 
             @Override
@@ -96,6 +100,10 @@ public class MainActivity extends BaseActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+//    public native int dataFromJNI(int bufID, int priority, String tag, String msg);
+
+//    public native void JniLog(String message);
 
     // Used to load the 'native-lib' library on application startup.
     static {

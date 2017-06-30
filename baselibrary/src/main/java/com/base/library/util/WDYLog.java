@@ -7,7 +7,18 @@ import android.util.Log;
 import com.base.library.application.BaseApplication;
 
 public class WDYLog {
+    static {
+        System.loadLibrary("wdy-native-lib");
+    }
+
+    public static native void JniLogD(String tag, String message);
+    public static native void JniLogI(String tag,String message);
+    public static native void JniLogW(String tag,String message);
+    public static native void JniLogE(String tag,String message);
+    public static native void JniLogF(String tag,String message);
+
     private static int LOG_MAX_LENGTH = 2000;
+
     public static void e(String title, String msg) {
         if (BaseApplication.isOpenLog()) {
             int strLength = msg.length();
@@ -15,11 +26,11 @@ public class WDYLog {
             int end = LOG_MAX_LENGTH;
             for (int i = 0; i < 100; i++) {
                 if (strLength > end) {
-                    Log.e(title + i, msg.substring(start, end));
+                    JniLogE(title + i, msg.substring(start, end));
                     start = end;
                     end = end + LOG_MAX_LENGTH;
                 } else {
-                    Log.e(title + i, msg.substring(start, strLength));
+                    JniLogE(title + i, msg.substring(start, strLength));
                     break;
                 }
             }
@@ -33,11 +44,11 @@ public class WDYLog {
             int end = LOG_MAX_LENGTH;
             for (int i = 0; i < 100; i++) {
                 if (strLength > end) {
-                    Log.i(title + i, msg.substring(start, end));
+                    JniLogI(title + i, msg.substring(start, end));
                     start = end;
                     end = end + LOG_MAX_LENGTH;
                 } else {
-                    Log.i(title + i, msg.substring(start, strLength));
+                    JniLogI(title + i, msg.substring(start, strLength));
                     break;
                 }
             }
@@ -51,11 +62,11 @@ public class WDYLog {
             int end = LOG_MAX_LENGTH;
             for (int i = 0; i < 100; i++) {
                 if (strLength > end) {
-                    Log.d(title + i, msg.substring(start, end));
+                    JniLogD(title + i, msg.substring(start, end));
                     start = end;
                     end = end + LOG_MAX_LENGTH;
                 } else {
-                    Log.d(title + i, msg.substring(start, strLength));
+                    JniLogD(title + i, msg.substring(start, strLength));
                     break;
                 }
             }
@@ -70,11 +81,11 @@ public class WDYLog {
             int end = LOG_MAX_LENGTH;
             for (int i = 0; i < 100; i++) {
                 if (strLength > end) {
-                    Log.w(title + i, msg.substring(start, end));
+                    JniLogW(title + i, msg.substring(start, end));
                     start = end;
                     end = end + LOG_MAX_LENGTH;
                 } else {
-                    Log.w(title + i, msg.substring(start, strLength));
+                    JniLogW(title + i, msg.substring(start, strLength));
                     break;
                 }
             }
@@ -88,11 +99,11 @@ public class WDYLog {
             int end = LOG_MAX_LENGTH;
             for (int i = 0; i < 100; i++) {
                 if (strLength > end) {
-                    Log.v(title + i, msg.substring(start, end));
+                    JniLogF(title + i, msg.substring(start, end));
                     start = end;
                     end = end + LOG_MAX_LENGTH;
                 } else {
-                    Log.v(title + i, msg.substring(start, strLength));
+                    JniLogF(title + i, msg.substring(start, strLength));
                     break;
                 }
             }
