@@ -46,3 +46,46 @@ PhotoPreviewUtil.movePhotoPreview(this,list,0);
 <br> OnPermissionListen 监听返回值
 # 修改电池栏颜色：
 <br>setStatusBar(boolean dark) true是黑色false白色。包含了小米，魅族和官方6.0以上系统。
+# okhttp简单封装
+```Java
+   final Request request = new Request.Builder()
+                .get()
+                .tag(this)
+                .url("http://wthrcdn.etouch.cn/weather_mini?citykey=101010100")
+                .build();
+        OkHttpUtil.with(this, request, new GenericsCallback<RequestBean>() {
+
+            @Override
+            public void onResponse(RequestBean response) {
+                Log.i("onSuccess", "泛型:" + JsonUtil.toJson(response));
+            }
+
+            @Override
+            public boolean onBefore() {
+                return true;
+            }
+
+            @Override
+            public void onRequest(String response) {
+                Log.i("onSuccess", "回掉:" + response);
+            }
+
+            @Override
+            public void onError(String msg) {
+                Log.i("onSuccess", "错误:" + msg);
+            }
+
+            @Override
+            public void onCancel() {
+                Log.i("onSuccess", "取消:");
+            }
+
+            @Override
+            public void onFinish() {
+                Log.i("onSuccess", "结束:");
+            }
+
+
+        });
+```
+传入activity和fragment 能绑定生命周期，在destroy中停止调用。
