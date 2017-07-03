@@ -1,5 +1,6 @@
 package com.wdy.project;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.base.library.okHtttpUtil.OkHttpListener;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.photopicker.utils.PhotoUtils;
 import com.base.library.util.JsonUtil;
+import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYLog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,23 +30,30 @@ import okhttp3.Response;
 
 
 public class MainActivity extends BaseActivity {
+    TextView tv;
+    String content = "/sdcard/HUDSDKLog.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
+        tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
         setTitleBackground(R.drawable.title_background);
+
         tv.setOnClickListener(new NoDoubleClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             protected void onNoDoubleClick(View v) {
                 getRequest();
+//                content = content + textFromJNI("/sdcard/HUDSDKLog.txt");
+                tv.setText(TxtReadUtil.TxtRead(content));
             }
         });
     }
 
+    public native String textFromJNI(String path);
 
     private void getRequest() {
         final Request request = new Request.Builder()
@@ -56,13 +65,11 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(RequestBean response) {
-//                Log.i("onSuccess", "泛型:" + JsonUtil.toJson(response));
                 String log = JsonUtil.toJson(response);
-
                 for (int i = 0; i < 10; i++) {
                     log = log + log;
                 }
-                WDYLog.i("泛型:dddd", log);
+//                WDYLog.i("泛型:dddd", log);
             }
 
             @Override
