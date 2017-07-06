@@ -3,6 +3,7 @@ package com.base.library.application;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.support.multidex.MultiDexApplication;
 import android.view.View;
@@ -174,7 +175,10 @@ public class BaseApplication extends MultiDexApplication {
         setOptionsHeadPortrait(this);
         setOptionsRectangular();
         setSquareOptions();
-
+        setIsOpenLog(isApkInDebug(instance));
+        if (!isApkInDebug(instance)) {
+            startCrash();
+        }
     }
 
     public void startCrash() {
@@ -295,5 +299,18 @@ public class BaseApplication extends MultiDexApplication {
             }
         }
         return null;
+    }
+
+    /**
+     * 判断当前应用是否是debug状态
+     */
+
+    public static boolean isApkInDebug(Context context) {
+        try {
+            ApplicationInfo info = context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
