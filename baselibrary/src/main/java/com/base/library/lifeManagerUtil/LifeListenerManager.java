@@ -80,21 +80,28 @@ public class LifeListenerManager {
             }
         }
     }
+
     /**
      * 权限申请的回调
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
      */
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        for(LifeListener listener:listeners){
-            if(listener instanceof PermissionListener){
-                ((PermissionListener)listener).onRequestPermissionsResult(requestCode,permissions,grantResults);
+        for (LifeListener listener : listeners) {
+            if (listener instanceof PermissionListener) {
+                ((PermissionListener) listener).onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
         }
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        for (LifeListener listener : listeners) {
+            if (listener instanceof OnActivityResultListener) {
+                ((OnActivityResultListener) listener).onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 
     /**

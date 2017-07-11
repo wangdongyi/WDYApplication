@@ -47,10 +47,8 @@ import java.util.ArrayList;
  * 作者：王东一 on 2016/3/21 16:54
  **/
 @ActivityTransition(0)
-public class BaseActivity extends WDYActivity implements GestureDetector.OnGestureListener, ActivityCompat.OnRequestPermissionsResultCallback {
+public class BaseActivity extends WDYActivity implements GestureDetector.OnGestureListener {
     private static final String TAG = BaseActivity.class.getSimpleName();
-    // 要申请的权限
-    private final int PERMISSIONS_REQUEST_CODE = 1114;
     private AlertDialog dialog;
     protected CCPLayoutListenerView ccp_content_fl;
     //接收子类view的布局
@@ -85,15 +83,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     private int mScrollLimit = 0;
     private boolean mIsChildScrolling = false;
     private int mMinExitScrollX = 0;
-    private OnPermissionListen onPermissionListen;//权限监听
-
-    public OnPermissionListen getOnPermissionListen() {
-        return onPermissionListen;
-    }
-
-    public void setOnPermissionListen(OnPermissionListen onPermissionListen) {
-        this.onPermissionListen = onPermissionListen;
-    }
 
     public BaseActivity.onKeyboardListener getOnKeyboardListener() {
         return onKeyboardListener;
@@ -170,9 +159,8 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     }
 
     public void close() {
-        finish();
+        onBackPressed();
     }
-
 
 
     @Override
@@ -196,38 +184,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         ActivityManage.getInstance().addActivity(this);
         //设置状态栏文字颜色
         StatusBarUtil.setStatusBarDark(this, BaseApplication.getThemBean().isStatusBarDark());
-    }
-
-    //检验权限
-    public void checkPermission(ArrayList<String> permission, OnPermissionListen onPermissionListen) {
-        setOnPermissionListen(onPermissionListen);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 检查该权限是否已经获取
-            ArrayList<String> myPermission = new ArrayList<>();
-            for (int i = 0; i < permission.size(); i++) {
-                int permissionType = ContextCompat.checkSelfPermission(this, permission.get(i));
-                switch (permissionType) {
-                    case PackageManager.PERMISSION_GRANTED:
-                        //授权
-                        break;
-                    case PackageManager.PERMISSION_DENIED:
-                        //拒绝
-                        myPermission.add(permission.get(i));
-                        break;
-                }
-            }
-            if (myPermission.size() == 0) {
-                getOnPermissionListen().callBack(true);
-            } else {
-                String[] array = new String[myPermission.size()];
-                for (int i = 0; i < myPermission.size(); i++) {
-                    array[i] = myPermission.get(i);
-                }
-                ActivityCompat.requestPermissions(this, array, PERMISSIONS_REQUEST_CODE);
-            }
-        } else {
-            getOnPermissionListen().callBack(true);
-        }
     }
 
     @Override
@@ -464,58 +420,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    // 判断用户是否 点击了不再提醒。(检测该权限是否还可以申请)
-                    boolean b = shouldShowRequestPermissionRationale(permissions[0]);
-                    if (!b) {
-                        // 用户还是想用我的 APP 的
-                        // 提示用户去应用设置界面手动开启权限
-                        showDialogTipUserGoToAppSettting();
-                    } else {
-                        getOnPermissionListen().callBack(false);
-                    }
-                } else {
-                    getOnPermissionListen().callBack(true);
-                }
-            }
-        }
-    }
-    // 提示用户去应用设置界面手动开启权限
-
-    private void showDialogTipUserGoToAppSettting() {
-        dialog = new AlertDialog.Builder(this)
-                .setTitle("权限不可用")
-                .setMessage("请在-应用设置-权限-中，开启权限")
-                .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 跳转到应用设置界面
-                        dialog.dismiss();
-                        goToAppSetting();
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        getOnPermissionListen().callBack(false);
-                    }
-                }).setCancelable(false).show();
-    }
-
-    // 跳转到当前应用的设置界面
-    private void goToAppSetting() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
-    }
 
     @Override
     protected void onResume() {

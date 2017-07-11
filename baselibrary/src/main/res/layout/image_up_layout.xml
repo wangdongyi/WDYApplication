@@ -48,20 +48,6 @@
                 android:gravity="center"
                 android:text="从手机相册选择" />
 
-            <View
-                android:id="@+id/line"
-                style="@style/LineHorizontal" />
-
-            <TextView
-                android:id="@+id/textView_change"
-                style="@style/Text_Blue_Default_little"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="@dimen/padding"
-                android:layout_marginRight="@dimen/padding"
-                android:background="@drawable/round_white"
-                android:gravity="center"
-                android:text="选择默认封皮" />
         </LinearLayout>
 
         <TextView

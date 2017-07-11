@@ -36,7 +36,7 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/BaseAppTheme" />
+    <style name="WDYAppTheme" parent="@style/BaseAppTheme" />
 
     <style name="actAnimation">
         <item name="android:activityOpenEnterAnimation">@anim/activity_new</item>

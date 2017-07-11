@@ -3,6 +3,7 @@ package com.base.library.lifeManagerUtil;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Looper;
 
@@ -12,13 +13,15 @@ import android.os.Looper;
  */
 
 public class LifeManager {
-    private static final String FRAGMENT_TAG = "ActLifeListenerFragment";
+    public static final String FRAGMENT_TAG = "ActivityLifeListenerFragment";
 
     private static volatile LifeManager mInstance;
 
     private LifeManager() {
 
     }
+
+    public SupportActLifeListenerFragment supportFragment;
 
     public static LifeManager getInstance() {
         if (null == mInstance) {
@@ -35,7 +38,7 @@ public class LifeManager {
     /**
      * 开始监听生命周期
      */
-    public void ObserveAct(Activity activity, LifeListener Listener) {
+    public void ObserveActivity(Activity activity, LifeListener Listener) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
             throw new IllegalArgumentException("You cannot start a observe for a destroyed activity");
         }
@@ -43,15 +46,39 @@ public class LifeManager {
             throw new IllegalArgumentException("You must start a observe on mainThread");
         }
         android.app.FragmentManager fm = activity.getFragmentManager();
-        SupportActLifeListenerFragment fragment = findFragment(fm, Listener);//找到绑定的Fragment
-        LifeListenerManager manager = findLifeListenerManager(fragment);//找到指定Fragment的ActLifeListenerManager
+        supportFragment = findFragment(fm);//找到绑定的Fragment
+        LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
+        manager.addLifeListener(Listener);//添加监听
+    }
+
+    public void requestPermissions(String[] permissions, int requestCode) {
+        supportFragment.LifeRequestPermissions(permissions, requestCode);
+    }
+
+    public void startActivityForResult(Intent intent, int requestCode) {
+        supportFragment.LifeStartActivityResult(intent, requestCode);
+    }
+
+    /**
+     * 开始监听生命周期
+     */
+    public void ObserveActivity(android.support.v4.app.Fragment fragment, LifeListener Listener) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && fragment.getActivity().isDestroyed()) {
+            throw new IllegalArgumentException("You cannot start a observe for a destroyed activity");
+        }
+        if (!(Looper.myLooper() == Looper.getMainLooper())) {
+            throw new IllegalArgumentException("You must start a observe on mainThread");
+        }
+        android.app.FragmentManager fm = fragment.getActivity().getFragmentManager();
+        supportFragment = findFragment(fm);//找到绑定的Fragment
+        LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
         manager.addLifeListener(Listener);//添加监听
     }
 
     /**
      * 开始监听生命周期
      */
-    public void ObserveAct(android.support.v4.app.Fragment fragment, LifeListener Listener) {
+    public void ObserveActivity(Fragment fragment, LifeListener Listener) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && fragment.getActivity().isDestroyed()) {
             throw new IllegalArgumentException("You cannot start a observe for a destroyed activity");
         }
@@ -59,29 +86,15 @@ public class LifeManager {
             throw new IllegalArgumentException("You must start a observe on mainThread");
         }
         android.app.FragmentManager fm = fragment.getActivity().getFragmentManager();
-        SupportActLifeListenerFragment supportFragment = findFragment(fm, Listener);//找到绑定的Fragment
+        supportFragment = findFragment(fm);//找到绑定的Fragment
         LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
         manager.addLifeListener(Listener);//添加监听
     }
-    /**
-     * 开始监听生命周期
-     */
-    public void ObserveAct(Fragment fragment, LifeListener Listener) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && fragment.getActivity().isDestroyed()) {
-            throw new IllegalArgumentException("You cannot start a observe for a destroyed activity");
-        }
-        if (!(Looper.myLooper() == Looper.getMainLooper())) {
-            throw new IllegalArgumentException("You must start a observe on mainThread");
-        }
-        android.app.FragmentManager fm = fragment.getActivity().getFragmentManager();
-        SupportActLifeListenerFragment supportFragment = findFragment(fm, Listener);//找到绑定的Fragment
-        LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
-        manager.addLifeListener(Listener);//添加监听
-    }
+
     /**
      * 找到用于监听生命周期的空白的Fragment
      */
-    private SupportActLifeListenerFragment findFragment(FragmentManager fm, LifeListener actListener) {
+    private SupportActLifeListenerFragment findFragment(FragmentManager fm) {
         SupportActLifeListenerFragment current = (SupportActLifeListenerFragment) fm.findFragmentByTag(FRAGMENT_TAG);
         if (current == null) {//没有找到，则新建
             current = new SupportActLifeListenerFragment();

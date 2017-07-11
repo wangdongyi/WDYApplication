@@ -39,7 +39,6 @@ import java.util.Map;
  **/
 public class DoPicCapUtil {
     public static final String IMAGE_FILE_LOCATION = Environment.getExternalStorageDirectory() + "/cache/camera/temp.png";
-    ;
     public static final String DATA = "data";
     public static final String MENU_STATE = "MENUSTATE";// menuactivity返回值2:相机，3：相册
     public static final int REQUEST_CODE_MENU = 1;// menuactivity,相机、拍照、取消

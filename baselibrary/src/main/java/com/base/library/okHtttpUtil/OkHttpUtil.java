@@ -29,7 +29,7 @@ import okhttp3.Response;
  * 创建时间：2017/6/27.
  */
 
-public class OkHttpUtil {
+public class  OkHttpUtil {
     private static OkHttpUtil mInstance;
     private OkHttpClient mOkHttpClient;
     private Platform platform;
@@ -118,7 +118,7 @@ public class OkHttpUtil {
                 }
             }
         });
-        LifeManager.getInstance().ObserveAct(activity, new LifeListener() {
+        LifeManager.getInstance().ObserveActivity(activity, new LifeListener() {
             @Override
             public void onCreate(Bundle bundle) {
             }
@@ -206,7 +206,7 @@ public class OkHttpUtil {
                 }
             }
         });
-        LifeManager.getInstance().ObserveAct(fragment, new LifeListener() {
+        LifeManager.getInstance().ObserveActivity(fragment, new LifeListener() {
             @Override
             public void onCreate(Bundle bundle) {
             }
@@ -294,7 +294,7 @@ public class OkHttpUtil {
                 }
             }
         });
-        LifeManager.getInstance().ObserveAct(fragment, new LifeListener() {
+        LifeManager.getInstance().ObserveActivity(fragment, new LifeListener() {
             @Override
             public void onCreate(Bundle bundle) {
             }

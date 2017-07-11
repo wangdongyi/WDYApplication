@@ -2,15 +2,27 @@ package com.base.library.permission;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import com.base.library.lifeManagerUtil.LifeManager;
+import com.base.library.lifeManagerUtil.PermissionListener;
+import com.base.library.listen.OnPermissionListen;
+import com.base.library.util.WDYLog;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -20,18 +32,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale;
+
 /**
  * 作者：王东一
  * 创建时间：2017/4/13.
  */
 
 public class PermissionsManager {
+    // 要申请的权限
+    public static final int PERMISSIONS_REQUEST_CODE = 1114;
     private static final String TAG = PermissionsManager.class.getSimpleName();
-
     private final Set<String> mPendingRequests = new HashSet<String>(1);
     private final Set<String> mPermissions = new HashSet<String>(1);
     private final List<WeakReference<PermissionsResultAction>> mPendingActions = new ArrayList<WeakReference<PermissionsResultAction>>(1);
-
+    private Activity activity;
+    private android.support.v4.app.Fragment v4_fragment;
+    private Fragment fragment;
     private static PermissionsManager mInstance = null;
 
     public static PermissionsManager getInstance() {
@@ -43,6 +60,308 @@ public class PermissionsManager {
 
     private PermissionsManager() {
         initializePermissionsMap();
+    }
+
+    public static void with(Activity activity, final OnPermissionListen onPermissionListen, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getInstance().activity = activity;
+            //权限回掉
+            LifeManager.getInstance().ObserveActivity(activity, new PermissionListener() {
+                @Override
+                public void onCreate(Bundle bundle) {
+                }
+
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onResume() {
+                }
+
+                @Override
+                public void onPause() {
+                }
+
+                @Override
+                public void onStop() {
+                }
+
+                @Override
+                public void onDestroy() {
+                }
+
+                @Override
+                public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                    if (requestCode == PERMISSIONS_REQUEST_CODE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                                // 判断用户是否 点击了不再提醒。(检测该权限是否还可以申请)
+                                boolean b = shouldShowRequestPermissionRationale(getInstance().activity, permissions[0]);
+                                if (!b) {
+                                    // 用户还是想用我的 APP 的
+                                    // 提示用户去应用设置界面手动开启权限
+                                    AlertDialog dialog = new AlertDialog.Builder(getInstance().activity)
+                                            .setTitle("权限不可用")
+                                            .setMessage("请在-应用设置-权限-中，开启权限")
+                                            .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // 跳转到应用设置界面
+                                                    dialog.dismiss();
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                    Uri uri = Uri.fromParts("package", getInstance().activity.getPackageName(), null);
+                                                    intent.setData(uri);
+                                                    getInstance().activity.startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
+                                                }
+                                            })
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    onPermissionListen.callBack(false);
+                                                }
+                                            }).setCancelable(false).show();
+                                } else {
+                                    onPermissionListen.callBack(false);
+                                }
+                            } else {
+                                onPermissionListen.callBack(true);
+                            }
+                        }
+                    }
+                }
+
+            });
+            // 检查该权限是否已经获取
+            ArrayList<String> myPermission = new ArrayList<>();
+            for (String permission : permissions) {
+                int permissionType = ContextCompat.checkSelfPermission(activity, permission);
+                switch (permissionType) {
+                    case PackageManager.PERMISSION_GRANTED:
+                        //授权
+                        break;
+                    case PackageManager.PERMISSION_DENIED:
+                        //拒绝
+                        myPermission.add(permission);
+                        break;
+                }
+            }
+            if (myPermission.size() == 0) {
+                onPermissionListen.callBack(true);
+            } else {
+                String[] array = new String[myPermission.size()];
+                for (int i = 0; i < myPermission.size(); i++) {
+                    array[i] = myPermission.get(i);
+                }
+                LifeManager.getInstance().requestPermissions(array, PERMISSIONS_REQUEST_CODE);
+            }
+
+        } else {
+            onPermissionListen.callBack(true);
+        }
+
+    }
+
+    public static void with(android.support.v4.app.Fragment v4_fragment, final OnPermissionListen onPermissionListen, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getInstance().v4_fragment = v4_fragment;
+            // 检查该权限是否已经获取
+            ArrayList<String> myPermission = new ArrayList<>();
+            for (String permission : permissions) {
+                int permissionType = ContextCompat.checkSelfPermission(v4_fragment.getActivity(), permission);
+                switch (permissionType) {
+                    case PackageManager.PERMISSION_GRANTED:
+                        //授权
+                        break;
+                    case PackageManager.PERMISSION_DENIED:
+                        //拒绝
+                        myPermission.add(permission);
+                        break;
+                }
+            }
+            if (myPermission.size() == 0) {
+                onPermissionListen.callBack(true);
+            } else {
+                String[] array = new String[myPermission.size()];
+                for (int i = 0; i < myPermission.size(); i++) {
+                    array[i] = myPermission.get(i);
+                }
+                ActivityCompat.requestPermissions(v4_fragment.getActivity(), array, PERMISSIONS_REQUEST_CODE);
+            }
+            LifeManager.getInstance().ObserveActivity(v4_fragment.getActivity(), new PermissionListener() {
+                @Override
+                public void onCreate(Bundle bundle) {
+                }
+
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onResume() {
+                }
+
+                @Override
+                public void onPause() {
+                }
+
+                @Override
+                public void onStop() {
+                }
+
+                @Override
+                public void onDestroy() {
+                }
+
+                @Override
+                public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                    if (requestCode == PERMISSIONS_REQUEST_CODE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                                // 判断用户是否 点击了不再提醒。(检测该权限是否还可以申请)
+                                boolean b = shouldShowRequestPermissionRationale(getInstance().v4_fragment.getActivity(), permissions[0]);
+                                if (!b) {
+                                    // 用户还是想用我的 APP 的
+                                    // 提示用户去应用设置界面手动开启权限
+                                    AlertDialog dialog = new AlertDialog.Builder(getInstance().v4_fragment.getActivity())
+                                            .setTitle("权限不可用")
+                                            .setMessage("请在-应用设置-权限-中，开启权限")
+                                            .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // 跳转到应用设置界面
+                                                    dialog.dismiss();
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                    Uri uri = Uri.fromParts("package", getInstance().v4_fragment.getActivity().getPackageName(), null);
+                                                    intent.setData(uri);
+                                                    getInstance().v4_fragment.getActivity().startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
+                                                }
+                                            })
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    onPermissionListen.callBack(false);
+                                                }
+                                            }).setCancelable(false).show();
+                                } else {
+                                    onPermissionListen.callBack(false);
+                                }
+                            } else {
+                                onPermissionListen.callBack(true);
+                            }
+                        }
+                    }
+                }
+
+            });
+        } else {
+            onPermissionListen.callBack(true);
+        }
+
+    }
+
+    public static void with(Fragment fragment, final OnPermissionListen onPermissionListen, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getInstance().fragment = fragment;
+            // 检查该权限是否已经获取
+            ArrayList<String> myPermission = new ArrayList<>();
+            for (String permission : permissions) {
+                int permissionType = ContextCompat.checkSelfPermission(fragment.getActivity(), permission);
+                switch (permissionType) {
+                    case PackageManager.PERMISSION_GRANTED:
+                        //授权
+                        break;
+                    case PackageManager.PERMISSION_DENIED:
+                        //拒绝
+                        myPermission.add(permission);
+                        break;
+                }
+            }
+            if (myPermission.size() == 0) {
+                onPermissionListen.callBack(true);
+            } else {
+                String[] array = new String[myPermission.size()];
+                for (int i = 0; i < myPermission.size(); i++) {
+                    array[i] = myPermission.get(i);
+                }
+                ActivityCompat.requestPermissions(fragment.getActivity(), array, PERMISSIONS_REQUEST_CODE);
+            }
+            LifeManager.getInstance().ObserveActivity(fragment.getActivity(), new PermissionListener() {
+                @Override
+                public void onCreate(Bundle bundle) {
+                }
+
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onResume() {
+                }
+
+                @Override
+                public void onPause() {
+                }
+
+                @Override
+                public void onStop() {
+                }
+
+                @Override
+                public void onDestroy() {
+                }
+
+                @Override
+                public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                    if (requestCode == PERMISSIONS_REQUEST_CODE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                                // 判断用户是否 点击了不再提醒。(检测该权限是否还可以申请)
+                                boolean b = shouldShowRequestPermissionRationale(getInstance().activity, permissions[0]);
+                                if (!b) {
+                                    // 用户还是想用我的 APP 的
+                                    // 提示用户去应用设置界面手动开启权限
+                                    AlertDialog dialog = new AlertDialog.Builder(getInstance().activity)
+                                            .setTitle("权限不可用")
+                                            .setMessage("请在-应用设置-权限-中，开启权限")
+                                            .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // 跳转到应用设置界面
+                                                    dialog.dismiss();
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                    Uri uri = Uri.fromParts("package", getInstance().fragment.getActivity().getPackageName(), null);
+                                                    intent.setData(uri);
+                                                    getInstance().fragment.getActivity().startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
+                                                }
+                                            })
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    onPermissionListen.callBack(false);
+                                                }
+                                            }).setCancelable(false).show();
+                                } else {
+                                    onPermissionListen.callBack(false);
+                                }
+                            } else {
+                                onPermissionListen.callBack(true);
+                            }
+                        }
+                    }
+                }
+
+            });
+        } else {
+            onPermissionListen.callBack(true);
+        }
+
     }
 
     /**
@@ -61,7 +380,7 @@ public class PermissionsManager {
             try {
                 name = (String) field.get("");
             } catch (IllegalAccessException e) {
-                Log.e(TAG, "Could not access field", e);
+                WDYLog.e(TAG, "Could not access field" + e.getMessage());
             }
             mPermissions.add(name);
         }
@@ -79,10 +398,10 @@ public class PermissionsManager {
         PackageInfo packageInfo = null;
         List<String> list = new ArrayList<String>(1);
         try {
-            Log.d(TAG, activity.getPackageName());
+            WDYLog.d(TAG, activity.getPackageName());
             packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), PackageManager.GET_PERMISSIONS);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "A problem occurred when retrieving permissions", e);
+            WDYLog.e(TAG, "A problem occurred when retrieving permissions" + e.getMessage());
         }
         if (packageInfo != null) {
             String[] permissions = packageInfo.requestedPermissions;
@@ -106,8 +425,7 @@ public class PermissionsManager {
      * @param permissions the required permissions for the action to be executed.
      * @param action      the action to add to the current list of pending actions.
      */
-    private synchronized void addPendingAction(@NonNull String[] permissions,
-                                               @Nullable PermissionsResultAction action) {
+    private synchronized void addPendingAction(@NonNull String[] permissions, @Nullable PermissionsResultAction action) {
         if (action == null) {
             return;
         }
@@ -147,8 +465,7 @@ public class PermissionsManager {
      */
     @SuppressWarnings("unused")
     public synchronized boolean hasPermission(@Nullable Context context, @NonNull String permission) {
-        return context != null && (ActivityCompat.checkSelfPermission(context, permission)
-                == PackageManager.PERMISSION_GRANTED || !mPermissions.contains(permission));
+        return context != null && (ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED || !mPermissions.contains(permission));
     }
 
     /**
@@ -214,9 +531,7 @@ public class PermissionsManager {
      * @param action      the PermissionsResultAction to notify when the permissions are granted or denied.
      */
     @SuppressWarnings("unused")
-    public synchronized void requestPermissionsIfNecessaryForResult(@Nullable Activity activity,
-                                                                    @NonNull String[] permissions,
-                                                                    @Nullable PermissionsResultAction action) {
+    public synchronized void requestPermissionsIfNecessaryForResult(@Nullable Activity activity, @NonNull String[] permissions, @Nullable PermissionsResultAction action) {
         if (activity == null) {
             return;
         }
@@ -250,9 +565,7 @@ public class PermissionsManager {
      * @param action      the PermissionsResultAction to notify when the permissions are granted or denied.
      */
     @SuppressWarnings("unused")
-    public synchronized void requestPermissionsIfNecessaryForResult(@NonNull Fragment fragment,
-                                                                    @NonNull String[] permissions,
-                                                                    @Nullable PermissionsResultAction action) {
+    public synchronized void requestPermissionsIfNecessaryForResult(@NonNull Fragment fragment, @NonNull String[] permissions, @Nullable PermissionsResultAction action) {
         Activity activity = fragment.getActivity();
         if (activity == null) {
             return;
@@ -315,9 +628,7 @@ public class PermissionsManager {
      * @param action      the callback work object, containing what we what to do after
      *                    permission check
      */
-    private void doPermissionWorkBeforeAndroidM(@NonNull Activity activity,
-                                                @NonNull String[] permissions,
-                                                @Nullable PermissionsResultAction action) {
+    private void doPermissionWorkBeforeAndroidM(@NonNull Activity activity, @NonNull String[] permissions, @Nullable PermissionsResultAction action) {
         for (String perm : permissions) {
             if (action != null) {
                 if (!mPermissions.contains(perm)) {
@@ -344,9 +655,7 @@ public class PermissionsManager {
      * @return a list of permissions names that are not granted yet
      */
     @NonNull
-    private List<String> getPermissionsListToRequest(@NonNull Activity activity,
-                                                     @NonNull String[] permissions,
-                                                     @Nullable PermissionsResultAction action) {
+    private List<String> getPermissionsListToRequest(@NonNull Activity activity, @NonNull String[] permissions, @Nullable PermissionsResultAction action) {
         List<String> permList = new ArrayList<String>(permissions.length);
         for (String perm : permissions) {
             if (!mPermissions.contains(perm)) {

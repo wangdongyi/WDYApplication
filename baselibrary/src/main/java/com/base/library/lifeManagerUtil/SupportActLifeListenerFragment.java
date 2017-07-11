@@ -2,8 +2,12 @@ package com.base.library.lifeManagerUtil;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+
+import static com.base.library.permission.PermissionsManager.PERMISSIONS_REQUEST_CODE;
 
 /**
  * 作者：王东一
@@ -13,18 +17,51 @@ import android.support.annotation.NonNull;
 public class SupportActLifeListenerFragment extends Fragment {
     private LifeListenerManager listenerManager;
 
-    public void setActLifeListenerManager(LifeListenerManager manager){
+    public void setActLifeListenerManager(LifeListenerManager manager) {
         listenerManager = manager;
     }
 
-    public LifeListenerManager getLifeListenerManager(){
+    public LifeListenerManager getLifeListenerManager() {
         return listenerManager;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
 
+    public void LifeRequestPermissions(final String[] array, final int code) {
+        if (!isAdded()) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded()) {
+                        SupportActLifeListenerFragment.this.requestPermissions(array, code);
+                    }
+                }
+            }, 500);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded()) {
+                SupportActLifeListenerFragment.this.requestPermissions(array, code);
+            }
+        }
+    }
+
+    public void LifeStartActivityResult(final Intent intent, final int code) {
+        if (!isAdded()) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SupportActLifeListenerFragment.this.startActivityForResult(intent, code);
+                }
+            }, 500);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded()) {
+                SupportActLifeListenerFragment.this.startActivityForResult(intent, code);
+            }
+        }
     }
 
     @Override
@@ -68,5 +105,7 @@ public class SupportActLifeListenerFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         listenerManager.onActivityResult(requestCode, resultCode, data);
+
     }
+
 }

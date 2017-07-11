@@ -25,6 +25,7 @@ import com.base.library.activity.BaseActivity;
 import com.base.library.application.BaseApplication;
 import com.base.library.listen.OnPermissionListen;
 import com.base.library.listen.OnRecyclerClickListen;
+import com.base.library.permission.PermissionsManager;
 import com.base.library.photopicker.model.Photo;
 import com.base.library.photopicker.model.PhotoDirectory;
 import com.base.library.photopicker.utils.MediaStoreHelper;
@@ -361,26 +362,17 @@ public class PhotoPickerActivity extends BaseActivity implements PhotoAdapter.Ph
      * 选择相机
      */
     private void showCamera() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> permission = new ArrayList<>();
-            permission.add(Manifest.permission.CAMERA);
-            permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            permission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            checkPermission(permission, new OnPermissionListen() {
-                @Override
-                public void callBack(boolean isHave) {
-                    if (isHave) {
-                        // 跳转到系统照相机
-                        openCamera();
-                    } else {
-                        BaseApplication.getToastUtil().showMiddleToast(getResources().getString(R.string.picker_msg_no_camera));
-                    }
+        PermissionsManager.with(PhotoPickerActivity.this, new OnPermissionListen() {
+            @Override
+            public void callBack(boolean isHave) {
+                if (isHave) {
+                    // 跳转到系统照相机
+                    openCamera();
+                } else {
+                    BaseApplication.getToastUtil().showMiddleToast(getResources().getString(R.string.picker_msg_no_camera));
                 }
-            });
-        } else {
-            // 跳转到系统照相机
-            openCamera();
-        }
+            }
+        },Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     private void openCamera() {

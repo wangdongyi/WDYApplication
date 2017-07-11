@@ -72,28 +72,28 @@
             android:exported="false"
             android:label="权限管理"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".view.upPhotoView.CropImageActivity"
             android:exported="false"
             android:label="裁剪图片"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <!-- 扫一扫起始页 -->
         <activity
             android:name=".zxing.ScanningMain"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="stateHidden|adjustUnspecified" />
         <!-- 扫一扫次级页 -->
         <activity
             android:name=".zxing.MipcaActivityCapture"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="stateHidden|adjustUnspecified" />
         <!--音乐播放-->
         <service android:name=".service.MusicService" />
@@ -103,7 +103,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="stateHidden|adjustUnspecified" />
         <!--图片左右滑动页面-->
         <activity
@@ -111,7 +111,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="stateHidden" />
         <provider
             android:name="android.support.v4.content.FileProvider"
