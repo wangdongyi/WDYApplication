@@ -1,6 +1,6 @@
 package com.base.library.okHtttpUtil;
 
-import com.base.library.util.JsonUtil;
+import com.base.library.util.WDYJsonUtil;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -19,7 +19,7 @@ public abstract class GenericsCallback<T> extends Callback<T> implements OkHttpL
         if (entityClass == String.class) {
             return (T) back;
         }
-        T bean = JsonUtil.GetEntity(JsonUtil.GetJsonObjByLevel(back), entityClass);
+        T bean = WDYJsonUtil.GetEntity(WDYJsonUtil.GetJsonObjByLevel(back), entityClass);
         onRequest(back);
         return bean;
     }

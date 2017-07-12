@@ -13,8 +13,9 @@ import com.base.library.listen.NoDoubleClickListener;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.util.CodeUtil;
-import com.base.library.util.JsonUtil;
 import com.base.library.util.TxtReadUtil;
+import com.base.library.util.WDYJsonUtil;
+import com.base.library.util.WDYLog;
 import com.base.library.view.upPhotoView.UpPhotoView;
 
 import java.io.IOException;
@@ -60,11 +61,11 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(RequestBean response) {
-                String log = JsonUtil.toJson(response);
+                String log = WDYJsonUtil.toJson(response);
                 for (int i = 0; i < 10; i++) {
                     log = log + log;
                 }
-//                WDYLog.i("泛型:dddd", log);
+                WDYLog.i("泛型:dddd", log);
             }
 
             @Override

@@ -14,20 +14,16 @@ import java.util.List;
  * 创建时间：2017/7/12.
  */
 
-public class JsonUtil {
+public class WDYJsonUtil {
     private static String TAG = "JsonUtil";
 
-    public static Gson getGson() {
+    private static Gson gson;
+
+    private static Gson getGson() {
         if(gson==null){
             gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         }
         return gson;
-    }
-
-    private static Gson gson;
-
-    public JsonUtil() {
-
     }
 
     public static String toJson(Object obj) {
