@@ -12,10 +12,22 @@ import java.util.List;
 public class JsonUtil {
 
     private static String TAG = "JsonUtil";
-    private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+
+    public static Gson getGson() {
+        if(gson==null){
+            gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        }
+        return gson;
+    }
+
+    private static Gson gson;
+
+    public JsonUtil() {
+
+    }
 
     public static String toJson(Object obj) {
-        return gson.toJson(obj);
+        return getGson().toJson(obj);
     }
 
     /**
@@ -24,7 +36,7 @@ public class JsonUtil {
      * @return
      */
     public static <T> T jsonToBean(String json, Class<T> c) {
-        T object = gson.fromJson(json, c);
+        T object = getGson().fromJson(json, c);
         return object;
     }
 
@@ -36,7 +48,7 @@ public class JsonUtil {
         JsonObject json = null;
         try {
             if (data != null && data != "") {
-                json = gson.fromJson(data, JsonObject.class);
+                json = getGson().fromJson(data, JsonObject.class);
                 if (param != null && param.length > 0) {
                     for (String item : param) {
                         json = json.getAsJsonObject(item);
@@ -55,7 +67,7 @@ public class JsonUtil {
         String result = null;
         try {
             if (data != null && data != "") {
-                json = gson.fromJson(data, JsonObject.class);
+                json = getGson().fromJson(data, JsonObject.class);
                 if (param != null && param.length > 0) {
                     for (int i = 0; i < param.length - 1; i++) {
                         json = json.getAsJsonObject(param[i]);
@@ -85,13 +97,13 @@ public class JsonUtil {
         try {
             if (data != null && data != "") {
                 if (param != null && param.length > 0) {
-                    json = gson.fromJson(data, JsonObject.class);
+                    json = getGson().fromJson(data, JsonObject.class);
                     for (int i = 0; i < param.length - 1; i++) {
                         json = json.getAsJsonObject(param[i]);
                     }
                     jsonArray = json.getAsJsonArray(param[param.length - 1]);
                 } else {
-                    jsonArray = gson.fromJson(data, JsonArray.class);
+                    jsonArray = getGson().fromJson(data, JsonArray.class);
                 }
             }
         } catch (Exception e) {
@@ -104,7 +116,7 @@ public class JsonUtil {
         T result = null;
         try {
             if (ele != null && ele.toString() != "") {
-                result = gson.fromJson(ele, classT);
+                result = getGson().fromJson(ele, classT);
             }
         } catch (Exception e) {
             WDYLog.e(TAG, "GetEntity 发生异常：" + e.getMessage());
