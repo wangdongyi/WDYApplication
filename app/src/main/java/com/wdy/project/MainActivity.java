@@ -1,42 +1,47 @@
 package com.wdy.project;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.library.activity.BaseActivity;
+import com.base.library.application.BaseApplication;
+import com.base.library.lifeManagerUtil.LifeManager;
+import com.base.library.lifeManagerUtil.OnActivityResultListener;
 import com.base.library.listen.NoDoubleClickListener;
+import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
-import com.base.library.okHtttpUtil.OkHttpListener;
 import com.base.library.okHtttpUtil.OkHttpUtil;
+import com.base.library.permission.PermissionsManager;
 import com.base.library.photopicker.utils.PhotoUtils;
+import com.base.library.util.CodeUtil;
 import com.base.library.util.JsonUtil;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYLog;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
+import com.base.library.view.upPhotoView.UpPhotoView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Call;
 import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class MainActivity extends BaseActivity {
     TextView tv;
     String content = "/sdcard/HUDSDKLog.txt";
+    private ImageView sample_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
         // Example of a call to a native method
         tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
@@ -120,13 +125,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PhotoUtils.onPhotoResult(resultCode, data, new PhotoUtils.onPhotoBack() {
-            @Override
-            public void onBack(ArrayList<String> result) {
 
+    }
+
+    private void initView() {
+        sample_image = (ImageView) findViewById(R.id.sample_image);
+        sample_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpPhotoView.with(MainActivity.this, new UpPhotoView.onBackPath() {
+                    @Override
+                    public void path(String Path) {
+                        try {
+                            sample_image.setImageBitmap(CodeUtil.convertBitmap(Path));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
     }
-
-
 }
