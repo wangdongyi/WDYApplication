@@ -1,8 +1,5 @@
 package com.base.library.util;
 
-
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -15,17 +12,13 @@ import java.util.List;
 public class JsonUtil {
 
     private static String TAG = "JsonUtil";
-    private static Gson gson;
-    static {
-        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    }
+    private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     public static String toJson(Object obj) {
         return gson.toJson(obj);
     }
 
     /**
-     * 
      * @param json
      * @param c
      * @return
@@ -51,7 +44,7 @@ public class JsonUtil {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "GetJsonObjByLevel 发生异常：" + e.getMessage());
+            WDYLog.e(TAG, "GetJsonObjByLevel 发生异常：" + e.getMessage());
             json = null;
         }
         return json;
@@ -73,7 +66,7 @@ public class JsonUtil {
                 result = json.getAsJsonPrimitive(param[param.length - 1]).toString();
             }
         } catch (Exception e) {
-            Log.e(TAG, "GetStringByLevel 发生异常：" + e.getMessage());
+            WDYLog.e(TAG, "GetStringByLevel 发生异常：" + e.getMessage());
         }
 
         return result == null ? null : result.replace('"', ' ').trim();
@@ -81,8 +74,9 @@ public class JsonUtil {
 
     /**
      * 从字符串中获取JsonArray，转为list时用
-     * @param data     目标字符串
-     * @param param    JsonArray各级的key，不写时为整个字符串
+     *
+     * @param data  目标字符串
+     * @param param JsonArray各级的key，不写时为整个字符串
      * @return
      */
     public static JsonArray GetJsonArrayByLevel(String data, String... param) {
@@ -96,12 +90,12 @@ public class JsonUtil {
                         json = json.getAsJsonObject(param[i]);
                     }
                     jsonArray = json.getAsJsonArray(param[param.length - 1]);
-                }else{
-                    jsonArray =  gson.fromJson(data, JsonArray.class);
+                } else {
+                    jsonArray = gson.fromJson(data, JsonArray.class);
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "GetJsonArrayByLevel 发生异常：" + e.getMessage());
+            WDYLog.e(TAG, "GetJsonArrayByLevel 发生异常：" + e.getMessage());
         }
         return jsonArray;
     }
@@ -113,7 +107,7 @@ public class JsonUtil {
                 result = gson.fromJson(ele, classT);
             }
         } catch (Exception e) {
-            Log.e(TAG, "GetEntity 发生异常：" + e.getMessage());
+            WDYLog.e(TAG, "GetEntity 发生异常：" + e.getMessage());
         }
         return result;
     }
@@ -125,9 +119,9 @@ public class JsonUtil {
             if (array != null && array.size() > 0) {
                 for (JsonElement item : array) {
                     if (!(item == null || item.toString() == "")) {
-                        if(classT == String.class){
+                        if (classT == String.class) {
                             result.add((T) item.getAsString());
-                        }else{
+                        } else {
                             t = GetEntity(item.getAsJsonObject(), classT);
                             if (t != null) {
                                 result.add(GetEntity(item.getAsJsonObject(), classT));
@@ -137,7 +131,7 @@ public class JsonUtil {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "GetEntityS 发生异常：" + e.getMessage());
+            WDYLog.e(TAG, "GetEntityS 发生异常：" + e.getMessage());
         }
         return result;
     }
