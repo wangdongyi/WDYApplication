@@ -1,33 +1,23 @@
 package com.wdy.project;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.library.activity.BaseActivity;
-import com.base.library.application.BaseApplication;
-import com.base.library.lifeManagerUtil.LifeManager;
-import com.base.library.lifeManagerUtil.OnActivityResultListener;
 import com.base.library.listen.NoDoubleClickListener;
-import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
-import com.base.library.permission.PermissionsManager;
-import com.base.library.photopicker.utils.PhotoUtils;
 import com.base.library.util.CodeUtil;
 import com.base.library.util.JsonUtil;
 import com.base.library.util.TxtReadUtil;
-import com.base.library.util.WDYLog;
 import com.base.library.view.upPhotoView.UpPhotoView;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.Request;
 

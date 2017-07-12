@@ -9,8 +9,12 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonUtil {
+/**
+ * 作者：王东一
+ * 创建时间：2017/7/12.
+ */
 
+public class JsonUtil {
     private static String TAG = "JsonUtil";
 
     public static Gson getGson() {

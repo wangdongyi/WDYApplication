@@ -2,10 +2,8 @@ package com.base.library.okHtttpUtil;
 
 import com.base.library.util.JsonUtil;
 
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 
-import okhttp3.Call;
 import okhttp3.Response;
 
 /**
