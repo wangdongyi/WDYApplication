@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="BaseAppTheme">
+    <style name="WDYAppTheme" parent="BaseAppTheme">
         <!--状态栏颜色-->
         <item name="android:statusBarColor">@color/top_color</item>
         <!-- 底部bar颜色 -->

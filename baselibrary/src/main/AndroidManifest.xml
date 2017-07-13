@@ -68,13 +68,6 @@
             android:value="GlideModule" />
 
         <activity
-            android:name=".activity.PermissionsActivity"
-            android:exported="false"
-            android:label="权限管理"
-            android:screenOrientation="portrait"
-            android:theme="@style/WDYAppTheme"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
             android:name=".view.upPhotoView.CropImageActivity"
             android:exported="false"
             android:label="裁剪图片"

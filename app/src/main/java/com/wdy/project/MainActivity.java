@@ -33,7 +33,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        // Example of a call to a native method
         tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
         setTitleBackground(R.drawable.title_background);
@@ -97,26 +96,10 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
     public native String stringFromJNI();
 
-//    public native int dataFromJNI(int bufID, int priority, String tag, String msg);
-
-//    public native void JniLog(String message);
-
-    // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     private void initView() {

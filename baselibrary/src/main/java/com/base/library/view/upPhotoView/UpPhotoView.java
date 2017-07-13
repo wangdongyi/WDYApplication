@@ -5,15 +5,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -23,21 +20,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.base.library.R;
-import com.base.library.activity.PermissionsActivity;
 import com.base.library.application.BaseApplication;
-import com.base.library.lifeManagerUtil.LifeListener;
 import com.base.library.lifeManagerUtil.LifeManager;
 import com.base.library.lifeManagerUtil.OnActivityResultListener;
 import com.base.library.lifeManagerUtil.SupportActLifeListenerFragment;
 import com.base.library.listen.OnPermissionListen;
-import com.base.library.okHtttpUtil.OkHttpUtil;
-import com.base.library.permission.PermissionsChecker;
 import com.base.library.permission.PermissionsManager;
 import com.base.library.util.CodeUtil;
 import com.base.library.util.WDYLog;
 
 import java.io.File;
-import java.util.List;
 
 import static com.base.library.lifeManagerUtil.LifeManager.FRAGMENT_TAG;
 import static com.base.library.view.upPhotoView.DoPicCapUtil.IMAGE_FILE_LOCATION;
