@@ -231,7 +231,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
                 }
             }
         });
-        initSystemBar();
         changeThem();
         if (mSwipeBackLayout != null) {
             mSwipeBackLayout.init();
@@ -305,20 +304,10 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
 
     //设置状态栏颜色
     private void initSystemBar() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //底部沉嵌式
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setNavigationBarTintEnabled(true);
-            tintManager.setTintColor(ContextCompat.getColor(this, R.color.transparent));
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //设置高度
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) wdyBaseStatus.getLayoutParams();
-            params.height = getStatusHeight();
-            wdyBaseStatus.setLayoutParams(params);
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
         }
     }
 
