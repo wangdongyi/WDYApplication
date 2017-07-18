@@ -3,6 +3,7 @@
     android:id="@+id/ccp_content_fl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="w"
     android:orientation="vertical">
 
     <include layout="@layout/title_layout" />
