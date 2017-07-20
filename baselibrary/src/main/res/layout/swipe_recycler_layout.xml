@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/rectangular"
+            android:background="@color/transparent"
             android:clipChildren="false"
             android:gravity="center"
             android:orientation="vertical"
@@ -36,7 +36,7 @@
             <com.base.library.view.loading.LoadingView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:loadingColor="@color/blue" />
+                app:loadingColor="@color/top_color" />
         </LinearLayout>
     </RelativeLayout>
 </com.base.library.view.refresh.RefreshLayout>

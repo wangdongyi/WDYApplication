@@ -63,7 +63,7 @@ public class RefreshLayout extends SwipeRefreshLayout implements SwipeRefreshLay
         super(context, attrs);
         setOnRefreshListener(this);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        setColorSchemeResources(R.color.blue);
+        setColorSchemeResources(R.color.top_color);
         setSize(SwipeRefreshLayout.DEFAULT);
         setProgressViewEndTarget(false, CodeUtil.dip2px(context, 60));
         refreshRunnable = new Runnable() {

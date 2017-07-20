@@ -238,7 +238,7 @@
         <attr name="cpb_paddingProgress" format="dimension" />
     </declare-styleable>
     <declare-styleable name="WdyEditTextStyleable">
-        <attr name="delete_with" format="dimension" />
+        <attr name="delete_width" format="dimension" />
     </declare-styleable>
     <declare-styleable name="LoadingView">
         <attr name="loadingColor" format="color" />
@@ -742,7 +742,7 @@
 
     <style name="LineHorizontal">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/line</item>
     </style>
 </resources>

@@ -21,7 +21,7 @@ public class LifeManager {
 
     }
 
-    public SupportActLifeListenerFragment supportFragment;
+    private FragmentManager fragmentManager;
 
     public static LifeManager getInstance() {
         if (null == mInstance) {
@@ -45,17 +45,19 @@ public class LifeManager {
         if (!(Looper.myLooper() == Looper.getMainLooper())) {
             throw new IllegalArgumentException("You must start a observe on mainThread");
         }
-        android.app.FragmentManager fm = activity.getFragmentManager();
-        supportFragment = findFragment(fm);//找到绑定的Fragment
+        fragmentManager = activity.getFragmentManager();
+        SupportActLifeListenerFragment supportFragment = findFragment(fragmentManager);//找到绑定的Fragment
         LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
         manager.addLifeListener(Listener);//添加监听
     }
 
     public void requestPermissions(String[] permissions, int requestCode) {
+        SupportActLifeListenerFragment supportFragment = findFragment(fragmentManager);//找到绑定的Fragment
         supportFragment.LifeRequestPermissions(permissions, requestCode);
     }
 
     public void startActivityForResult(Intent intent, int requestCode) {
+        SupportActLifeListenerFragment supportFragment = findFragment(fragmentManager);//找到绑定的Fragment
         supportFragment.LifeStartActivityResult(intent, requestCode);
     }
 
@@ -69,8 +71,8 @@ public class LifeManager {
         if (!(Looper.myLooper() == Looper.getMainLooper())) {
             throw new IllegalArgumentException("You must start a observe on mainThread");
         }
-        android.app.FragmentManager fm = fragment.getActivity().getFragmentManager();
-        supportFragment = findFragment(fm);//找到绑定的Fragment
+        fragmentManager = fragment.getActivity().getFragmentManager();
+        SupportActLifeListenerFragment supportFragment = findFragment(fragmentManager);//找到绑定的Fragment
         LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
         manager.addLifeListener(Listener);//添加监听
     }
@@ -85,8 +87,8 @@ public class LifeManager {
         if (!(Looper.myLooper() == Looper.getMainLooper())) {
             throw new IllegalArgumentException("You must start a observe on mainThread");
         }
-        android.app.FragmentManager fm = fragment.getActivity().getFragmentManager();
-        supportFragment = findFragment(fm);//找到绑定的Fragment
+        fragmentManager = fragment.getActivity().getFragmentManager();
+        SupportActLifeListenerFragment supportFragment = findFragment(fragmentManager);//找到绑定的Fragment
         LifeListenerManager manager = findLifeListenerManager(supportFragment);//找到指定Fragment的ActLifeListenerManager
         manager.addLifeListener(Listener);//添加监听
     }

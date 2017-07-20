@@ -105,7 +105,6 @@ public class SupportActLifeListenerFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         listenerManager.onActivityResult(requestCode, resultCode, data);
-
     }
 
 }

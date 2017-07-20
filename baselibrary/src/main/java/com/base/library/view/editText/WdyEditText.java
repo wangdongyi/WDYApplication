@@ -202,7 +202,7 @@ public class WdyEditText extends EditText {
             return;
         }
         try {
-            deleteWith = (int) attr.getDimension(R.styleable.WdyEditTextStyleable_delete_with, CodeUtil.dip2px(context, 30));
+            deleteWith = (int) attr.getDimension(R.styleable.WdyEditTextStyleable_delete_width, CodeUtil.dip2px(context, 30));
         } finally {
             attr.recycle();
         }

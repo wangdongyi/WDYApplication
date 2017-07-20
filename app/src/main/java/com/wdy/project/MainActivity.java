@@ -26,6 +26,8 @@ public class MainActivity extends BaseActivity {
     TextView tv;
     String content = "/sdcard/HUDSDKLog.txt";
     private ImageView sample_image;
+    private TextView sample_text;
+    private ImageView sample_image2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +108,28 @@ public class MainActivity extends BaseActivity {
         sample_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpPhotoView.with(MainActivity.this, new UpPhotoView.onBackPath() {
+                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
                     @Override
                     public void path(String Path) {
                         try {
                             sample_image.setImageBitmap(CodeUtil.convertBitmap(Path));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+        sample_text = (TextView) findViewById(R.id.sample_text);
+        sample_image2 = (ImageView) findViewById(R.id.sample_image2);
+        sample_image2.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
+                    @Override
+                    public void path(String Path) {
+                        try {
+                            sample_image2.setImageBitmap(CodeUtil.convertBitmap(Path));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
