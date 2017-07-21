@@ -37,7 +37,6 @@ public class PhotoPreviewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_preview);
         hintTitle();
-        setTitleBarColor(R.color.text_black);
         HackyViewPager mPager = (HackyViewPager) findViewById(R.id.pager);
         int pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
         urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);

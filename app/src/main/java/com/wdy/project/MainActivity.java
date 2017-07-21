@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
-                Intent intent=new Intent(MainActivity.this,NextActivity.class);
+                Intent intent = new Intent(MainActivity.this, NextActivity.class);
                 startActivity(intent);
             }
         });

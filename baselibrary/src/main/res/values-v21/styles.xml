@@ -2,17 +2,18 @@
 <resources>
 
     <style name="WDYAppTheme" parent="BaseAppTheme">
-        <!--状态栏颜色-->
-        <item name="android:statusBarColor">@color/top_color</item>
-        <!-- 底部bar颜色 -->
-        <item name="android:navigationBarColor">@color/top_color</item>
         <!--透明状态栏-->
         <item name="android:windowTranslucentStatus">true</item>
-        <!--透明导航栏-->
-        <item name="android:windowTranslucentNavigation">false</item>
-        <!--使状态栏，导航栏可绘制-->
+        <!--状态栏颜色-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- 底部bar颜色 -->
+        <item name="android:navigationBarColor">@color/top_color</item>
+        <!--是否隐藏底部返回栏-->
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
-
+        <!--浮在底部导航上-->
+        <item name="android:windowTranslucentNavigation">false</item>
+        <!--各个控制控件的默认颜色-->
+        <item name="android:colorControlNormal">@color/top_color</item>
     </style>
 
 
@@ -31,5 +32,29 @@
         <item name="tabIndicatorHeight">2dp</item>
         <item name="android:elevation">0dp</item>
         <item name="android:translationZ">0dp</item>
+    </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!--状态栏颜色-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--控件Color-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--背景颜色-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--Appbar背景色-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--ToolBar上的Title颜色-->
+        <item name="android:textColorPrimary">@color/text_black</item>
+        <!--过场动画-->
+        <item name="android:windowAnimationStyle">@style/actAnimation</item>
+        <item name="windowActionBar">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:screenOrientation">portrait</item>
+        <!--各个控制控件的默认颜色-->
+        <item name="android:colorControlNormal">@color/top_color</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!--activity透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowContentOverlay">@null</item>-->
     </style>
 </resources>

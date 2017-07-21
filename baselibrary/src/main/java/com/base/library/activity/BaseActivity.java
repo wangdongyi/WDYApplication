@@ -2,16 +2,10 @@ package com.base.library.activity;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.GestureDetector;
@@ -30,7 +24,7 @@ import android.widget.TextView;
 import com.base.library.R;
 import com.base.library.application.BaseApplication;
 import com.base.library.bean.ThemBean;
-import com.base.library.listen.OnPermissionListen;
+import com.base.library.immersion.ImmersionBar;
 import com.base.library.util.ActivityManage;
 import com.base.library.util.ActivityTaskUtils;
 import com.base.library.util.ActivityTransition;
@@ -39,9 +33,6 @@ import com.base.library.util.CrashHandler;
 import com.base.library.util.StatusBarUtil;
 import com.base.library.util.WDYLog;
 import com.base.library.view.relativeLayout.CCPLayoutListenerView;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
-
-import java.util.ArrayList;
 
 /**
  * 作者：王东一 on 2016/3/21 16:54
@@ -75,8 +66,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     private LinearLayout wdyBaseTitleLayout;
     //标题
     private RelativeLayout wdyActivityTitleLayout;
-    //标题管理
-    private SystemBarTintManager tintManager;
     //键盘状态监听
     private onKeyboardListener onKeyboardListener;
     private boolean mIsHorizontalScrolling = false;
@@ -184,6 +173,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         ActivityManage.getInstance().addActivity(this);
         //设置状态栏文字颜色
         StatusBarUtil.setStatusBarDark(this, BaseApplication.getThemBean().isStatusBarDark());
+        initSystemBar();
     }
 
     @Override
@@ -231,7 +221,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
                 }
             }
         });
-        changeThem();
+//        changeThem();
         if (mSwipeBackLayout != null) {
             mSwipeBackLayout.init();
             mSwipeBackLayout.setSwipeGestureDelegate(this);
@@ -304,11 +294,10 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
 
     //设置状态栏颜色
     private void initSystemBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-        }
+        ImmersionBar.with(this)
+                .transparentStatusBar()  //透明状态栏，不写默认透明色
+                .init();
+
     }
 
     //设置主题是不是深色的
@@ -337,18 +326,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         return statusHeight;
     }
 
-    //设置状态颜色
-    protected void setTitleBarColor(int id) {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            tintManager.setTintColor(ContextCompat.getColor(this, id));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(this, id));
-        }
-    }
 
     //设置状态栏+标题的背景色
     protected void setTitleLayoutColor(int id) {
