@@ -58,7 +58,7 @@ public class SupportActLifeListenerFragment extends Fragment {
                 }
             }, 500);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isAdded()) {
+            if (isAdded()) {
                 SupportActLifeListenerFragment.this.startActivityForResult(intent, code);
             }
         }

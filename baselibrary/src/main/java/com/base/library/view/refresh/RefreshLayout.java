@@ -165,6 +165,8 @@ public class RefreshLayout extends SwipeRefreshLayout implements SwipeRefreshLay
                         setEnabled(true);
                     } else if (mRecyclerView.getChildCount() > 0 && mRecyclerView.getChildAt(0).getTop() == 0) {
                         setEnabled(true);
+                    } else if (mRecyclerView.getChildCount() == 0) {
+                        setEnabled(true);
                     } else {
                         setEnabled(false);
                     }
@@ -196,6 +198,11 @@ public class RefreshLayout extends SwipeRefreshLayout implements SwipeRefreshLay
 
     public boolean isCanLoadMore() {
         return canLoadMore;
+    }
+
+    //是否可以下拉刷新
+    public void setCanRefresh(boolean canRefresh) {
+        setEnabled(canRefresh);
     }
 
     //是否可以加载更多

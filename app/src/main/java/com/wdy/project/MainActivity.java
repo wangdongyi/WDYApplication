@@ -1,6 +1,7 @@
 package com.wdy.project;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -125,16 +126,18 @@ public class MainActivity extends BaseActivity {
         sample_image2.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
-                    @Override
-                    public void path(String Path) {
-                        try {
-                            sample_image2.setImageBitmap(CodeUtil.convertBitmap(Path));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
+//                    @Override
+//                    public void path(String Path) {
+//                        try {
+//                            sample_image2.setImageBitmap(CodeUtil.convertBitmap(Path));
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+                Intent intent=new Intent(MainActivity.this,NextActivity.class);
+                startActivity(intent);
             }
         });
     }

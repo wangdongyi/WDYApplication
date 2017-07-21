@@ -42,6 +42,7 @@ public class UpPhotoView {
     private static UpPhotoView mInstance;
     private File iconDir;
     private AlertDialog mAlertDialog;
+    private RelativeLayout layout;
     private Activity activity;
     private Fragment fragment;
     private android.support.v4.app.Fragment fragment_v4;
@@ -184,78 +185,77 @@ public class UpPhotoView {
 
     @SuppressLint("InflateParams")
     private void init() {
-        if (mAlertDialog != null) {
-            return;
-        }
-        LayoutInflater inflaterDl = LayoutInflater.from(getContext());
-        RelativeLayout layout = (RelativeLayout) inflaterDl.inflate(R.layout.image_up_layout, null);
-        mAlertDialog = new AlertDialog.Builder(getContext(), R.style.PhotoDialog).create();
-        RelativeLayout main = (RelativeLayout) layout.findViewById(R.id.main);
-        TextView textView_photo = (TextView) layout.findViewById(R.id.textView_photo);
-        TextView textView_picture = (TextView) layout.findViewById(R.id.textView_picture);
-        TextView textView_cancel = (TextView) layout.findViewById(R.id.textView_cancel);
-        main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        textView_photo.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("InlinedApi")
-            @Override
-            public void onClick(View v) {
-                //相机
-                mAlertDialog.dismiss();
-                PermissionsManager.with(activity, new OnPermissionListen() {
-                    @Override
-                    public void callBack(boolean isHave) {
-                        if (isHave) {
-                            openCamera();
-                        } else {
-                            BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
-                        }
-                    }
-                }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
-            }
-        });
-        textView_picture.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onClick(View v) {
-                //相册
-                mAlertDialog.dismiss();
-                PermissionsManager.with(activity, new OnPermissionListen() {
-                    @Override
-                    public void callBack(boolean isHave) {
-                        if (isHave) {
-                            Intent intent = null;
-                            try {
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                                    intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                    intent.setType("image/*");
-                                } else {
-                                    intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                }
-                                LifeManager.getInstance().startActivityForResult(intent, DoPicCapUtil.REQUEST_CODE_ALBUM);
-                            } catch (Exception e) {
-                                //  访问相册失败
-                                BaseApplication.getToastUtil().showMiddleToast("请开启访问相册权限");
-                                e.printStackTrace();
+        if (mAlertDialog == null) {
+            LayoutInflater inflaterDl = LayoutInflater.from(getContext());
+            layout = (RelativeLayout) inflaterDl.inflate(R.layout.image_up_layout, null);
+            mAlertDialog = new AlertDialog.Builder(getContext(), R.style.PhotoDialog).create();
+            RelativeLayout main = (RelativeLayout) layout.findViewById(R.id.main);
+            TextView textView_photo = (TextView) layout.findViewById(R.id.textView_photo);
+            TextView textView_picture = (TextView) layout.findViewById(R.id.textView_picture);
+            TextView textView_cancel = (TextView) layout.findViewById(R.id.textView_cancel);
+            main.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDialog.dismiss();
+                }
+            });
+            textView_photo.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("InlinedApi")
+                @Override
+                public void onClick(View v) {
+                    //相机
+                    mAlertDialog.dismiss();
+                    PermissionsManager.with(getInstance().activity, new OnPermissionListen() {
+                        @Override
+                        public void callBack(boolean isHave) {
+                            if (isHave) {
+                                openCamera();
+                            } else {
+                                BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
                             }
-                        } else {
-                            BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
                         }
-                    }
-                }, Manifest.permission.READ_EXTERNAL_STORAGE);
+                    }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+                }
+            });
+            textView_picture.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onClick(View v) {
+                    //相册
+                    mAlertDialog.dismiss();
+                    PermissionsManager.with(getInstance().activity, new OnPermissionListen() {
+                        @Override
+                        public void callBack(boolean isHave) {
+                            if (isHave) {
+                                Intent intent = null;
+                                try {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                                        intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                        intent.setType("image/*");
+                                    } else {
+                                        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    }
+                                    LifeManager.getInstance().startActivityForResult(intent, DoPicCapUtil.REQUEST_CODE_ALBUM);
+                                } catch (Exception e) {
+                                    //  访问相册失败
+                                    BaseApplication.getToastUtil().showMiddleToast("请开启访问相册权限");
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
+                            }
+                        }
+                    }, Manifest.permission.READ_EXTERNAL_STORAGE);
 
-            }
-        });
-        textView_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+                }
+            });
+            textView_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDialog.dismiss();
+                }
+            });
+        }
         mAlertDialog.show();
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
