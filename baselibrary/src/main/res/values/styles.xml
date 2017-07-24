@@ -15,12 +15,12 @@
         <!--过场动画-->
         <item name="android:windowAnimationStyle">@style/actAnimation</item>
         <item name="android:screenOrientation">portrait</item>
-        <!--<item name="windowActionBar">true</item>-->
+        <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <!--activity透明-->
-        <!--<item name="android:windowIsTranslucent">true</item>-->
-        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="LoadingAppTheme" parent="Theme.AppCompat.Light.NoActionBar">

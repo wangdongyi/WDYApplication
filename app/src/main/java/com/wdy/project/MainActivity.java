@@ -48,6 +48,7 @@ public class MainActivity extends BaseActivity {
                 tv.setText(TxtReadUtil.TxtRead(content));
             }
         });
+        setStatusBar(true);
     }
 
     public native String textFromJNI(String path);

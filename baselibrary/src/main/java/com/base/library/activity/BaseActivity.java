@@ -221,7 +221,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
                 }
             }
         });
-//        changeThem();
+        changeThem();
         if (mSwipeBackLayout != null) {
             mSwipeBackLayout.init();
             mSwipeBackLayout.setSwipeGestureDelegate(this);
@@ -292,6 +292,11 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
             wdyBaseTitleLayout.setBackgroundResource(id);
     }
 
+    //设置状态栏+标题的背景色
+    protected void setTitleLayoutColor(int id) {
+        wdyBaseTitleLayout.setBackgroundColor(ContextCompat.getColor(this, id));
+    }
+
     //设置状态栏颜色
     private void initSystemBar() {
         ImmersionBar.with(this)
@@ -326,11 +331,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         return statusHeight;
     }
 
-
-    //设置状态栏+标题的背景色
-    protected void setTitleLayoutColor(int id) {
-        wdyBaseTitleLayout.setBackgroundColor(ContextCompat.getColor(this, id));
-    }
 
     //初始化右侧按钮
     protected void setRightInit(String text, int logo, View.OnClickListener listener) {
@@ -390,7 +390,8 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     @Override
     protected void onResume() {
         super.onResume();
-        CrashHandler.getInstance().setContext(this);
+        if (!BaseApplication.isOpenLog())
+            CrashHandler.getInstance().setContext(this);
     }
 
     @Override
@@ -398,5 +399,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         WDYLog.d(TAG, "checktask onCreate:" + super.getClass().getSimpleName() + "#0x" + super.hashCode() + ", taskid:" + getTaskId() + ", task:" + new ActivityTaskUtils(this));
         super.onDestroy();
         ActivityManage.getInstance().removeActivity(this);
+        ImmersionBar.with(this).destroy();  //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再
     }
 }
