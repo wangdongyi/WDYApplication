@@ -67,44 +67,51 @@ public class SupportActLifeListenerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        listenerManager.onStart();
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        listenerManager.onResume();
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        listenerManager.onPause();
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        listenerManager.onStop();
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        listenerManager.onDestroy();
-        listenerManager = null;
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onDestroy();
+        setActLifeListenerManager(null);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        listenerManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        listenerManager.onActivityResult(requestCode, resultCode, data);
+        if (getLifeListenerManager() != null)
+            getLifeListenerManager().onActivityResult(requestCode, resultCode, data);
     }
 
 }

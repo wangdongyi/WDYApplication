@@ -1,5 +1,6 @@
 package com.wdy.project;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.library.activity.BaseActivity;
+import com.base.library.application.BaseApplication;
 import com.base.library.listen.NoDoubleClickListener;
+import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
+import com.base.library.permission.PermissionsManager;
 import com.base.library.util.CodeUtil;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
+import com.base.library.view.upPhotoView.DoPicCapUtil;
 import com.base.library.view.upPhotoView.UpPhotoView;
 
 import java.io.IOException;
@@ -49,6 +54,16 @@ public class MainActivity extends BaseActivity {
             }
         });
         setStatusBar(true);
+        PermissionsManager.with(this, new OnPermissionListen() {
+            @Override
+            public void callBack(boolean isHave) {
+                if (isHave) {
+                } else {
+                    BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
+                }
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+
     }
 
     public native String textFromJNI(String path);
