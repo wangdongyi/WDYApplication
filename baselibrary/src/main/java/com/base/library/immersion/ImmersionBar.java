@@ -1158,7 +1158,7 @@ public class ImmersionBar {
         initBar();   //初始化沉浸式
         setStatusBarView();  //通过状态栏高度动态设置状态栏布局
         transformView();  //变色view
-        keyboardEnable();  //解决软键盘与底部输入框冲突问题
+//        keyboardEnable();  //解决软键盘与底部输入框冲突问题
     }
 
     /**

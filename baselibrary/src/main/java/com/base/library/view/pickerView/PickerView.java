@@ -3,6 +3,7 @@ package com.base.library.view.pickerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.base.library.R;
+import com.base.library.util.CodeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.TimerTask;
 
 /**
  * 作者：王东一 on 2016/5/20 11:00
- * 饼状图
+ * 选择框
  **/
 public class PickerView extends View {
     public static final String TAG = "PickerView";
@@ -174,12 +176,13 @@ public class PickerView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.text_black));
+        mPaint.setColor(Color.rgb(34,34,34));
         //第二个paint
         nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nPaint.setStyle(Paint.Style.FILL);
         nPaint.setTextAlign(Paint.Align.CENTER);
-        nPaint.setColor(mColorText);
+        nPaint.setColor(Color.rgb(177,179,186));
+
     }
 
     @Override
@@ -194,7 +197,7 @@ public class PickerView extends View {
         // 先绘制选中的text再往上往下绘制其余的text
         float scale = parabola(mViewHeight / 4.0f, mMoveLen);
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
-        mPaint.setTextSize(size);
+
         mPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
         // text居中绘制，注意baseline的计算才能达到居中，y值是text中心坐标
         float x = (float) (mViewWidth / 2.0);
@@ -223,8 +226,8 @@ public class PickerView extends View {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type * mMoveLen);
         float scale = parabola(mViewHeight / 4.0f, d);
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
-        nPaint.setTextSize(size);
-        nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
+        nPaint.setTextSize(CodeUtil.px2sp(getContext(),15));
+//        nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
         float y = (float) (mViewHeight / 2.0 + type * d);
         Paint.FontMetricsInt fmi = nPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
@@ -268,9 +271,7 @@ public class PickerView extends View {
     }
 
     private void doMove(MotionEvent event) {
-
         mMoveLen += (event.getY() - mLastDownY);
-
         if (mMoveLen > MARGIN_ALPHA * mMinTextSize / 2) {
             // 往下滑超过离开距离
             moveTailToHead();
@@ -280,7 +281,6 @@ public class PickerView extends View {
             moveHeadToTail();
             mMoveLen = mMoveLen + MARGIN_ALPHA * mMinTextSize;
         }
-
         mLastDownY = event.getY();
         invalidate();
     }
@@ -299,10 +299,10 @@ public class PickerView extends View {
         timer.schedule(mTask, 0, 10);
     }
 
-    class MyTimerTask extends TimerTask {
+    private class MyTimerTask extends TimerTask {
         Handler handler;
 
-        public MyTimerTask(Handler handler) {
+        MyTimerTask(Handler handler) {
             this.handler = handler;
         }
 

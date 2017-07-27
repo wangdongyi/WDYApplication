@@ -247,7 +247,6 @@
         <attr name="horizontal_spacing" format="dimension" />
         <attr name="vertical_spacing" format="dimension" />
     </declare-styleable>
-
     <style name="DialogLoadingStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <!--边框-->
