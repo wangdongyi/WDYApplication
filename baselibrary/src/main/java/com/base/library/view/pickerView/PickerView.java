@@ -2,6 +2,7 @@ package com.base.library.view.pickerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -48,8 +49,10 @@ public class PickerView extends View {
     private float mMaxTextAlpha = 255;
     private float mMinTextAlpha = 120;
 
-    private int mColorText = 0x333333;
-    private int nColorText = 0x666666;
+    private int selectedSize = 0x333333;
+    private int selectedColor = 0x666666;
+    private int hintSize = 0x333333;
+    private int hintColor = 0x666666;
 
     private int mViewHeight;
     private int mViewWidth;
@@ -92,7 +95,27 @@ public class PickerView extends View {
 
     public PickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initAttributes(context, attrs);
         init();
+    }
+
+    protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
+        return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
+    }
+
+    private void initAttributes(Context context, AttributeSet attributeSet) {
+        TypedArray attr = getTypedArray(context, attributeSet, R.styleable.PickerViewStyleable);
+        if (attr == null) {
+            return;
+        }
+        try {
+            selectedSize = (int) attr.getDimension(R.styleable.PickerViewStyleable_selected_size, CodeUtil.dip2px(context, 15));
+            selectedColor = attr.getColor(R.styleable.PickerViewStyleable_selected_color, ContextCompat.getColor(context, R.color.text_black));
+            hintSize = (int) attr.getDimension(R.styleable.PickerViewStyleable_hint_size, CodeUtil.dip2px(context, 15));
+            hintColor = attr.getColor(R.styleable.PickerViewStyleable_selected_size, ContextCompat.getColor(context, R.color.text_dark_gray));
+        } finally {
+            attr.recycle();
+        }
     }
 
     public void setOnSelectListener(onSelectListener listener) {
@@ -171,17 +194,18 @@ public class PickerView extends View {
 
     private void init() {
         timer = new Timer();
-        mDataList = new ArrayList<String>();
+        mDataList = new ArrayList<>();
         //第一个paint
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setTextAlign(Paint.Align.CENTER);
-        mPaint.setColor(Color.rgb(34,34,34));
+        mPaint.setColor(selectedColor);
+        mPaint.setTextSize(selectedSize);
         //第二个paint
         nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nPaint.setStyle(Paint.Style.FILL);
         nPaint.setTextAlign(Paint.Align.CENTER);
-        nPaint.setColor(Color.rgb(177,179,186));
+        nPaint.setColor(hintColor);
 
     }
 
@@ -226,7 +250,7 @@ public class PickerView extends View {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type * mMoveLen);
         float scale = parabola(mViewHeight / 4.0f, d);
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
-        nPaint.setTextSize(CodeUtil.px2sp(getContext(),15));
+        nPaint.setTextSize(hintSize);
 //        nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
         float y = (float) (mViewHeight / 2.0 + type * d);
         Paint.FontMetricsInt fmi = nPaint.getFontMetricsInt();

@@ -247,6 +247,13 @@
         <attr name="horizontal_spacing" format="dimension" />
         <attr name="vertical_spacing" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="PickerViewStyleable">
+        <attr name="selected_size" format="dimension" />
+        <attr name="selected_color" format="color" />
+        <attr name="hint_size" format="dimension" />
+        <attr name="hint_color" format="color" />
+    </declare-styleable>
+
     <style name="DialogLoadingStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <!--边框-->
