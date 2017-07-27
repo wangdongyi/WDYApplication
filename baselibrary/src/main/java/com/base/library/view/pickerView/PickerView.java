@@ -112,7 +112,7 @@ public class PickerView extends View {
             selectedSize = (int) attr.getDimension(R.styleable.PickerViewStyleable_selected_size, CodeUtil.dip2px(context, 15));
             selectedColor = attr.getColor(R.styleable.PickerViewStyleable_selected_color, ContextCompat.getColor(context, R.color.text_black));
             hintSize = (int) attr.getDimension(R.styleable.PickerViewStyleable_hint_size, CodeUtil.dip2px(context, 15));
-            hintColor = attr.getColor(R.styleable.PickerViewStyleable_selected_size, ContextCompat.getColor(context, R.color.text_dark_gray));
+            hintColor = attr.getColor(R.styleable.PickerViewStyleable_hint_color, ContextCompat.getColor(context, R.color.text_dark_gray));
         } finally {
             attr.recycle();
         }

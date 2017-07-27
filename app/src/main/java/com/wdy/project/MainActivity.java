@@ -24,6 +24,7 @@ import com.base.library.view.upPhotoView.DoPicCapUtil;
 import com.base.library.view.upPhotoView.UpPhotoView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Request;
 
@@ -34,7 +35,7 @@ public class MainActivity extends BaseActivity {
     private ImageView sample_image;
     private TextView sample_text;
     private ImageView sample_image2;
-
+    private ArrayList<String> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,8 +153,18 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
-                Intent intent = new Intent(MainActivity.this, NextActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, NextActivity.class);
+//                startActivity(intent);
+                //选择车辆
+                for (int i = 0; i < 5; i++) {
+                    list.add("车辆"+i);
+                }
+                SingleSelectedDialog.getInstance().with(MainActivity.this, list, 2, new SingleSelectedDialog.selected() {
+                    @Override
+                    public void handle(String selected) {
+
+                    }
+                });
             }
         });
     }
