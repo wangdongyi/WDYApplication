@@ -188,8 +188,6 @@ public class WdyEditText extends EditText {
                 }
             });
         }
-//        textCursorDrawable
-
     }
 
     protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {

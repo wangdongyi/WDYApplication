@@ -3,6 +3,7 @@ package com.wdy.project;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.base.library.activity.BaseActivity;
@@ -25,6 +26,8 @@ public class NextActivity extends BaseActivity {
     private int page = 0;
     private ArrayList<MessageBean> list = new ArrayList<>();
     private MessageAdapter messageAdapter;
+    private EditText edit1;
+    private EditText edit2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class NextActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         load = (LinearLayout) findViewById(R.id.load);
         refresh = (RefreshLayout) findViewById(R.id.refresh);
+        edit1 = (EditText) findViewById(R.id.edit1);
+        edit2 = (EditText) findViewById(R.id.edit2);
     }
 
     public void getData() {
@@ -89,4 +94,5 @@ public class NextActivity extends BaseActivity {
             }
         }, 1000);
     }
+
 }

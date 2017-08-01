@@ -58,7 +58,6 @@ public class WDYActivity extends AppCompatActivity implements SwipeActivityManag
             super.overridePendingTransition(mAnimation.openEnter, mAnimation.openExit);
             return;
         }
-
         if ((0x4 & MethodInvoke.getTransitionValue(className)) != 0) {
             MethodInvoke.startTransitionNotChange(this);
             return;
@@ -269,16 +268,16 @@ public class WDYActivity extends AppCompatActivity implements SwipeActivityManag
     }
 
 
-    public static class WindowAnimation {
-        public static int activityOpenEnterAnimation;
-        public static int activityOpenExitAnimation;
-        public static int activityCloseEnterAnimation;
-        public static int activityCloseExitAnimation;
+    private static class WindowAnimation {
+        static int activityOpenEnterAnimation;
+        static int activityOpenExitAnimation;
+        static int activityCloseEnterAnimation;
+        static int activityCloseExitAnimation;
 
-        public int openEnter = activityOpenEnterAnimation;
-        public int openExit = activityOpenExitAnimation;
-        public int closeEnter = activityCloseEnterAnimation;
-        public int closeExit = activityCloseExitAnimation;
+        int openEnter = activityOpenEnterAnimation;
+        int openExit = activityOpenExitAnimation;
+        int closeEnter = activityCloseEnterAnimation;
+        int closeExit = activityCloseExitAnimation;
 
         static {
             if (!(SDKVersionUtils.isSmallerVersion(19) && SupportSwipeModeUtils.isEnable())) {
@@ -287,10 +286,10 @@ public class WDYActivity extends AppCompatActivity implements SwipeActivityManag
                 activityCloseEnterAnimation = R.anim.slide_left_in;
                 activityCloseExitAnimation = R.anim.slide_right_out;
             } else {
-//                activityOpenEnterAnimation = R.anim.pop_in;
-//                activityOpenExitAnimation = R.anim.anim_not_change;
-//                activityCloseEnterAnimation = R.anim.anim_not_change;
-//                activityCloseExitAnimation = R.anim.pop_out;
+                activityOpenEnterAnimation = R.anim.slide_right_in;
+                activityOpenExitAnimation = R.anim.slide_left_out;
+                activityCloseEnterAnimation = R.anim.slide_left_in;
+                activityCloseExitAnimation = R.anim.slide_right_out;
             }
         }
     }

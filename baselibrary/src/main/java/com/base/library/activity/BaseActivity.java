@@ -70,7 +70,6 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     private onKeyboardListener onKeyboardListener;
     private boolean mIsHorizontalScrolling = false;
     private int mScrollLimit = 0;
-    private boolean mIsChildScrolling = false;
     private int mMinExitScrollX = 0;
 
     public BaseActivity.onKeyboardListener getOnKeyboardListener() {
@@ -121,19 +120,13 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
             return false;
         }
         float f1 = 0.0F;
-        if (!(this.mIsChildScrolling)) {
-            if (e1 != null) {
-                f1 = e1.getX();
-            }
-            float f2 = 0.0F;
-            if (e2 != null) {
-                f2 = e2.getX();
-            }
-            if (f1 - f2 < getMinExitScrollX()) {
-                this.mScrollLimit = 5;
-                close();
-                return true;
-            }
+        f1 = e1.getX();
+        float f2 = 0.0F;
+        f2 = e2.getX();
+        if (f1 - f2 < getMinExitScrollX()) {
+            this.mScrollLimit = 5;
+            close();
+            return true;
         }
         return false;
     }
@@ -163,7 +156,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     }
 
 
-    public interface onKeyboardListener {
+    interface onKeyboardListener {
         void isShow(boolean isShow);
     }
 
@@ -210,7 +203,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
             public void onGlobalLayout() {
                 Rect r = new Rect();
                 ccp_content_fl.getWindowVisibleDisplayFrame(r);
-                if (ccp_content_fl.getRootView().getHeight() - (r.bottom - r.top) > 100) {
+                if (ccp_content_fl.getRootView().getHeight() - (r.bottom - r.top) > CodeUtil.dip2px(BaseActivity.this, 100)) {
                     setIsShowKeyboard(true);
                     if (getOnKeyboardListener() != null)
                         getOnKeyboardListener().isShow(true);

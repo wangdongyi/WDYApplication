@@ -153,18 +153,18 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
-//                Intent intent = new Intent(MainActivity.this, NextActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, NextActivity.class);
+                startActivity(intent);
                 //选择车辆
-                for (int i = 0; i < 5; i++) {
-                    list.add("车辆"+i);
-                }
-                SingleSelectedDialog.getInstance().with(MainActivity.this, list, 2, new SingleSelectedDialog.selected() {
-                    @Override
-                    public void handle(String selected) {
-
-                    }
-                });
+//                for (int i = 0; i < 5; i++) {
+//                    list.add("车辆"+i);
+//                }
+//                SingleSelectedDialog.getInstance().with(MainActivity.this, list, 2, new SingleSelectedDialog.selected() {
+//                    @Override
+//                    public void handle(String selected) {
+//
+//                    }
+//                });
             }
         });
     }

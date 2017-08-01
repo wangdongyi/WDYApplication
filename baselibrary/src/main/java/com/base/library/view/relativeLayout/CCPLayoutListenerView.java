@@ -2,8 +2,10 @@ package com.base.library.view.relativeLayout;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.LinearLayout;
@@ -14,10 +16,9 @@ import com.base.library.util.WDYLog;
 
 //Created by 王东一 on 2016/9/9.
 public class CCPLayoutListenerView extends LinearLayout {
-
     private OnCCPViewLayoutListener mOnLayoutListener;
     private OnCCPViewSizeChangedListener mOnSizeChangedListener;
-
+    private int[] mInsets = new int[4];
     /**
      * @param context
      */
@@ -68,6 +69,29 @@ public class CCPLayoutListenerView extends LinearLayout {
         }
     }
 
+    @Override
+    public WindowInsets onApplyWindowInsets(WindowInsets insets) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            mInsets[0] = insets.getSystemWindowInsetLeft();
+            mInsets[1] = insets.getSystemWindowInsetTop();
+            mInsets[2] = insets.getSystemWindowInsetRight();
+            return super.onApplyWindowInsets(insets.replaceSystemWindowInsets(0, 0, 0, insets.getSystemWindowInsetBottom()));
+        } else {
+            return insets;
+        }
+    }
+    @Override
+    protected final boolean fitSystemWindows(Rect insets) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            mInsets[0] = insets.left;
+            mInsets[1] = insets.top;
+            mInsets[2] = insets.right;
+            return super.fitSystemWindows(insets);
+        } else {
+            return super.fitSystemWindows(insets);
+        }
+    }
     public void setOnLayoutListener(OnCCPViewLayoutListener onLayoutListener) {
         this.mOnLayoutListener = onLayoutListener;
     }

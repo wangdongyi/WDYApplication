@@ -15,7 +15,7 @@ public class MethodInvoke {
 
     public static int getTransitionValue(String componentName) {
         Class<?> clazz = getTransitionClass(componentName);
-        if (clazz != null) {
+        if(clazz != null) {
             return getAnnotationValue(clazz);
         }
         return 0;
@@ -26,20 +26,20 @@ public class MethodInvoke {
             Class clazz = Class.forName(componentName);
             return clazz;
         } catch (ClassNotFoundException e) {
-            LogUtil.e(TAG, "Class " + componentName + " not found in dex");
+            LogUtil.e(TAG , "Class " + componentName + " not found in dex");
         }
         return null;
     }
 
     public static int getAnnotationValue(Class<?> clazz) {
         ActivityTransition clazzAnnotation = clazz.getAnnotation(ActivityTransition.class);
-        if (clazzAnnotation != null) {
+        if(clazzAnnotation != null) {
             return clazzAnnotation.value();
         }
         while (clazz.getSuperclass() != null) {
             clazz = clazz.getSuperclass();
             clazzAnnotation = clazz.getAnnotation(ActivityTransition.class);
-            if (clazzAnnotation != null) {
+            if(clazzAnnotation != null) {
                 return clazzAnnotation.value();
             }
         }
@@ -50,24 +50,23 @@ public class MethodInvoke {
         if ((context == null) || (!(context instanceof Activity))) {
             return;
         }
-//        ((Activity) context).overridePendingTransition(R.anim.pop_in, R.anim.anim_not_change);
-        ((Activity) context).overridePendingTransition(R.anim.activity_new, R.anim.activity_finish);
+        ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
     public static void startTransitionPopout(Context context) {
         if ((context == null) || (!(context instanceof Activity))) {
             return;
         }
-//        ((Activity) context).overridePendingTransition(R.anim.anim_not_change, R.anim.pop_out);
-        ((Activity) context).overridePendingTransition(R.anim.anim_not_change, R.anim.anim_not_change);
+        ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
     public static void startTransitionNotChange(Context context) {
         if ((context == null) || (!(context instanceof Activity))) {
             return;
         }
-        ((Activity) context).overridePendingTransition(R.anim.anim_not_change, R.anim.anim_not_change);
+        ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
+
 
 
     public interface OnSwipeInvokeResultListener {
@@ -76,25 +75,24 @@ public class MethodInvoke {
 
     public static class SwipeInvocationHandler implements InvocationHandler {
 
-        public WeakReference<OnSwipeInvokeResultListener> mWeakReference;
-
+        public WeakReference<OnSwipeInvokeResultListener> mWeakReference ;
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (mWeakReference == null) {
-                LogUtil.i(TAG, "swipe invoke fail, callbackRef NULL!");
+            if(mWeakReference == null) {
+                LogUtil.i(TAG , "swipe invoke fail, callbackRef NULL!");
                 return null;
             }
             OnSwipeInvokeResultListener onSwipeInvokeResultListener = mWeakReference.get();
-            if (onSwipeInvokeResultListener == null) {
-                LogUtil.i(TAG, "swipe invoke fail, callback NULL!");
+            if(onSwipeInvokeResultListener == null) {
+                LogUtil.i(TAG , "swipe invoke fail, callback NULL!");
                 return null;
             }
             boolean result = false;
-            if (args != null) {
-                if (args.length > 0) {
+            if(args != null) {
+                if(args.length > 0) {
                     boolean isBoolArgs = (args[0] instanceof Boolean);
-                    if (isBoolArgs) {
-                        result = ((Boolean) args[0]).booleanValue();
+                    if(isBoolArgs) {
+                        result = ((Boolean)args[0]).booleanValue();
                     }
                 }
             }
@@ -102,5 +100,4 @@ public class MethodInvoke {
             return null;
         }
     }
-
 }

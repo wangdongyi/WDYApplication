@@ -66,6 +66,15 @@ public class PickerView extends View {
     private onSelectListener mSelectListener;
     private Timer timer;
     private MyTimerTask mTask;
+    private int upSize = 0;
+
+    public int getUpSize() {
+        return upSize;
+    }
+
+    public void setUpSize(int upSize) {
+        this.upSize = upSize;
+    }
 
     @SuppressLint("HandlerLeak")
     Handler updateHandler = new Handler() {
@@ -113,6 +122,8 @@ public class PickerView extends View {
             selectedColor = attr.getColor(R.styleable.PickerViewStyleable_selected_color, ContextCompat.getColor(context, R.color.text_black));
             hintSize = (int) attr.getDimension(R.styleable.PickerViewStyleable_hint_size, CodeUtil.dip2px(context, 15));
             hintColor = attr.getColor(R.styleable.PickerViewStyleable_hint_color, ContextCompat.getColor(context, R.color.text_dark_gray));
+            mMaxTextSize = selectedSize;
+            mMinTextSize = selectedSize;
         } finally {
             attr.recycle();
         }
@@ -186,8 +197,6 @@ public class PickerView extends View {
         mViewHeight = getMeasuredHeight();
         mViewWidth = getMeasuredWidth();
         // 按照View的高度计算字体大小
-        mMaxTextSize = mViewHeight / 7f;
-        mMinTextSize = mMaxTextSize / 2.2f;
         isInit = true;
         invalidate();
     }
@@ -220,8 +229,6 @@ public class PickerView extends View {
     private void drawData(Canvas canvas) {
         // 先绘制选中的text再往上往下绘制其余的text
         float scale = parabola(mViewHeight / 4.0f, mMoveLen);
-        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
-
         mPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
         // text居中绘制，注意baseline的计算才能达到居中，y值是text中心坐标
         float x = (float) (mViewWidth / 2.0);
@@ -231,9 +238,16 @@ public class PickerView extends View {
 
         canvas.drawText(mDataList.get(mCurrentSelected), x, baseline, mPaint);
         // 绘制上方data
-        for (int i = 1; (mCurrentSelected - i) >= 0; i++) {
-            drawOtherText(canvas, i, -1);
+        if (getUpSize() == 0) {
+            for (int i = 1; (mCurrentSelected - i) >= 0; i++) {
+                drawOtherText(canvas, i, -1);
+            }
+        } else {
+            for (int i = 0; i < getUpSize(); i++) {
+                drawOtherText(canvas, i + 1, -1);
+            }
         }
+
         // 绘制下方data
         for (int i = 1; (mCurrentSelected + i) < mDataList.size(); i++) {
             drawOtherText(canvas, i, 1);
@@ -248,8 +262,6 @@ public class PickerView extends View {
      */
     private void drawOtherText(Canvas canvas, int position, int type) {
         float d = (float) (MARGIN_ALPHA * mMinTextSize * position + type * mMoveLen);
-        float scale = parabola(mViewHeight / 4.0f, d);
-        float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
         nPaint.setTextSize(hintSize);
 //        nPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));
         float y = (float) (mViewHeight / 2.0 + type * d);
