@@ -3,11 +3,14 @@ package com.base.library.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.JsonObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Created by wangdongyi on 2017/2/27.
@@ -54,24 +57,16 @@ public class SharedPreferencesUtil {
      */
     public void saveBean(String key, Object data) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        try {
-            String serialize = serialize(data);
-            editor.putString(key, serialize);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String serialize = WDYJsonUtil.toJson(data);
+        editor.putString(key, serialize);
         editor.apply();
     }
 
-    public Object getBean(String Key) {
+    public <T> T getBean(String Key, Class<T> entityClass) {
         String s = sharedPreferences.getString(Key, null);
-        Object o = null;
-        try {
-            o = deSerialization(s);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return o;
+        T bean = WDYJsonUtil.GetEntity(WDYJsonUtil.GetJsonObjByLevel(s), entityClass);
+
+        return bean;
     }
 
     /**

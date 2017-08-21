@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import okhttp3.Request;
 
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity {
     TextView tv;
     String content = "/sdcard/HUDSDKLog.txt";
     private ImageView sample_image;
@@ -49,9 +49,10 @@ public class MainActivity extends BaseActivity{
             protected void onNoDoubleClick(View v) {
                 getRequest();
 //                content = content + textFromJNI("/sdcard/HUDSDKLog.txt");
-                tv.setText(TxtReadUtil.TxtRead(content));
+
             }
         });
+
         setStatusBar(true);
         PermissionsManager.with(this, new OnPermissionListen() {
             @Override
@@ -77,10 +78,12 @@ public class MainActivity extends BaseActivity{
 
             @Override
             public void onResponse(RequestBean response) {
+                BaseApplication.getSharedPreferencesUtil().saveBean("RequestBean", response);
                 String log = WDYJsonUtil.toJson(response);
                 for (int i = 0; i < 10; i++) {
                     log = log + log;
                 }
+
                 WDYLog.i("泛型:dddd", log);
             }
 
@@ -125,7 +128,7 @@ public class MainActivity extends BaseActivity{
         sample_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preview();
+//                preview();
 //                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
 //                    @Override
 //                    public void path(String Path) {
@@ -136,6 +139,8 @@ public class MainActivity extends BaseActivity{
 //                        }
 //                    }
 //                });
+                RequestBean requestBean = BaseApplication.getSharedPreferencesUtil().getBean("RequestBean", RequestBean.class);
+                tv.setText(requestBean.getData().getCity());
             }
         });
         sample_text = (TextView) findViewById(R.id.sample_text);
