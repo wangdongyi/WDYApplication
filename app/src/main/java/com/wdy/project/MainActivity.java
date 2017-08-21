@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,15 +16,12 @@ import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
-import com.base.library.preview.PhotoPreviewActivity;
 import com.base.library.preview.PhotoPreviewUtil;
-import com.base.library.sharedPreferences.BeanSharedPreferences;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
 import com.bumptech.glide.Glide;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.Request;

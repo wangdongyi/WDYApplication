@@ -68,9 +68,7 @@ public class SharedPreferencesUtil {
         Object o = null;
         try {
             o = deSerialization(s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return o;
