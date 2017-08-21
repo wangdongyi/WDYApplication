@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.base.library.preview.PhotoPreviewLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
-    <com.base.library.view.photoView.HackyViewPager
+    <com.base.library.preview.PhotoViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black" />
-</LinearLayout>
+        android:background="@color/transparent"
+        android:visibility="visible" />
+
+</com.base.library.preview.PhotoPreviewLayout>

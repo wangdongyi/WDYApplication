@@ -175,7 +175,7 @@ public class WdyEditText extends EditText {
             DisplayMetrics dm = new DisplayMetrics();
             ((AppCompatActivity) getContext()).getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
             height = dm.heightPixels;//高度
-            deleteDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.search_delete, null);
+            deleteDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_delete, null);
             assert deleteDrawable != null;
             deleteDrawable.setBounds(0, 0, deleteWith, deleteWith);
             clearFocus();
@@ -200,7 +200,7 @@ public class WdyEditText extends EditText {
             return;
         }
         try {
-            deleteWith = (int) attr.getDimension(R.styleable.WdyEditTextStyleable_delete_width, CodeUtil.dip2px(context, 30));
+            deleteWith = (int) attr.getDimension(R.styleable.WdyEditTextStyleable_delete_width, (float) (getTextSize() * 1.5));
         } finally {
             attr.recycle();
         }

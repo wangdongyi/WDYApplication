@@ -27,7 +27,6 @@ public class NextActivity extends BaseActivity {
     private ArrayList<MessageBean> list = new ArrayList<>();
     private MessageAdapter messageAdapter;
     private EditText edit1;
-    private EditText edit2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class NextActivity extends BaseActivity {
                 getData();
             }
         });
-        refresh.setCanLoadMore(false);
+        refresh.setCanLoadMore(true);
         refresh.AutoRefresh();
     }
 
@@ -65,13 +64,12 @@ public class NextActivity extends BaseActivity {
         load = (LinearLayout) findViewById(R.id.load);
         refresh = (RefreshLayout) findViewById(R.id.refresh);
         edit1 = (EditText) findViewById(R.id.edit1);
-        edit2 = (EditText) findViewById(R.id.edit2);
     }
 
     public void getData() {
         Random r = new Random();
         final int l = r.nextInt(15);
-        for (int i = 0; i < l; i++) {
+        for (int i = 0; i < 11; i++) {
             MessageBean m = new MessageBean();
             m.setContent("测试内容");
             m.setTitle("测试标题" + i);
@@ -83,11 +81,7 @@ public class NextActivity extends BaseActivity {
             @Override
             public void run() {
                 if (refresh != null) {
-                    if (l < 10) {
-                        refresh.setCanLoadMore(false);
-                    } else {
-                        refresh.setCanLoadMore(true);
-                    }
+                    refresh.setCanLoadMore(true);
                     refresh.RefreshComplete();
                     refresh.LoadMoreComplete();
                 }

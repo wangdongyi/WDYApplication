@@ -237,6 +237,10 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         }
     }
 
+    public void setMainBackgroundColor(int color) {
+        ccp_content_fl.setBackgroundColor(ContextCompat.getColor(this, color));
+    }
+
     //键盘状态监听
     public void setIsShowKeyboard(Boolean isShowKeyboard) {
         this.isShowKeyboard = isShowKeyboard;

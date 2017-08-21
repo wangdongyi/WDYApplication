@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,12 +17,13 @@ import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
-import com.base.library.util.CodeUtil;
+import com.base.library.preview.PhotoPreviewActivity;
+import com.base.library.preview.PhotoPreviewUtil;
+import com.base.library.sharedPreferences.BeanSharedPreferences;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
-import com.base.library.view.upPhotoView.DoPicCapUtil;
-import com.base.library.view.upPhotoView.UpPhotoView;
+import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,13 +31,14 @@ import java.util.ArrayList;
 import okhttp3.Request;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity{
     TextView tv;
     String content = "/sdcard/HUDSDKLog.txt";
     private ImageView sample_image;
     private TextView sample_text;
     private ImageView sample_image2;
     private ArrayList<String> list = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,6 @@ public class MainActivity extends BaseActivity {
         tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
         setTitleBackground(R.drawable.title_background);
-
         tv.setOnClickListener(new NoDoubleClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -123,19 +125,21 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         sample_image = (ImageView) findViewById(R.id.sample_image);
+        Glide.with(MainActivity.this).load("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg").asBitmap().into(sample_image);
         sample_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
-                    @Override
-                    public void path(String Path) {
-                        try {
-                            sample_image.setImageBitmap(CodeUtil.convertBitmap(Path));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                preview();
+//                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
+//                    @Override
+//                    public void path(String Path) {
+//                        try {
+//                            sample_image.setImageBitmap(CodeUtil.convertBitmap(Path));
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
             }
         });
         sample_text = (TextView) findViewById(R.id.sample_text);
@@ -167,5 +171,30 @@ public class MainActivity extends BaseActivity {
 //                });
             }
         });
+    }
+
+    private void preview() {
+        ArrayList<String> sourceImageList = new ArrayList<>();
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-12-18380140_455327614813449_854681840315793408_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-10-18382517_1955528334668679_3605707761767153664_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-09-18443931_429618670743803_5734501112254300160_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-08-18252341_289400908178710_9137908350942445568_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-05-18251898_1013302395468665_8734429858911748096_n.jpg");
+        sourceImageList.add("http://ww1.sinaimg.cn/large/61e74233ly1feuogwvg27j20p00zkqe7.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-02-926821_1453024764952889_775781470_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-28-18094719_120129648541065_8356500748640452608_n.jpg");
+        sourceImageList.add("https://ws1.sinaimg.cn/mw690/610dc034ly1ffwb7npldpj20u00u076z.jpg");
+        sourceImageList.add("https://ws1.sinaimg.cn/large/610dc034ly1ffv3gxs37oj20u011i0vk.jpg");
+        sourceImageList.add("https://ws1.sinaimg.cn/large/610dc034ly1fftusiwb8hj20u00zan1j.jpg");
+        sourceImageList.add("http://ww1.sinaimg.cn/large/610dc034ly1ffmwnrkv1hj20ku0q1wfu.jpg");
+        sourceImageList.add("https://ws1.sinaimg.cn/large/610dc034ly1ffyp4g2vwxj20u00tu77b.jpg");
+        sourceImageList.add("https://ws1.sinaimg.cn/large/610dc034ly1ffxjlvinj5j20u011igri.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-11-17881546_248332202297978_2420944671002853376_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-12-17662441_1675934806042139_7236493360834281472_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-13-17882785_926451654163513_7725522121023029248_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-14-17881962_1329090457138411_8289893708619317248_n.jpg");
+        sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-16-17934400_1738549946443321_2924146161843437568_n.jpg");
+        PhotoPreviewUtil.movePhotoPreview(MainActivity.this, sample_image, sourceImageList, 1);
     }
 }

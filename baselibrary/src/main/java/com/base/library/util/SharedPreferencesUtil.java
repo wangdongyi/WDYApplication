@@ -47,6 +47,36 @@ public class SharedPreferencesUtil {
     }
 
     /**
+     * 保存数据到文件
+     *
+     * @ key
+     * @ data
+     */
+    public void saveBean(String key, Object data) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        try {
+            String serialize = serialize(data);
+            editor.putString(key, serialize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        editor.apply();
+    }
+
+    public Object getBean(String Key) {
+        String s = sharedPreferences.getString(Key, null);
+        Object o = null;
+        try {
+            o = deSerialization(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+
+    /**
      * 从文件中读取数据
      *
      * @ key

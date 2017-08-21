@@ -1,23 +1,32 @@
 package com.base.library.preview;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.*;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.base.library.R;
 import com.base.library.activity.BaseActivity;
 import com.base.library.application.BaseApplication;
-import com.base.library.fragment.BaseFragment;
+import com.base.library.immersion.ImmersionBar;
 import com.base.library.util.DialogUtil;
-import com.base.library.view.photoView.HackyViewPager;
-import com.base.library.view.photoView.PhotoView;
-import com.base.library.view.photoView.PhotoViewAttacher;
-import com.base.library.view.photoView.model.ViewImageInfo;
+import com.base.library.util.StatusBarUtil;
 import com.base.library.view.upPhotoView.PictureUtil;
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 作者：王东一
@@ -25,48 +34,48 @@ import java.util.List;
  * 图片预览
  */
 
-public class PhotoPreviewActivity extends BaseActivity {
-    private static final String STATE_POSITION = "STATE_POSITION";
+public class PhotoPreviewActivity extends AppCompatActivity {
     public static final String EXTRA_IMAGE_INDEX = "image_index";
     public static final String EXTRA_IMAGE_URLS = "image_urls";
-    public static final String EXTRA_IMAGE_URLS_ID = "image_urls_id";
-    private static ArrayList<String> urls;
+    private ArrayList<String> urls = new ArrayList<>();
+    private ArrayList<PhotoView> photoViewArrayList = new ArrayList<>();
+    private PhotoViewPager pager;
+    private PhotoPreviewLayout mainLayout;
+    private int pagerPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_preview);
-        hintTitle();
-        HackyViewPager mPager = (HackyViewPager) findViewById(R.id.pager);
-        int pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
+        StatusBarUtil.setStatusBarDark(this, false);
+        //透明状态栏，不写默认透明色
+        ImmersionBar.with(this).transparentStatusBar().init();
+        pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
         urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
         if (urls == null || urls.isEmpty()) {
             finish();
+            overridePendingTransition(0, R.anim.browser_exit_anim);
             return;
         }
         if (pagerPosition > urls.size()) {
             pagerPosition = 0;
         }
-        mPager.setAdapter(new SamplePagerAdapter());
-        mPager.setCurrentItem(pagerPosition, false);
+        initView();
     }
 
-    private class SamplePagerAdapter extends android.support.v4.view.PagerAdapter {
-
-
-        @Override
-        public int getCount() {
-            return urls.size();
-        }
-
-        @Override
-        public View instantiateItem(ViewGroup container, int position) {
-            final PhotoView photoView = new PhotoView(container.getContext());
-            Glide.with(PhotoPreviewActivity.this).load(urls.get(position)).into(photoView);
+    private void initView() {
+        pager = (PhotoViewPager) findViewById(R.id.pager);
+        mainLayout = (PhotoPreviewLayout) findViewById(R.id.main_layout);
+        mainLayout.setDragScale(true);
+        ViewCompat.setTransitionName(pager, urls.get(pagerPosition));
+        for (int i = 0; i < urls.size(); i++) {
+            final PhotoView photoView = new PhotoView(this);
+            photoView.setDrawingCacheEnabled(true);
+            Glide.with(PhotoPreviewActivity.this).load(urls.get(i)).into(photoView);
             photoView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    DialogUtil.showNoTitleSave(PhotoPreviewActivity.this, "保存到手机", "取消", "保存", new View.OnClickListener() {
+                    DialogUtil.showNoTitleSave(PhotoPreviewActivity.this, "保存改图片到手机相册", "取消", "保存", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             DialogUtil.dismiss();
@@ -75,29 +84,60 @@ public class PhotoPreviewActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             DialogUtil.dismiss();
-                            PictureUtil.saveImageToGallery(PhotoPreviewActivity.this, photoView.getVisibleRectangleBitmap());
+                            PictureUtil.saveImageToGallery(PhotoPreviewActivity.this, photoView.getDrawingCache());
                             BaseApplication.getToastUtil().showMiddleToast("保存成功");
                         }
                     });
-
                     return false;
                 }
             });
-            photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-
+            photoView.setOnPhotoTapListener(new OnPhotoTapListener() {
                 @Override
-                public void onPhotoTap(View arg0, float arg1, float arg2) {
-                    finish();
+                public void onPhotoTap(ImageView view, float x, float y) {
+                    onBackPressed();
                 }
             });
-            container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            photoViewArrayList.add(photoView);
+        }
+        pager.setAdapter(new SamplePagerAdapter());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            return photoView;
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //支持Transition的设定支持缩放
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        pager.setCurrentItem(pagerPosition, false);
+    }
+
+    private class SamplePagerAdapter extends android.support.v4.view.PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return photoViewArrayList.size();
+        }
+
+        @Override
+        public View instantiateItem(ViewGroup container, final int position) {
+
+            container.addView(photoViewArrayList.get(position));
+
+            return photoViewArrayList.get(position);
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+            container.removeView(photoViewArrayList.get(position));
         }
 
         @Override
@@ -108,7 +148,8 @@ public class PhotoPreviewActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onBackPressed() {
+        ActivityCompat.finishAfterTransition(this);
     }
+
 }
