@@ -14,7 +14,7 @@ import okhttp3.Response;
 public interface OkHttpListener {
     boolean onBefore();
 
-    void onRequest(String response);
+    void onResponse(String response);
 
     void onError(String msg);
 

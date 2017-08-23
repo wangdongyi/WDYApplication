@@ -17,14 +17,19 @@ import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
 import com.base.library.preview.PhotoPreviewUtil;
+import com.base.library.util.DialogUtil;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class MainActivity extends BaseActivity {
@@ -47,9 +52,9 @@ public class MainActivity extends BaseActivity {
             @SuppressLint("SetTextI18n")
             @Override
             protected void onNoDoubleClick(View v) {
-                getRequest();
+//                getRequest();
 //                content = content + textFromJNI("/sdcard/HUDSDKLog.txt");
-
+                getUserAgreement();
             }
         });
 
@@ -63,6 +68,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+        getUserAgreement();
 
     }
 
@@ -93,8 +99,8 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onRequest(String response) {
-//                JniLog("回掉:" + response);
+            public void onResponse(String response) {
+
             }
 
             @Override
@@ -113,6 +119,57 @@ public class MainActivity extends BaseActivity {
             }
 
 
+        });
+    }
+
+    private void getUserAgreement() {
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(JSON, "");
+        final Request request = new Request.Builder()
+//                .addHeader("auth_token", "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKZXJzZXktU2VjdXJpdHktQmFzaWMiLCJzdWIiOiIxODY0MDUzMzYzNCIsImF1ZCI6InVzZXIiLCJleHAiOjE1MDYwNDk5MTgsImlhdCI6MTUwMzQ1NzkyMywianRpIjoiMTA4NjZiZTktNGJlNS00MWJjLThiNGUtNjc1YTI1YjRlMTg0In0.--a66ATqGuOYsf1mTAI7GEjXKHhcFvD-nW2XDHaVqOs")
+                .addHeader("auth_token", ".eyJpc3MiOiJKZXJzZXktU2VjdXJpdHktQmFzaWMiLCJzdWIiOiIxODY0MDUzMzYzNCIsImF1ZCI6InVzZXIiLCJleHAiOjE1MDYwNDk5MTgsImlhdCI6MTUwMzQ1NzkyMywianRpIjoiMTA4NjZiZTktNGJlNS00MWJjLThiNGUtNjc1YTI1YjRlMTg0In0.--a66ATqGuOYsf1mTAI7GEjXKHhcFvD-nW2XDHaVqOs")
+                .post(requestBody)
+                .tag(this)
+                .url("http://192.168.4.160:8011/user/getUserAgreement")
+                .build();
+        OkHttpUtil.with(this, request, new GenericsCallback<AboutUsBean>() {
+
+            @Override
+            public void onResponse(AboutUsBean response) {
+                switch (response.getStatus()) {
+                    case "SUCCESS":
+                        WDYLog.d("suceess", response.getData().getContent());
+                        break;
+                    case "ERROR":
+                        BaseApplication.getToastUtil().showMiddleToast(response.getMsg());
+                        break;
+                }
+            }
+
+            @Override
+            public boolean onBefore() {
+                DialogUtil.show(MainActivity.this);
+                return true;
+            }
+
+            @Override
+            public void onResponse(String response) {
+                WDYLog.e("onResponse", response);
+            }
+            @Override
+            public void onError(String msg) {
+                WDYLog.e("错误", msg);
+            }
+
+            @Override
+            public void onCancel() {
+                DialogUtil.dismiss();
+            }
+
+            @Override
+            public void onFinish() {
+                DialogUtil.dismiss();
+            }
         });
     }
 

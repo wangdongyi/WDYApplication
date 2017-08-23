@@ -88,6 +88,7 @@ public class  OkHttpUtil {
                 if (call.isCanceled()) {
                     return;
                 }
+
                 if (response.isSuccessful()) {
                     try {
                         final Object o = genericsCallback.parseNetworkResponse(response);
@@ -111,8 +112,13 @@ public class  OkHttpUtil {
                     getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
                         @Override
                         public void run() {
-                            genericsCallback.onError(response.networkResponse().toString());
-                            genericsCallback.onFinish();
+                            try {
+                                genericsCallback.onResponse(response.body().string());
+                                genericsCallback.onError(response.toString());
+                                genericsCallback.onFinish();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
