@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onRequest(String response) {
 
             }
 
@@ -153,9 +153,10 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onRequest(String response) {
                 WDYLog.e("onResponse", response);
             }
+
             @Override
             public void onError(String msg) {
                 WDYLog.e("错误", msg);

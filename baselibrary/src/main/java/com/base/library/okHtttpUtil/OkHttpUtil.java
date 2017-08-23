@@ -29,7 +29,7 @@ import okhttp3.Response;
  * 创建时间：2017/6/27.
  */
 
-public class  OkHttpUtil {
+public class OkHttpUtil {
     private static OkHttpUtil mInstance;
     private OkHttpClient mOkHttpClient;
     private Platform platform;
@@ -88,39 +88,10 @@ public class  OkHttpUtil {
                 if (call.isCanceled()) {
                     return;
                 }
-
                 if (response.isSuccessful()) {
-                    try {
-                        final Object o = genericsCallback.parseNetworkResponse(response);
-                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                genericsCallback.onResponse(o);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onFinish();
-                        }
-                    });
-
+                    OnSuccess(genericsCallback, response);
                 } else {
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                genericsCallback.onResponse(response.body().string());
-                                genericsCallback.onError(response.toString());
-                                genericsCallback.onFinish();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    onError(genericsCallback, response);
                 }
             }
         });
@@ -184,31 +155,9 @@ public class  OkHttpUtil {
                     return;
                 }
                 if (response.isSuccessful()) {
-                    try {
-                        final Object o = genericsCallback.parseNetworkResponse(response);
-                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                genericsCallback.onResponse(o);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    OnSuccess(genericsCallback, response);
                 } else {
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onError(response.networkResponse().toString());
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    onError(genericsCallback, response);
                 }
             }
         });
@@ -272,31 +221,9 @@ public class  OkHttpUtil {
                     return;
                 }
                 if (response.isSuccessful()) {
-                    try {
-                        final Object o = genericsCallback.parseNetworkResponse(response);
-                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                genericsCallback.onResponse(o);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    OnSuccess(genericsCallback, response);
                 } else {
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onError(response.networkResponse().toString());
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    onError(genericsCallback, response);
                 }
             }
         });
@@ -359,31 +286,9 @@ public class  OkHttpUtil {
                     return;
                 }
                 if (response.isSuccessful()) {
-                    try {
-                        final Object o = genericsCallback.parseNetworkResponse(response);
-                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                genericsCallback.onResponse(o);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    OnSuccess(genericsCallback, response);
                 } else {
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onError(response.networkResponse().toString());
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    onError(genericsCallback, response);
                 }
             }
         });
@@ -419,31 +324,44 @@ public class  OkHttpUtil {
                     return;
                 }
                 if (response.isSuccessful()) {
-                    try {
-                        final Object o = genericsCallback.parseNetworkResponse(response);
-                        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                genericsCallback.onResponse(o);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    OnSuccess(genericsCallback, response);
                 } else {
-                    getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            genericsCallback.onError(response.networkResponse().toString());
-                            genericsCallback.onFinish();
-                        }
-                    });
+                    onError(genericsCallback, response);
+                }
+            }
+        });
+    }
+
+    private static void OnSuccess(final GenericsCallback genericsCallback, final Response response) {
+        try {
+            final Object o = genericsCallback.parseNetworkResponse(response);
+            getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    genericsCallback.onResponse(o);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                genericsCallback.onFinish();
+            }
+        });
+    }
+
+    private static void onError(final GenericsCallback genericsCallback, final Response response) {
+        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    genericsCallback.onRequest(response.body().string());
+                    genericsCallback.onError(response.toString());
+                    genericsCallback.onFinish();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });

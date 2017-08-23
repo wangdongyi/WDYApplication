@@ -20,7 +20,7 @@ public abstract class GenericsCallback<T> extends Callback<T> implements OkHttpL
             return (T) back;
         }
         T bean = WDYJsonUtil.GetEntity(WDYJsonUtil.GetJsonObjByLevel(back), entityClass);
-        onResponse(back);
+        onRequest(back);
         return bean;
     }
 
