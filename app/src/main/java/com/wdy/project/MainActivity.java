@@ -124,13 +124,15 @@ public class MainActivity extends BaseActivity {
 
     private void getUserAgreement() {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestBody = RequestBody.create(JSON, "");
+        InputIdBean inputIdBean=new InputIdBean();
+        inputIdBean.setId("sdada");
+        RequestBody requestBody = RequestBody.create(JSON, WDYJsonUtil.toJson(inputIdBean));
         final Request request = new Request.Builder()
 //                .addHeader("auth_token", "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKZXJzZXktU2VjdXJpdHktQmFzaWMiLCJzdWIiOiIxODY0MDUzMzYzNCIsImF1ZCI6InVzZXIiLCJleHAiOjE1MDYwNDk5MTgsImlhdCI6MTUwMzQ1NzkyMywianRpIjoiMTA4NjZiZTktNGJlNS00MWJjLThiNGUtNjc1YTI1YjRlMTg0In0.--a66ATqGuOYsf1mTAI7GEjXKHhcFvD-nW2XDHaVqOs")
                 .addHeader("auth_token", ".eyJpc3MiOiJKZXJzZXktU2VjdXJpdHktQmFzaWMiLCJzdWIiOiIxODY0MDUzMzYzNCIsImF1ZCI6InVzZXIiLCJleHAiOjE1MDYwNDk5MTgsImlhdCI6MTUwMzQ1NzkyMywianRpIjoiMTA4NjZiZTktNGJlNS00MWJjLThiNGUtNjc1YTI1YjRlMTg0In0.--a66ATqGuOYsf1mTAI7GEjXKHhcFvD-nW2XDHaVqOs")
                 .post(requestBody)
                 .tag(this)
-                .url("http://192.168.4.160:8011/user/getUserAgreement")
+                .url("http://172.16.175.18:8501/user/cancelTrip")
                 .build();
         OkHttpUtil.with(this, request, new GenericsCallback<AboutUsBean>() {
 

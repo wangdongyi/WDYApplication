@@ -353,17 +353,19 @@ public class OkHttpUtil {
     }
 
     private static void onError(final GenericsCallback genericsCallback, final Response response) {
-        getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    genericsCallback.onRequest(response.body().string());
+        try {
+            final String back = response.body().string();
+            getInstance().platform.defaultCallbackExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    genericsCallback.onRequest(back);
                     genericsCallback.onError(response.toString());
                     genericsCallback.onFinish();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
