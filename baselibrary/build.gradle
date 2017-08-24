@@ -49,6 +49,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
     //网络请求
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
