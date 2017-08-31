@@ -40,12 +40,11 @@ public class ActivityManage {
     public void finishActivity(Class<?>... activityClasses) {
         for (Class<?> ac : activityClasses) {
             for (Activity a : activityList) {
-                if (a != null) {
+                if(ac.toString().equals(a.getClass().toString())){
                     a.finish();
                 }
             }
         }
-
     }
 
     public boolean HaveActivity(Class<?>... activityClasses) {
