@@ -3,10 +3,14 @@ package com.wdy.project;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.base.library.activity.BaseActivity;
+import com.base.library.application.BaseApplication;
+import com.base.library.util.CodeUtil;
 import com.base.library.view.refresh.OnAutoRefreshListener;
 import com.base.library.view.refresh.OnLoadListener;
 import com.base.library.view.refresh.RefreshLayout;
@@ -64,6 +68,24 @@ public class NextActivity extends BaseActivity {
         load = (LinearLayout) findViewById(R.id.load);
         refresh = (RefreshLayout) findViewById(R.id.refresh);
         edit1 = (EditText) findViewById(R.id.edit1);
+        edit1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (CodeUtil.isMobileNO(edit1.getText().toString())){
+                    BaseApplication.getToastUtil().showMiddleToast("对了");
+                }
+            }
+        });
     }
 
     public void getData() {

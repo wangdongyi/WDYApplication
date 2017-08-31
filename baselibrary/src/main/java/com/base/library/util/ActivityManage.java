@@ -51,8 +51,8 @@ public class ActivityManage {
     public boolean HaveActivity(Class<?>... activityClasses) {
         boolean have = false;
         for (Class<?> ac : activityClasses) {
-            for (Activity a : activityList) {
-                if (a != null) {
+            for (int i = 0; i < activityList.size(); i++) {
+                if(ac.toString().equals(activityList.get(i).getClass().toString())){
                     have = true;
                 }
             }

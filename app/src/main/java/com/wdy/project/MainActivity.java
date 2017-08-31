@@ -17,6 +17,7 @@ import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
 import com.base.library.preview.PhotoPreviewUtil;
+import com.base.library.util.ActivityManage;
 import com.base.library.util.DialogUtil;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
@@ -57,6 +58,11 @@ public class MainActivity extends BaseActivity {
                 getUserAgreement();
             }
         });
+        if(ActivityManage.getInstance().HaveActivity(MainActivity.class)){
+            tv.setText("存在这个界面");
+        }else {
+            tv.setText("不存在这个界面");
+        }
 
         setStatusBar(true);
         PermissionsManager.with(this, new OnPermissionListen() {
@@ -199,8 +205,8 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
-                RequestBean requestBean = BaseApplication.getSharedPreferencesUtil().getBean("RequestBean", RequestBean.class);
-                tv.setText(requestBean.getData().getCity());
+//                RequestBean requestBean = BaseApplication.getSharedPreferencesUtil().getBean("RequestBean", RequestBean.class);
+//                tv.setText(requestBean.getData().getCity());
             }
         });
         sample_text = (TextView) findViewById(R.id.sample_text);
@@ -208,6 +214,11 @@ public class MainActivity extends BaseActivity {
         sample_image2.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
+                if(ActivityManage.getInstance().HaveActivity(NextActivity.class)){
+                    tv.setText("存在这个界面");
+                }else {
+                    tv.setText("不存在这个界面");
+                }
 //                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
 //                    @Override
 //                    public void path(String Path) {
@@ -218,8 +229,8 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
-                Intent intent = new Intent(MainActivity.this, NextActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, NextActivity.class);
+//                startActivity(intent);
                 //选择车辆
 //                for (int i = 0; i < 5; i++) {
 //                    list.add("车辆"+i);
