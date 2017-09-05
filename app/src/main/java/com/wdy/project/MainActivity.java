@@ -195,7 +195,8 @@ public class MainActivity extends BaseActivity {
         sample_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preview();
+//                preview();
+                CountDownUtil.getInstance().cancel();
 //                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
 //                    @Override
 //                    public void path(String Path) {

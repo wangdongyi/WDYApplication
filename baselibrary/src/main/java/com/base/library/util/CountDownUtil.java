@@ -31,7 +31,7 @@ public class CountDownUtil {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    countDownListen.onTick(millisUntilFinished-1000);
+                    countDownListen.onTick(millisUntilFinished - 1000);
                 }
 
                 @Override
@@ -42,6 +42,13 @@ public class CountDownUtil {
             };
             timer.start();
             isTask = true;
+        }
+    }
+
+    public void cancel() {
+        if (timer != null) {
+            timer.cancel();
+            isTask = false;
         }
     }
 
