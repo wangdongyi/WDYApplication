@@ -31,7 +31,7 @@ public class CountDownUtil {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    countDownListen.onTick(millisUntilFinished);
+                    countDownListen.onTick(millisUntilFinished-1000);
                 }
 
                 @Override

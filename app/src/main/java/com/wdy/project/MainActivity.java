@@ -18,6 +18,7 @@ import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
 import com.base.library.preview.PhotoPreviewUtil;
 import com.base.library.util.ActivityManage;
+import com.base.library.util.CountDownUtil;
 import com.base.library.util.DialogUtil;
 import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
@@ -214,11 +215,18 @@ public class MainActivity extends BaseActivity {
         sample_image2.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                if(ActivityManage.getInstance().HaveActivity(NextActivity.class)){
-                    tv.setText("存在这个界面");
-                }else {
-                    tv.setText("不存在这个界面");
-                }
+                CountDownUtil.getInstance().with(5000, new CountDownUtil.CountDownListen() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onTick(long time) {
+                        tv.setText(time/1000+"存在这个界面");
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+                });
 //                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
 //                    @Override
 //                    public void path(String Path) {
