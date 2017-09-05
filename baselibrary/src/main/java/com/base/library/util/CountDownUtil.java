@@ -37,6 +37,8 @@ public class CountDownUtil {
                 @Override
                 public void onFinish() {
                     countDownListen.onFinish();
+                    timer.cancel();
+                    timer = null;
                     isTask = false;
                 }
             };
