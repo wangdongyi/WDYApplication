@@ -1,6 +1,5 @@
 package com.base.library.view.upPhotoView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +8,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+
+import com.base.library.application.BaseApplication;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,24 +20,29 @@ import java.io.IOException;
 
 /**
  * 作者：王东一 on 2015/12/22 09:47
+ * 图片工具类
  **/
 public class PictureUtil {
-    /**
-     * 把bitmap转换成String
-     *
-     * @param bitmap
-     * @return
-     */
-    @SuppressLint("NewApi")
-    public static String bitmapToString(Bitmap bitmap) {
+    //Base64转bitmap
+    public static Bitmap base64ToBitmap(String string) {
+        Bitmap bitmap = null;
+        try {
+            byte[] bitmapArray = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
 
-        //Bitmap bitmap = getSmallBitmap(filePath);
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-        byte[] b = baos.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
-
+    //将Bitmap转换成Base64
+    public static String bitmapToBase64(Bitmap bitmap) {
+        String string = null;
+        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+        byte[] bytes = bStream.toByteArray();
+        string = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return string;
     }
 
     /**
@@ -47,8 +53,7 @@ public class PictureUtil {
      * @param reqHeight
      * @return
      */
-    public static int calculateInSampleSize(BitmapFactory.Options options,
-                                            int reqWidth, int reqHeight) {
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -58,8 +63,7 @@ public class PictureUtil {
 
             // Calculate ratios of height and width to requested height and
             // width
-            final int heightRatio = Math.round((float) height
-                    / (float) reqHeight);
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
             final int widthRatio = Math.round((float) width / (float) reqWidth);
 
             // Choose the smallest ratio as inSampleSize value, this will
@@ -74,10 +78,6 @@ public class PictureUtil {
 
     /**
      * 根据路径获得突破并压缩返回bitmap用于显示
-     * <p>
-     * imagesrc
-     *
-     * @return
      */
     public static Bitmap getSmallBitmap(String filePath) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -129,15 +129,14 @@ public class PictureUtil {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            BaseApplication.getToastUtil().showToastShort("图片保存错误");
         }
         galleryAddPic(context, path);
     }
+
+    //保存图片到相册
     public static void saveImageToGallery(Context context, Bitmap bmp) {
         // 首先保存图片
         File appDir = new File(Environment.getExternalStorageDirectory(), "wdy");
@@ -151,12 +150,10 @@ public class PictureUtil {
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
+            BaseApplication.getToastUtil().showToastShort("图片保存错误");
             e.printStackTrace();
         }
-
         // 其次把文件插入到系统图库
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
@@ -166,12 +163,13 @@ public class PictureUtil {
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + appDir.getPath())));
     }
+
     /**
      * 根据路径删除图片
      *
      * @param path
      */
-    public static void deleteTempFile(String path) {
+    public static void deleteFile(String path) {
         File file = new File(path);
         if (file.exists()) {
             file.delete();
@@ -195,10 +193,7 @@ public class PictureUtil {
      * @return
      */
     public static File getAlbumDir() {
-        File dir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                getAlbumName());
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getAlbumName());
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -211,6 +206,6 @@ public class PictureUtil {
      * @return
      */
     public static String getAlbumName() {
-        return "sheguantong";
+        return "wdy";
     }
 }
