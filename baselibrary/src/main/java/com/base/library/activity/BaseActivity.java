@@ -71,7 +71,7 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
     private boolean mIsHorizontalScrolling = false;
     private int mScrollLimit = 0;
     private int mMinExitScrollX = 0;
-
+    private boolean isViewBuild = false;
     public BaseActivity.onKeyboardListener getOnKeyboardListener() {
         return onKeyboardListener;
     }
@@ -175,8 +175,27 @@ public class BaseActivity extends WDYActivity implements GestureDetector.OnGestu
         mBaseLayoutView = LayoutInflater.from(this).inflate(layoutResID, null);
         initView();
         onActivityCreate();
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            ccp_content_fl.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onAnimationComplete();
+                }
+            }, 300);
+        }
+    }
+    @Override
+    public void onEnterAnimationComplete() {
+        super.onEnterAnimationComplete();
+        if (!isViewBuild) {
+            isViewBuild = true;
+            onAnimationComplete();
+        }
     }
 
+    protected void onAnimationComplete() {
+
+    }
     private void initView() {
         ccp_content_fl = (CCPLayoutListenerView) findViewById(R.id.ccp_content_fl);
         mRelativeLayout = (RelativeLayout) findViewById(R.id.WDY_content);

@@ -3,6 +3,7 @@ package com.base.library.permission;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AppOpsManager;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +24,7 @@ import android.util.Log;
 import com.base.library.lifeManagerUtil.LifeManager;
 import com.base.library.lifeManagerUtil.PermissionListener;
 import com.base.library.listen.OnPermissionListen;
+import com.base.library.manufacturerUtil.Manufacturer;
 import com.base.library.util.WDYLog;
 
 import java.lang.ref.WeakReference;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 
 import static android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale;
+import static com.base.library.manufacturerUtil.ManufacturerUtil.getManufactureUtil;
 
 /**
  * 作者：王东一
@@ -62,7 +66,7 @@ public class PermissionsManager {
         initializePermissionsMap();
     }
 
-    public static void with(Activity activity, final OnPermissionListen onPermissionListen, String... permissions) {
+    public static void with(final Activity activity, final OnPermissionListen onPermissionListen, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getInstance().activity = activity;
             //权限回掉
@@ -94,8 +98,41 @@ public class PermissionsManager {
                 @Override
                 public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
                     if (requestCode == PERMISSIONS_REQUEST_CODE) {
+                        boolean bv = shouldShowRequestPermissionRationale(getInstance().activity, permissions[0]);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                            if (getManufactureUtil() == Manufacturer.XIAOMI) {
+                                AppOpsManager appOpsManager = (AppOpsManager) activity.getSystemService(Context.APP_OPS_SERVICE);
+                                int checkOp = appOpsManager.checkOp(AppOpsManager.OPSTR_FINE_LOCATION, Process.myUid(), activity.getPackageName());
+                                if (checkOp == AppOpsManager.MODE_IGNORED) {
+                                    // 权限被拒绝了 .
+                                    // 用户还是想用我的 APP 的
+                                    // 提示用户去应用设置界面手动开启权限
+                                    AlertDialog dialog = new AlertDialog.Builder(getInstance().activity)
+                                            .setTitle("权限不可用")
+                                            .setMessage("请在-应用设置-权限-中，开启权限")
+                                            .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // 跳转到应用设置界面
+                                                    dialog.dismiss();
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                                    Uri uri = Uri.fromParts("package", getInstance().activity.getPackageName(), null);
+                                                    intent.setData(uri);
+                                                    getInstance().activity.startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
+                                                }
+                                            })
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    onPermissionListen.callBack(false);
+                                                }
+                                            }).setCancelable(false).show();
+                                } else {
+                                    onPermissionListen.callBack(true);
+                                }
+                            } else if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                                 // 判断用户是否 点击了不再提醒。(检测该权限是否还可以申请)
                                 boolean b = shouldShowRequestPermissionRationale(getInstance().activity, permissions[0]);
                                 if (!b) {

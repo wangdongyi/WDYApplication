@@ -3,6 +3,7 @@ package com.wdy.project;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,21 +18,17 @@ import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
 import com.base.library.preview.PhotoPreviewUtil;
-import com.base.library.util.ActivityManage;
 import com.base.library.util.CountDownUtil;
 import com.base.library.util.DialogUtil;
-import com.base.library.util.TxtReadUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
 import com.bumptech.glide.Glide;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 public class MainActivity extends BaseActivity {
@@ -59,22 +56,77 @@ public class MainActivity extends BaseActivity {
                 getUserAgreement();
             }
         });
-        if(ActivityManage.getInstance().HaveActivity(MainActivity.class)){
-            tv.setText("存在这个界面");
-        }else {
-            tv.setText("不存在这个界面");
-        }
+//        ArrayList<PermissionBean> list = new ArrayList<>();
+//        list = (ArrayList<PermissionBean>) BaseApplication.getSharedPreferencesUtil().getList("list", list);
+//
+//        if (list.size() == 0) {
+//            list.addAll(PermissionsList.getPermissionsList().getPermissionsArrayList());
+//            BaseApplication.getSharedPreferencesUtil().saveList("list", list);
+//            tv.setText("不存在这个界面");
+//        } else {
+//            tv.setText("存在这个界面" + list.size());
+//        }
 
         setStatusBar(true);
-        PermissionsManager.with(this, new OnPermissionListen() {
+//        PackageManager pm = getPackageManager();
+//         boolean permission = (PackageManager.PERMISSION_GRANTED == pm.checkPermission(Manifest.permission.CALL_PHONE, "com.wdy.project"));
+//         if (permission) {
+//             BaseApplication.getToastUtil().showMiddleToast("有这个权限");
+//             Intent intent = new Intent(Intent.ACTION_CALL);
+//             Uri data = Uri.parse("tel:" + "10086");
+//             intent.setData(data);
+//             startActivity(intent);
+//             }else {
+//             BaseApplication.getToastUtil().showMiddleToast("木有这个权限");
+//         }
+//        Permissions4M.get(MainActivity.this)
+//                // 是否强制弹出权限申请对话框，建议设置为 true，默认为 true
+//                // .requestForce(true)
+//                // 是否支持 5.0 权限申请，默认为 false
+//                // .requestUnderM(false)
+//                // 权限，单权限申请仅只能填入一个
+//                .requestPermissions(Manifest.permission.CALL_PHONE)
+//                // 权限码
+//                .requestCodes(100)
+//                // 如果需要使用 @PermissionNonRationale 注解的话，建议添加如下一行
+//                // 返回的 intent 是跳转至**系统设置页面**
+//                // .requestPageType(Permissions4M.PageType.MANAGER_PAGE)
+//                // 返回的 intent 是跳转至**手机管家页面**
+//                // .requestPageType(Permissions4M.PageType.ANDROID_SETTING_PAGE)
+//                .request();
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//            BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
+//            return;
+//        }else {
+//            Intent intent = new Intent(Intent.ACTION_CALL);
+//            Uri data = Uri.parse("tel:" + "10086");
+//            intent.setData(data);
+//            startActivity(intent);
+//        }
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            PermissionsChecker mChecker = new PermissionsChecker(this);
+//            if (mChecker.lacksPermissions(Manifest.permission.CALL_PHONE)) {
+//                BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
+//            } else {
+//                BaseApplication.getToastUtil().showMiddleToast("您开启权限");
+//
+//            }
+//        } else
+//            BaseApplication.getToastUtil().showMiddleToast("小于6.0");
+
+        PermissionsManager.with(MainActivity.this, new OnPermissionListen() {
             @Override
             public void callBack(boolean isHave) {
                 if (isHave) {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    Uri data = Uri.parse("tel:" + "10086");
+                    intent.setData(data);
                 } else {
                     BaseApplication.getToastUtil().showMiddleToast("您没有开启权限");
                 }
             }
-        }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+        }, Manifest.permission.CALL_PHONE);
         getUserAgreement();
 
     }
@@ -131,7 +183,7 @@ public class MainActivity extends BaseActivity {
 
     private void getUserAgreement() {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        InputIdBean inputIdBean=new InputIdBean();
+        InputIdBean inputIdBean = new InputIdBean();
         inputIdBean.setId("sdada");
         RequestBody requestBody = RequestBody.create(JSON, WDYJsonUtil.toJson(inputIdBean));
         final Request request = new Request.Builder()
@@ -195,8 +247,8 @@ public class MainActivity extends BaseActivity {
         sample_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                preview();
-                CountDownUtil.getInstance().cancel();
+                preview();
+//                CountDownUtil.getInstance().cancel();
 //                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
 //                    @Override
 //                    public void path(String Path) {
@@ -220,7 +272,7 @@ public class MainActivity extends BaseActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onTick(long time) {
-                        tv.setText(time/1000+"存在这个界面");
+                        tv.setText(time / 1000 + "存在这个界面");
                     }
 
                     @Override
@@ -238,8 +290,8 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
-//                Intent intent = new Intent(MainActivity.this, NextActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, NextActivity.class);
+                startActivity(intent);
                 //选择车辆
 //                for (int i = 0; i < 5; i++) {
 //                    list.add("车辆"+i);
@@ -278,4 +330,5 @@ public class MainActivity extends BaseActivity {
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-16-17934400_1738549946443321_2924146161843437568_n.jpg");
         PhotoPreviewUtil.movePhotoPreview(MainActivity.this, sample_image, sourceImageList, 1);
     }
+
 }

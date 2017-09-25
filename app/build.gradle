@@ -34,5 +34,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+    compile 'com.github.jokermonn:permissions4m:2.1.0-lib'
+    annotationProcessor 'com.github.jokermonn:permissions4m:2.1.0-processor'
     compile project(':baselibrary')
 }

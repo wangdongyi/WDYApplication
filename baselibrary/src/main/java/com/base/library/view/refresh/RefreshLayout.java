@@ -293,6 +293,14 @@ public class RefreshLayout extends SwipeRefreshLayout implements SwipeRefreshLay
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if(!hasWindowFocus){
+            closeHandler();
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         closeHandler();

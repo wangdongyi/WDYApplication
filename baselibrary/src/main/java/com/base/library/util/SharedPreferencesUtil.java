@@ -32,6 +32,50 @@ public class SharedPreferencesUtil {
      * @ key
      * @ data
      */
+    public void saveBean(String key, Object data) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String serialize = WDYJsonUtil.toJson(data);
+        editor.putString(key, serialize);
+        editor.apply();
+    }
+
+    public <T> T getBean(String Key, Class<T> entityClass) {
+        String s = sharedPreferences.getString(Key, null);
+        T bean = WDYJsonUtil.GetEntity(WDYJsonUtil.GetJsonObjByLevel(s), entityClass);
+
+        return bean;
+    }
+
+    public void saveList(String key, Object data) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        try {
+            editor.putString(key, serialize(data));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        editor.apply();
+    }
+
+    public Object getList(String key, Object Default) {
+        String s = sharedPreferences.getString(key, null);
+        if (CodeUtil.isEmpty(s)) {
+            return Default;
+        } else {
+            try {
+                return deSerialization(s);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                return Default;
+            }
+        }
+    }
+
+    /**
+     * 保存数据到文件
+     *
+     * @ key
+     * @ data
+     */
     public void saveData(String key, Object data) {
         String type = data.getClass().getSimpleName();
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -47,26 +91,6 @@ public class SharedPreferencesUtil {
             editor.putLong(key, (Long) data);
         }
         editor.apply();
-    }
-
-    /**
-     * 保存数据到文件
-     *
-     * @ key
-     * @ data
-     */
-    public void saveBean(String key, Object data) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String serialize = WDYJsonUtil.toJson(data);
-        editor.putString(key, serialize);
-        editor.apply();
-    }
-
-    public <T> T getBean(String Key, Class<T> entityClass) {
-        String s = sharedPreferences.getString(Key, null);
-        T bean = WDYJsonUtil.GetEntity(WDYJsonUtil.GetJsonObjByLevel(s), entityClass);
-
-        return bean;
     }
 
     /**
