@@ -216,24 +216,21 @@ public class WdyEditText extends EditText {
         }
     }
 
+
     // 处理删除事件
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (deleteDrawable != null && isDelete()) {
-                int eventX = (int) event.getRawX();
-                int eventY = (int) event.getRawY();
-                Rect rect = new Rect();
-                getGlobalVisibleRect(rect);
-                rect.left = rect.right - CodeUtil.dip2px(getContext(), 50);
-                if (rect.contains(eventX, eventY)) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                if ((event.getX() > (getWidth() - getTotalPaddingRight())) && (event.getX() < (getWidth() - getPaddingRight()))) {
                     setText("");
                     clear = true;
                 }
-            }
+                break;
         }
         return super.onTouchEvent(event);
     }
+
 
     @Override
     protected void finalize() throws Throwable {
