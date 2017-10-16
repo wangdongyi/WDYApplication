@@ -14,24 +14,28 @@ import android.widget.TextView;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.base.library.activity.BaseActivity;
 import com.base.library.application.BaseApplication;
+import com.base.library.lifeManagerUtil.PermissionListener;
 import com.base.library.listen.NoDoubleClickListener;
 import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
 import com.base.library.okHtttpUtil.OkHttpUtil;
 import com.base.library.permission.PermissionsManager;
 import com.base.library.preview.PhotoPreviewUtil;
+import com.base.library.util.CodeUtil;
 import com.base.library.util.CountDownUtil;
 import com.base.library.util.DialogUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
 import com.base.library.view.advertView.AdvertisementView;
 import com.base.library.view.loading.CellularView;
+import com.base.library.view.upPhotoView.UpPhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -282,16 +286,16 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
 
 //                CountDownUtil.getInstance().cancel();
-//                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
-//                    @Override
-//                    public void path(String Path) {
-//                        try {
-//                            sample_image.setImageBitmap(CodeUtil.convertBitmap(Path));
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
+                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
+                    @Override
+                    public void path(String Path) {
+                        try {
+                            sample_image.setImageBitmap(CodeUtil.convertBitmap(Path));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 //                RequestBean requestBean = BaseApplication.getSharedPreferencesUtil().getBean("RequestBean", RequestBean.class);
 //                tv.setText(requestBean.getData().getCity());
             }
