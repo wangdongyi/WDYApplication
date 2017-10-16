@@ -5,11 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.base.library.activity.BaseActivity;
 import com.base.library.application.BaseApplication;
 import com.base.library.listen.NoDoubleClickListener;
@@ -62,7 +64,11 @@ public class MainActivity extends BaseActivity {
         tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
         setTitleBackground(R.drawable.title_background);
-
+        MaterialRippleLayout.on(tv)
+                .rippleColor(ContextCompat.getColor(this,R.color.top_color))
+                .rippleAlpha(0.2f)
+                .rippleHover(false)
+                .create();
         tv.setOnClickListener(new NoDoubleClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
