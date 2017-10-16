@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/swipe_recycler_layout" />
@@ -15,6 +16,7 @@
         android:layout_centerVertical="true"
         android:background="@color/blue"
         android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

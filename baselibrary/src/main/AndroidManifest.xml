@@ -63,9 +63,6 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <meta-data
-            android:name="com.base.library.glide.WDYGlideModule"
-            android:value="GlideModule" />
 
         <activity
             android:name=".view.upPhotoView.CropImageActivity"

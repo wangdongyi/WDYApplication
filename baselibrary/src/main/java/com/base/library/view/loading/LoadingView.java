@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -22,12 +23,13 @@ import java.util.ArrayList;
 
 /**
  * 作者：王东一 on 2016/4/5 14:49
+ * 黏性加载
  **/
 public class LoadingView extends View {
     private Paint paint = new Paint();
-    private float radius = CodeUtil.dip2px(getContext(), 10);
-    private final int ITEM_COUNT = 6;
-    private final int ITEM_DIVIDER = CodeUtil.dip2px(getContext(), 20);
+    private float radius = CodeUtil.dip2px(getContext(), 7);
+    private final int ITEM_COUNT = 5;
+    private final int ITEM_DIVIDER = CodeUtil.dip2px(getContext(), 10);
     private final float SCALE_RATE = 0.3f;
     private float maxLength;
     private ArrayList<Circle> circlePaths = new ArrayList<>();
@@ -59,7 +61,7 @@ public class LoadingView extends View {
             return;
         }
         try {
-            LoadingColor = attr.getColor(R.styleable.LoadingView_loadingColor, Color.WHITE);
+            LoadingColor = attr.getColor(R.styleable.LoadingView_loadingColor, ContextCompat.getColor(context,R.color.top_color));
         } finally {
             attr.recycle();
         }

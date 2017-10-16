@@ -140,7 +140,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
                         }
                     });
                 }
-                Glide.with(mContext).load(photo.getPath()).dontAnimate().thumbnail(0.1f).into(viewHolder.viewHolderPhoto.photoImageView);
+                Glide.with(mContext).load(photo.getPath()).thumbnail(0.1f).into(viewHolder.viewHolderPhoto.photoImageView);
                 break;
         }
 

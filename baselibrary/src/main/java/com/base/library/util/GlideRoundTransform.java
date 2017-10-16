@@ -11,6 +11,8 @@ import android.graphics.RectF;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
+import java.security.MessageDigest;
+
 /**
  * 作者：王东一
  * 创建时间：2017/4/22.
@@ -51,8 +53,10 @@ public class GlideRoundTransform extends BitmapTransformation {
         return result;
     }
 
+
+
     @Override
-    public String getId() {
-        return getClass().getName() + Math.round(radius);
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
+
     }
 }

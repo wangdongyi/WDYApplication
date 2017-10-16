@@ -5,11 +5,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.base.library.activity.BaseActivity;
+import com.base.library.animation.LayoutAnimationHelper;
 import com.base.library.application.BaseApplication;
+import com.base.library.listen.OnRecyclerClickListen;
 import com.base.library.util.CodeUtil;
 import com.base.library.view.refresh.OnAutoRefreshListener;
 import com.base.library.view.refresh.OnLoadListener;
@@ -36,9 +39,21 @@ public class NextActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_activity);
-        initView();
         setTitleName("消息盒子");
+        setStatusBar(true);
+        initView();
         messageAdapter = new MessageAdapter(this, list);
+        messageAdapter.setOnRecyclerClickListen(new OnRecyclerClickListen() {
+            @Override
+            public void onClick(int position) {
+                Window.getInstance().with(NextActivity.this, new Window.onClickSure() {
+                    @Override
+                    public void onClick(String password) {
+
+                    }
+                });
+            }
+        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(messageAdapter);
         refresh.setColorSchemeResources(R.color.text_black);
@@ -63,6 +78,15 @@ public class NextActivity extends BaseActivity {
         refresh.AutoRefresh();
     }
 
+    @Override
+    protected void onAnimationComplete() {
+        super.onAnimationComplete();
+        LayoutAnimationController controller = new LayoutAnimationController(LayoutAnimationHelper.getAnimationSetFromBottom());
+        mRecyclerView.setLayoutAnimation(controller);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
     private void initView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
         load = (LinearLayout) findViewById(R.id.load);
@@ -81,7 +105,7 @@ public class NextActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (CodeUtil.isMobileNO(edit1.getText().toString())){
+                if (CodeUtil.isMobileNO(edit1.getText().toString())) {
                     BaseApplication.getToastUtil().showMiddleToast("对了");
                 }
             }
@@ -90,8 +114,8 @@ public class NextActivity extends BaseActivity {
 
     public void getData() {
         Random r = new Random();
-        final int l = r.nextInt(15);
-        for (int i = 0; i < 11; i++) {
+        final int l = r.nextInt(3);
+        for (int i = 0; i < 2; i++) {
             MessageBean m = new MessageBean();
             m.setContent("测试内容");
             m.setTitle("测试标题" + i);

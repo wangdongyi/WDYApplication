@@ -27,6 +27,8 @@ import com.base.library.application.BaseApplication;
 import com.base.library.bean.AdvertisementBean;
 import com.base.library.util.CodeUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -111,18 +113,12 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
         public void dispatchMessage(Message msg) {
             switch (msg.what) {
                 case MSG_CHANGE_PHOTO:
-                    if (getImgIdArray().size() > 1) {
-                        int index = viewPager.getCurrentItem();
-                        viewPager.setCurrentItem(index + 1, true);
-                        for (int i = 0; i < list.size(); i++) {
-                            if (i == index + 1) {
-                                list.get(i).setSelected(true);
-                            } else {
-                                list.get(i).setSelected(false);
-                            }
-                        }
-                        advertisementAdapter.notifyDataSetChanged();
+                    if (viewPager == null) {
+
+                        return;
                     }
+                    int index = viewPager.getCurrentItem();
+                    viewPager.setCurrentItem(index + 1, true);
                     break;
             }
             super.dispatchMessage(msg);
@@ -165,10 +161,12 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
      * 初始化相关Data
      */
     private void initData() {
-        LayoutInflater.from(mContext).inflate(R.layout.advertisement_view, this, true);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.viewGroup_recyclerView);
-        linear_viewPager = (LinearLayout) findViewById(R.id.linear_viewPager);
-        singImageView = (ImageView) findViewById(R.id.advertisement_imageview);
+        removeAllViews();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.advertisement_view, this, false);
+        addView(view);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.viewGroup_recyclerView);
+        linear_viewPager = (LinearLayout) view.findViewById(R.id.linear_viewPager);
+        singImageView = (ImageView) view.findViewById(R.id.advertisement_imageview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -182,6 +180,11 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
      * 初始化Views等UI
      */
     private void initUI() {
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.default_picture)
+                .error(R.drawable.default_picture)
+                .priority(Priority.HIGH);
         switch (getImgIdArray().size()) {
             case 0://没有图片
                 linear_viewPager.removeAllViews();
@@ -201,27 +204,7 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
                 advertisementBean1.setSelected(true);
                 list.add(advertisementBean1);
                 advertisementAdapter.notifyDataSetChanged();
-                ImageLoader.getInstance().displayImage(getImgIdArray().get(0), singImageView, BaseApplication.getOptionsRectangular(), new ImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                        singImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        singImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        singImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-                        singImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                    }
-                });
+                Glide.with(mContext).load(getImgIdArray().get(0)).apply(options).into(singImageView);
                 break;
             default://多张图片
                 singImageView.setVisibility(View.GONE);
@@ -232,7 +215,7 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
                 mImageViews[0] = new ImageView[getImgIdArray().size()];
                 mImageViews[1] = new ImageView[getImgIdArray().size()];
                 viewPager = new ViewPager(mContext);
-                linear_viewPager.addView(viewPager, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                linear_viewPager.addView(viewPager, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, CodeUtil.dip2px(mContext, 180)));
                 viewPager.setFocusable(true);
                 viewPager.setOnTouchListener(this);
                 viewPager.addOnPageChangeListener(new MyPageChangeListener());
@@ -263,8 +246,7 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
                                 }
                             }
                         });
-                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        Glide.with(mContext).load(getImgIdArray().get(j)).into(imageView);
+                        Glide.with(mContext).load(getImgIdArray().get(j)).apply(options).into(imageView);
                         mImageViews[i][j] = imageView;
                     }
                 }
@@ -362,6 +344,16 @@ public class AdvertisementView extends FrameLayout implements Runnable, OnTouchL
         @Override
         public void onPageSelected(int pos) {
             setImageBackground(pos % getImgIdArray().size());
+            if (getImgIdArray().size() > 1) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (i == pos % getImgIdArray().size()) {
+                        list.get(i).setSelected(true);
+                    } else {
+                        list.get(i).setSelected(false);
+                    }
+                }
+                advertisementAdapter.notifyDataSetChanged();
+            }
         }
 
     }

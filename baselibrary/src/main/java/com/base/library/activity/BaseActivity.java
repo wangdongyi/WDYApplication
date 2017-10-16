@@ -40,7 +40,6 @@ import com.base.library.view.relativeLayout.CCPLayoutListenerView;
 @ActivityTransition(0)
 public class BaseActivity extends WDYActivity implements GestureDetector.OnGestureListener {
     private static final String TAG = BaseActivity.class.getSimpleName();
-    private AlertDialog dialog;
     protected CCPLayoutListenerView ccp_content_fl;
     //接收子类view的布局
     protected RelativeLayout mRelativeLayout = null;

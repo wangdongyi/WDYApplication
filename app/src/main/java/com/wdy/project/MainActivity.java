@@ -22,13 +22,22 @@ import com.base.library.util.CountDownUtil;
 import com.base.library.util.DialogUtil;
 import com.base.library.util.WDYJsonUtil;
 import com.base.library.util.WDYLog;
+import com.base.library.view.advertView.AdvertisementView;
+import com.base.library.view.loading.CellularView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 
 public class MainActivity extends BaseActivity {
@@ -38,6 +47,12 @@ public class MainActivity extends BaseActivity {
     private TextView sample_text;
     private ImageView sample_image2;
     private ArrayList<String> list = new ArrayList<>();
+    private CellularView cellular;
+    private AdvertisementView advertisementImageview;
+    private TextView sampleText;
+    private ImageView sampleImage;
+    private ImageView sampleImage2;
+    private ArrayList<String> sourceImageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +62,7 @@ public class MainActivity extends BaseActivity {
         tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
         setTitleBackground(R.drawable.title_background);
+
         tv.setOnClickListener(new NoDoubleClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -243,11 +259,22 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         sample_image = (ImageView) findViewById(R.id.sample_image);
-        Glide.with(MainActivity.this).load("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg").asBitmap().into(sample_image);
+        MultiTransformation multi = new MultiTransformation(new BlurTransformation(25), new CircleCrop());
+//        Glide.with(MainActivity.this)
+//                .load("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg")
+//                .apply(bitmapTransform(multi))
+//                .into(sample_image);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(com.base.library.R.drawable.default_picture)
+                .error(com.base.library.R.drawable.default_picture)
+                .transforms(multi)
+                .priority(Priority.HIGH);
+        Glide.with(this).load("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg").apply(options).into(sample_image);
         sample_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preview();
+
 //                CountDownUtil.getInstance().cancel();
 //                UpPhotoView.getInstance().with(MainActivity.this, new UpPhotoView.onBackPath() {
 //                    @Override
@@ -304,10 +331,12 @@ public class MainActivity extends BaseActivity {
 //                });
             }
         });
+
+        advertisementImageview = (AdvertisementView) findViewById(R.id.advertisement_imageview);
+        initAdvertisement();
     }
 
-    private void preview() {
-        ArrayList<String> sourceImageList = new ArrayList<>();
+    private void initAdvertisement() {
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-12-18380140_455327614813449_854681840315793408_n.jpg");
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg");
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-10-18382517_1955528334668679_3605707761767153664_n.jpg");
@@ -328,7 +357,15 @@ public class MainActivity extends BaseActivity {
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-13-17882785_926451654163513_7725522121023029248_n.jpg");
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-14-17881962_1329090457138411_8289893708619317248_n.jpg");
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-04-16-17934400_1738549946443321_2924146161843437568_n.jpg");
-        PhotoPreviewUtil.movePhotoPreview(MainActivity.this, sample_image, sourceImageList, 1);
+        advertisementImageview.init(sourceImageList);
+        advertisementImageview.setAutoPlay(true);
+        advertisementImageview.setOnItemClick(new AdvertisementView.onItemClick() {
+            @Override
+            public void click(int position) {
+                PhotoPreviewUtil.movePhotoPreview(MainActivity.this, advertisementImageview, sourceImageList, 1);
+            }
+        });
+
     }
 
 }

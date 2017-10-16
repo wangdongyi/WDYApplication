@@ -24,7 +24,8 @@ public class DialogUtil {
 
     public static void show(Context mContext) {
         dialog = new Dialog(mContext, R.style.DialogStyle);
-        dialog.setContentView(R.layout.loading_layout);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.loading_layout, null);
+        dialog.setContentView(view);
         dialog.setCancelable(true);
         Window win = dialog.getWindow();
         win.getDecorView().setPadding(0, 0, 0, 0);
