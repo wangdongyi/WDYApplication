@@ -23,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    useLibrary 'org.apache.http.legacy'
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
@@ -32,6 +31,7 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.android.support:support-annotations:25.0.0'
     }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
