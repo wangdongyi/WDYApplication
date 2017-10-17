@@ -1,0 +1,41 @@
+
+{
+	"buildFiles" : 
+	[
+		"/Users/apple/Desktop/myProject/WDYApplication/baselibrary/CMakeLists.txt"
+	],
+	"cleanCommands" : 
+	[
+		"/Users/apple/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/release/armeabi --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"wdy-native-lib-Release-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "wdy-native-lib",
+			"buildCommand" : "/Users/apple/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/release/armeabi --target wdy-native-lib",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=armv5te-none-linux-androideabi --gcc-toolchain=/Users/apple/Library/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/apple/Library/Android/sdk/ndk-bundle/sysroot  -Dwdy_native_lib_EXPORTS -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi/include -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -frtti -fexceptions -Os -DNDEBUG  -fPIC    -c ",
+					"src" : "/Users/apple/Desktop/myProject/WDYApplication/baselibrary/src/main/cpp/wdy-native-lib.cpp",
+					"workingDirectory" : "/Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/release/armeabi"
+				}
+			],
+			"output" : "/Users/apple/Desktop/myProject/WDYApplication/baselibrary/build/intermediates/cmake/release/obj/armeabi/libwdy-native-lib.so",
+			"toolchain" : "2737792678101485901"
+		}
+	},
+	"toolchains" : 
+	{
+		"2737792678101485901" : 
+		{
+			"cCompilerExecutable" : "/Users/apple/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/Users/apple/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+		}
+	}
+}

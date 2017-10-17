@@ -1,0 +1,41 @@
+
+{
+	"buildFiles" : 
+	[
+		"/Users/apple/Desktop/myProject/WDYApplication/baselibrary/CMakeLists.txt"
+	],
+	"cleanCommands" : 
+	[
+		"/Users/apple/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/debug/mips64 --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"wdy-native-lib-Debug-mips64" : 
+		{
+			"abi" : "mips64",
+			"artifactName" : "wdy-native-lib",
+			"buildCommand" : "/Users/apple/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/debug/mips64 --target wdy-native-lib",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=mips64el-none-linux-android --gcc-toolchain=/Users/apple/Library/Android/sdk/ndk-bundle/toolchains/mips64el-linux-android-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/apple/Library/Android/sdk/ndk-bundle/sysroot  -Dwdy_native_lib_EXPORTS -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/mips64/include -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/apple/Library/Android/sdk/ndk-bundle/sysroot/usr/include/mips64el-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fintegrated-as -Wa,--noexecstack -Wformat -Werror=format-security  -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "/Users/apple/Desktop/myProject/WDYApplication/baselibrary/src/main/cpp/wdy-native-lib.cpp",
+					"workingDirectory" : "/Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/debug/mips64"
+				}
+			],
+			"output" : "/Users/apple/Desktop/myProject/WDYApplication/baselibrary/build/intermediates/cmake/debug/obj/mips64/libwdy-native-lib.so",
+			"toolchain" : "2737792678101485901"
+		}
+	},
+	"toolchains" : 
+	{
+		"2737792678101485901" : 
+		{
+			"cCompilerExecutable" : "/Users/apple/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/Users/apple/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+		}
+	}
+}
