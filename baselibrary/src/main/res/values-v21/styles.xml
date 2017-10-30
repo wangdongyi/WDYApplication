@@ -1,46 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- 允许使用transitions -->
-        <!--<item name="android:windowContentTransitions">true</item>-->
-        <!--是否覆盖执行，其实可以理解成是否同步执行还是顺序执行-->
-        <item name="android:windowAllowEnterTransitionOverlap">false</item>
-        <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        <!--状态栏颜色-->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--控件Color-->
-        <item name="colorAccent">@color/colorAccent</item>
-        <!--背景颜色-->
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <!--Appbar背景色-->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <!--ToolBar上的Title颜色-->
-        <item name="android:textColorPrimary">@color/text_black</item>
-        <!--过场动画-->
-        <item name="android:windowAnimationStyle">@style/actAnimation</item>
-        <item name="windowActionBar">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:screenOrientation">portrait</item>
-        <!--各个控制控件的默认颜色-->
-        <item name="android:colorControlNormal">@color/top_color</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <!--&lt;!&ndash;activity透明&ndash;&gt;-->
-        <!--<item name="android:windowContentOverlay">@null</item>-->
-    </style>
+
     <style name="WDYAppTheme" parent="BaseAppTheme">
         <!--透明状态栏 影响dialog与键盘冲突-->
         <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <item name="android:windowIsTranslucent">true</item>
-        <!--状态栏颜色-->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- 底部bar颜色 -->
-        <item name="android:navigationBarColor">@color/top_color</item>
-        <!--是否隐藏底部返回栏-->
-        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
-        <!--浮在底部导航上-->
-        <item name="android:windowTranslucentNavigation">false</item>
-        <!--各个控制控件的默认颜色-->
-        <item name="android:colorControlNormal">@color/top_color</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--&lt;!&ndash;状态栏颜色&ndash;&gt;-->
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
+        <!--&lt;!&ndash; 底部bar颜色 &ndash;&gt;-->
+        <!--<item name="android:navigationBarColor">@color/top_color</item>-->
+        <!--&lt;!&ndash;是否隐藏底部返回栏&ndash;&gt;-->
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
     </style>
 
 

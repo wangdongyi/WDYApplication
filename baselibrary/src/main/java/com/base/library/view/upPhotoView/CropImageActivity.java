@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.base.library.R;
-import com.base.library.activity.BaseActivity;
+import com.base.library.activity.WDYBaseActivity;
 import com.base.library.application.BaseApplication;
 import com.base.library.util.CodeUtil;
 
@@ -22,7 +22,7 @@ import java.io.File;
  * 作者：王东一 on 2015/12/22 10:06
  * 图片切割
  **/
-public class CropImageActivity extends BaseActivity implements View.OnClickListener {
+public class CropImageActivity extends WDYBaseActivity implements View.OnClickListener {
     private static final String TAG = "CropImageActivity";
     private CropImageView mImageView;
     private Bitmap mBitmap;
@@ -42,7 +42,7 @@ public class CropImageActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void init() {
-        setTitleName("裁剪图片");
+//        setTitleName("裁剪图片");
         getWindowWH();
         mImageView = (CropImageView) findViewById(R.id.crop_image);
         mSave = (Button) this.findViewById(R.id.okBtn);

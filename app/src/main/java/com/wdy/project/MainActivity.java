@@ -12,9 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.base.library.activity.BaseActivity;
+import com.base.library.activity.WDYBaseActivity;
 import com.base.library.application.BaseApplication;
-import com.base.library.lifeManagerUtil.PermissionListener;
 import com.base.library.listen.NoDoubleClickListener;
 import com.base.library.listen.OnPermissionListen;
 import com.base.library.okHtttpUtil.GenericsCallback;
@@ -43,10 +42,8 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
-
-public class MainActivity extends BaseActivity {
+public class MainActivity extends WDYBaseActivity {
     TextView tv;
     String content = "/sdcard/HUDSDKLog.txt";
     private ImageView sample_image;
@@ -67,9 +64,8 @@ public class MainActivity extends BaseActivity {
         initView();
         tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());
-        setTitleBackground(R.drawable.title_background);
         MaterialRippleLayout.on(tv)
-                .rippleColor(ContextCompat.getColor(this,R.color.top_color))
+                .rippleColor(ContextCompat.getColor(this, R.color.top_color))
                 .rippleAlpha(0.2f)
                 .rippleHover(false)
                 .create();
@@ -296,6 +292,7 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                 });
+
 //                RequestBean requestBean = BaseApplication.getSharedPreferencesUtil().getBean("RequestBean", RequestBean.class);
 //                tv.setText(requestBean.getData().getCity());
             }
@@ -346,6 +343,11 @@ public class MainActivity extends BaseActivity {
         initAdvertisement();
     }
 
+    public void clickRecycleTest(View view) {
+        Intent intent = new Intent(MainActivity.this, RecycleTestActivity.class);
+        startActivity(intent);
+    }
+
     private void initAdvertisement() {
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-12-18380140_455327614813449_854681840315793408_n.jpg");
         sourceImageList.add("http://7xi8d6.com1.z0.glb.clouddn.com/2017-05-11-18380166_305443499890139_8426655762360565760_n.jpg");
@@ -375,7 +377,6 @@ public class MainActivity extends BaseActivity {
                 PhotoPreviewUtil.movePhotoPreview(MainActivity.this, advertisementImageview, sourceImageList, 1);
             }
         });
-
     }
 
 }

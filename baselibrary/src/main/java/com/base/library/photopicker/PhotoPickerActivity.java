@@ -21,7 +21,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.base.library.R;
-import com.base.library.activity.BaseActivity;
+import com.base.library.activity.WDYBaseActivity;
 import com.base.library.application.BaseApplication;
 import com.base.library.listen.OnPermissionListen;
 import com.base.library.listen.OnRecyclerClickListen;
@@ -43,7 +43,7 @@ import java.util.List;
  * 图片选择
  */
 
-public class PhotoPickerActivity extends BaseActivity implements PhotoAdapter.PhotoClickCallBack {
+public class PhotoPickerActivity extends WDYBaseActivity implements PhotoAdapter.PhotoClickCallBack {
     public final static String TAG = "PhotoPickerActivity";
 
     public final static String KEY_RESULT = "picker_result";
@@ -115,7 +115,7 @@ public class PhotoPickerActivity extends BaseActivity implements PhotoAdapter.Ph
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picker_activity_photo_picker);
-        setTitleName("选择图片");
+//        setTitleName("选择图片");
         mSrcFolderMap = new ArrayList<>();
         initIntentParams();
         initView();
@@ -148,19 +148,19 @@ public class PhotoPickerActivity extends BaseActivity implements PhotoAdapter.Ph
 
         if (mSelectMode == MODE_MULTI) {
             //如果是多选模式，需要将确定按钮初始化以及绑定事件
-            setRightInit("保存", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<String> list = mPhotoAdapter.getSelectedPhotos();
-                    if (list != null && list.size() > 0) {
-                        mSelectList.addAll(mPhotoAdapter.getSelectedPhotos());
-                        returnData();
-                    } else {
-                        BaseApplication.getToastUtil().showMiddleToast("未选择图片");
-                    }
-
-                }
-            });
+//            setRightInit("保存", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    List<String> list = mPhotoAdapter.getSelectedPhotos();
+//                    if (list != null && list.size() > 0) {
+//                        mSelectList.addAll(mPhotoAdapter.getSelectedPhotos());
+//                        returnData();
+//                    } else {
+//                        BaseApplication.getToastUtil().showMiddleToast("未选择图片");
+//                    }
+//
+//                }
+//            });
         }
     }
 
@@ -332,7 +332,7 @@ public class PhotoPickerActivity extends BaseActivity implements PhotoAdapter.Ph
 
     private void initAnimation(View dimLayout) {
         ObjectAnimator alphaInAnimator, alphaOutAnimator, transInAnimator, transOutAnimator;
-        int height = PhotoUtils.getHeightInPx(this) - 2 * CodeUtil.dip2px(this, 50) - getStatusHeight();
+        int height = PhotoUtils.getHeightInPx(this) - 2 * CodeUtil.dip2px(this, 50) - CodeUtil.getNavigationBarHeight(this);
         alphaInAnimator = ObjectAnimator.ofFloat(dimLayout, "alpha", 0f, 0.7f);
         alphaOutAnimator = ObjectAnimator.ofFloat(dimLayout, "alpha", 0.7f, 0f);
         transInAnimator = ObjectAnimator.ofFloat(mFolderListView, "translationY", height, 0);

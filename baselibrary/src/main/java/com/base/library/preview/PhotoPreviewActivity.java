@@ -1,20 +1,14 @@
 package com.base.library.preview;
 
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.*;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.base.library.R;
-import com.base.library.activity.BaseActivity;
 import com.base.library.application.BaseApplication;
 import com.base.library.immersion.ImmersionBar;
 import com.base.library.util.DialogUtil;
@@ -23,8 +17,6 @@ import com.base.library.view.upPhotoView.PictureUtil;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
 
 import java.util.ArrayList;
 

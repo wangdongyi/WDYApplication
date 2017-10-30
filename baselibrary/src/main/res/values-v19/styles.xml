@@ -3,9 +3,9 @@
 
     <style name="WDYAppTheme" parent="BaseAppTheme">
         <!--透明状态栏-->
-        <item name="android:windowTranslucentStatus">true</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <!--浮在底部导航上-->
-        <item name="android:windowTranslucentNavigation">false</item>
+        <!--<item name="android:windowTranslucentNavigation">false</item>-->
     </style>
 
     <style name="titleStyles">

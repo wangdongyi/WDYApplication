@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/WDYAppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +25,14 @@
             android:exported="false"
             android:label="消息详情"
             android:screenOrientation="portrait"
-
+            android:theme="@style/WDYAppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".RecycleTestActivity"
+            android:exported="false"
+            android:label="消息详情"
+            android:screenOrientation="portrait"
+            android:theme="@style/WDYAppTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     </application>
 

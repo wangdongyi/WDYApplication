@@ -20,13 +20,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import com.base.library.activity.BaseActivity;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.base.library.activity.WDYBaseActivity;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 存储SDK一些全局性的常量
@@ -51,7 +47,7 @@ public class CCPAppManager {
      * IM功能UserData字段默认文字
      */
     public static final String USER_DATA = "com.base.library";
-    public static ArrayList<BaseActivity> activities = new ArrayList<BaseActivity>();
+    public static ArrayList<WDYBaseActivity> activities = new ArrayList<WDYBaseActivity>();
 
     public static String getPackageName() {
         return pkgName;
@@ -134,12 +130,12 @@ public class CCPAppManager {
     }
 
 
-    public static void addActivity(BaseActivity activity) {
+    public static void addActivity(WDYBaseActivity activity) {
         activities.add(activity);
     }
 
     public static void clearActivity() {
-        for (BaseActivity activity : activities) {
+        for (WDYBaseActivity activity : activities) {
             if (activity != null) {
                 activity.finish();
                 activity = null;

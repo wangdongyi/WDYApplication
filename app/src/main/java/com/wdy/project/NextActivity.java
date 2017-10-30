@@ -9,7 +9,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.base.library.activity.BaseActivity;
+import com.base.library.activity.WDYBaseActivity;
 import com.base.library.animation.LayoutAnimationHelper;
 import com.base.library.application.BaseApplication;
 import com.base.library.listen.OnRecyclerClickListen;
@@ -26,7 +26,7 @@ import java.util.Random;
  * 创建时间：2017/7/7.
  */
 
-public class NextActivity extends BaseActivity {
+public class NextActivity extends WDYBaseActivity {
     private RecyclerView mRecyclerView;
     private LinearLayout load;
     private RefreshLayout refresh;
@@ -39,7 +39,6 @@ public class NextActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_activity);
-        setTitleName("消息盒子");
         setStatusBar(true);
         initView();
         messageAdapter = new MessageAdapter(this, list);

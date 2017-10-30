@@ -12,20 +12,18 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <!--ToolBar上的Title颜色-->
         <item name="android:textColorPrimary">@color/text_black</item>
-        <!--过场动画-->
-        <item name="android:windowAnimationStyle">@style/actAnimation</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <!--activity透明-->
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="LoadingAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/blue</item>
-        <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/actAnimation</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -170,14 +168,6 @@
         <item name="android:text">@string/app_name</item>
     </style>
 
-    <style name="RightText">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/default_text_size</item>
-        <item name="android:text">@string/back</item>
-    </style>
 
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -747,7 +737,22 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:translationY">3dp</item>
     </style>
-
+    <style name="RightText">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:text">@string/back</item>
+    </style>
+    <style name="LeftText">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:text">@string/back</item>
+    </style>
     <style name="LineVertical">
         <item name="android:layout_width">0.5dp</item>
         <item name="android:layout_height">match_parent</item>

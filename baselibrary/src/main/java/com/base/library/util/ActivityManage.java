@@ -10,12 +10,13 @@ import com.base.library.application.BaseApplication;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * 作者：王东一 on 2016/3/21 16:56
  **/
 public class ActivityManage {
-    private List<AppCompatActivity> activityList = new LinkedList<AppCompatActivity>();
+    private Stack<Activity> activityList = new Stack<>();
     private static ActivityManage instance;
 
 
@@ -26,14 +27,16 @@ public class ActivityManage {
         }
         return instance;
     }
-
+    public Stack<Activity> getActivityList() {
+        return activityList;
+    }
     // 添加Activity到容器中
-    public void addActivity(AppCompatActivity activity) {
+    public void addActivity(Activity activity) {
         activityList.add(activity);
     }
 
     // 添加Activity到容器中
-    public void removeActivity(AppCompatActivity activity) {
+    public void removeActivity(Activity activity) {
         activityList.remove(activity);
     }
 
@@ -73,14 +76,14 @@ public class ActivityManage {
     }
 
     public void removeActivity() {
-        for (AppCompatActivity activity : activityList) {
+        for (Activity activity : activityList) {
             activity.finish();
         }
     }
 
     // 遍历所有Activity并finish
     public void exit() {
-        for (AppCompatActivity activity : activityList) {
+        for (Activity activity : activityList) {
             activity.finish();
         }
         System.exit(0);
