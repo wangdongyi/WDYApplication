@@ -1,7 +1,0 @@
-# ninja log v5
-0	130	0	CMakeFiles/wdy-native-lib.dir/src/main/cpp/wdy-native-lib.cpp.o	ba2cb4041f8649f5
-130	171	0	../../../../build/intermediates/cmake/release/obj/x86_64/libwdy-native-lib.so	93bb22f637b0657b
-1	181	0	CMakeFiles/wdy-native-lib.dir/src/main/cpp/wdy-native-lib.cpp.o	ba2cb4041f8649f5
-181	263	0	../../../../build/intermediates/cmake/release/obj/x86_64/libwdy-native-lib.so	93bb22f637b0657b
-1	177	0	CMakeFiles/wdy-native-lib.dir/src/main/cpp/wdy-native-lib.cpp.o	ba2cb4041f8649f5
-177	256	0	../../../../build/intermediates/cmake/release/obj/x86_64/libwdy-native-lib.so	93bb22f637b0657b

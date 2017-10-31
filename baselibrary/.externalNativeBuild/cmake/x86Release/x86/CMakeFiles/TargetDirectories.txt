@@ -1,3 +1,0 @@
-/Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/x86Release/x86/CMakeFiles/edit_cache.dir
-/Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/x86Release/x86/CMakeFiles/rebuild_cache.dir
-/Users/apple/Desktop/myProject/WDYApplication/baselibrary/.externalNativeBuild/cmake/x86Release/x86/CMakeFiles/wdy-native-lib.dir
