@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="取消"
-                android:textColor="@color/top_color"
+                android:textColor="#ffffff"
                 android:textSize="?default_text_size" />
 
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:text="确定"
-                android:textColor="@color/top_color"
+                android:textColor="#ffffff"
                 android:textSize="?default_text_size" />
         </RelativeLayout>
 

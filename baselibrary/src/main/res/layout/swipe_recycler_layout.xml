@@ -36,7 +36,7 @@
             <com.base.library.view.loading.LoadingView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:loadingColor="@color/top_color" />
+                app:loadingColor="#ffffff" />
         </LinearLayout>
     </RelativeLayout>
 </com.base.library.view.refresh.RefreshLayout>

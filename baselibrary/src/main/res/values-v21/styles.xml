@@ -8,7 +8,7 @@
         <!--&lt;!&ndash;状态栏颜色&ndash;&gt;-->
         <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <!--&lt;!&ndash; 底部bar颜色 &ndash;&gt;-->
-        <!--<item name="android:navigationBarColor">@color/top_color</item>-->
+        <!--<item name="android:navigationBarColor">#ffffff</item>-->
         <!--&lt;!&ndash;是否隐藏底部返回栏&ndash;&gt;-->
         <!--<item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
     </style>
