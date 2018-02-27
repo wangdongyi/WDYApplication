@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.base.library.R;
@@ -30,9 +28,6 @@ import com.base.library.util.MethodInvoke;
 import com.base.library.util.SDKVersionUtils;
 import com.base.library.util.StatusBarUtil;
 import com.base.library.util.SupportSwipeModeUtils;
-import com.base.library.util.SwipeActivityManager;
-import com.base.library.view.swipeBackLayout.SwipeBackHelper;
-import com.base.library.view.swipeBackLayout.SwipeBackLayout;
 
 /**
  * 作者：王东一 on 2016/3/21 16:54

@@ -120,7 +120,7 @@ public class SharedPreferencesUtil {
     /**
      * 反序列化对象
      */
-    public Object deSerialization(String str) throws IOException, ClassNotFoundException {
+    private Object deSerialization(String str) throws IOException, ClassNotFoundException {
         String redStr = java.net.URLDecoder.decode(str, "UTF-8");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(redStr.getBytes("ISO-8859-1"));
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
@@ -133,7 +133,7 @@ public class SharedPreferencesUtil {
     /**
      * 序列化对象
      */
-    public String serialize(Object save) throws IOException {
+    private String serialize(Object save) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
         objectOutputStream.writeObject(save);
